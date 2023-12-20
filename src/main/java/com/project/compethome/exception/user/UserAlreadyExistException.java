@@ -1,3 +1,3 @@
-package com.project.compethome.exception.users;
+package com.project.compethome.exception.user;
 
 public class UserAlreadyExistException extends RuntimeException{}

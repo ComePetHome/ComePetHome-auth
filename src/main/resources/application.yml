@@ -23,3 +23,13 @@ spring:
   flyway:
     enabled: true
     baseline-on-migrate: true
+
+jwt:
+  properties:
+    secret: 123
+    access-token-expiration-seconds: 60 # 900 15분
+    refresh-token-expiration-seconds: 180 # 1209600 14일
+    token-prefix: Bearer
+  response:
+    access-token-header-name: Authorization
+    refresh-token-header-name: Refresh-Token
