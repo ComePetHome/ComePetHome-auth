@@ -1,0 +1,55 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: gateway-server
+  h2:
+    console:
+      enabled: true
+  datasource:
+    url: jdbc:h2:mem:RefreshTokendb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  cloud:
+    gateway:
+      routes:
+        - id: user
+          uri: http://user-server:8080
+          predicates:
+            - Path=/api/user/login, /api/user/join
+          filters:
+            - LoginFilter
+        - id: custom
+          uri: http://user-server:8080
+          predicates:
+            - Path=/api/user/test
+          filters:
+            - AuthenticationFilter
+
+
+jwt:
+  properties:
+    secret: 123
+    access-token-expiration-seconds: 60 # 900 10?
+    refresh-token-expiration-seconds: 180 # 3600 1??
+    token-prefix: Bearer
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registryFetchIntervalSeconds: 5
+    disable-delta: true
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://eureka-server:8761/eureka/

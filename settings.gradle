@@ -1,1 +1,5 @@
 rootProject.name = 'animal'
+include 'user-server'
+include 'eureka-server'
+include 'gateway-server'
+

@@ -1,0 +1,197 @@
+version: "3"
+services:
+#  database:
+#    image: mariadb:latest
+#    ports:
+#      - "3306:3306" # 컨테이너 안 포트/호스트 시스템 외부 포트
+#    networks:
+#      backend:
+#        aliases:
+#          - "database"
+#    environment:
+#      MARIADB_DATABASE: "gopang"
+##      MARIADB_USER: "root"
+#      MARIADB_PASSWORD: "1234"
+#      MARIADB_ROOT_PASSWORD: "1234"
+#    volumes:
+#      - ./db/conf.d:/etc/mysql/conf.d
+#      - ./db/data:/var/lib/mysql
+#
+#    healthcheck:
+#      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+#      interval: 1m
+#      timeout: 5s
+#      retries: 3
+#
+#  zookeeper:
+#    image: 'bitnami/zookeeper:latest'
+#    ports:
+#      - '2181:2181'
+#    networks:
+#      backend:
+#        aliases:
+#          - "zookeeper"
+#    environment:
+#      - ALLOW_ANONYMOUS_LOGIN=yes
+#
+#  kafka:
+#    image: 'bitnami/kafka:latest'
+#    ports:
+#      - '9092:9092'
+#    networks:
+#      backend:
+#        aliases:
+#          - "kafka"
+#    environment:
+#      - KAFKA_BROKER_ID=1
+#      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
+#      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+#      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+#      - ALLOW_PLAINTEXT_LISTENER=yes
+#    depends_on:
+#      - zookeeper
+#
+#  gatewayserver:
+#    image: gopang/gatewayserver:0.0.1-SNAPSHOT
+#    ports:
+#      - "8072:8072"
+#    environment:
+#      SERVER_PORT: "8072"
+#      CONFIGSERVER_URI: "http://configserver:8071"
+#      EUREKASERVER_URI: "http://eurekaserver:8070/eureka/"
+#      EUREKASERVER_PORT: "8070"
+#      CONFIGSERVER_PORT: "8071"
+#    depends_on:
+#      database:
+#        condition: service_healthy
+#      configserver:
+#        condition: service_started
+#      eurekaserver:
+#        condition: service_started
+#    networks:
+#      backend:
+#        aliases:
+#          - "gatewayserver"
+#
+#  configserver:
+#    image: gopang/configserver:0.0.1-SNAPSHOT
+#    ports:
+#      - "8071:8071"
+#    networks:
+#      backend:
+#        aliases:
+#          - "configserver"
+#
+  eureka-server:
+    image: eureka-server:0.0.1-SNAPSHOT
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+#    depends_on:
+#      database:
+#        condition: service_healthy
+#      configserver:
+#        condition: service_started
+    networks:
+      - default
+  user-server:
+    image: user-server:0.0.1-SNAPSHOT
+    container_name: user-server
+    build:
+      context: ../user-server
+      dockerfile: ../user-server/Dockerfile
+    restart: always
+    ports:
+      - '8080:8080'
+    networks:
+      - default
+  gateway-server:
+    image: gateway-server:0.0.1-SNAPSHOT
+    container_name: gateway-server
+    build:
+      context: ../gateway-server
+      dockerfile: ../gateway-server/Dockerfile
+    restart: always
+    ports:
+      - '9001:9001'
+    networks:
+      - default
+#  orderservice:
+#    image: gopang/orderserver:0.0.2-SNAPSHOT
+#    environment:
+#      DATABASESERVER_PORT: "3306"
+#    depends_on:
+#      database:
+#        condition: service_healthy
+#      configserver:
+#        condition: service_started
+#      kafka:
+#        condition: service_started
+#    ports:
+#      - "8082:8082"
+#    networks:
+#      - backend
+#
+#  gopangpayment:
+#    image: gopang/paymentserver:0.0.1-SNAPSHOT
+#    container_name: gopangpayment
+#    environment:
+#      DATABASESERVER_PORT: "3306"
+#    depends_on:
+#      database:
+#        condition: service_healthy
+#      configserver:
+#        condition: service_started
+#    ports:
+#      - "8083:8083"
+#    networks:
+#      - backend
+#
+#  gopangitems:
+#    image: gopang/itemserver:0.0.1-SNAPSHOT
+#    ports:
+#      - "8081:8081"
+#    depends_on:
+#      database:
+#        condition: service_healthy
+#      configserver:
+#        condition: service_started
+#    networks:
+#      backend:
+#        aliases:
+#          - "itemserver"
+#  oauth2server:
+#    image: gopang/oauth2server:0.0.1-SNAPSHOT
+#    ports:
+#      - "8085:8085"
+#    depends_on:
+#      database:
+#        condition: service_healthy
+#      configserver:
+#        condition: service_started
+#    networks:
+#      backend:
+#        aliases:
+#          - "oauth2server"
+#  angular-app:
+#    image: nginx-server:web-server
+#    container_name: angular-app
+#    build:
+#      context: ../nginx-server
+#      dockerfile: ../nginx-server/Dockerfile
+#    ports:
+#      - "80:80"
+#  chat-server:
+#    image: chat-server:spring-boot
+#    container_name: service-chat
+#    build:
+#      context: ../chat-server
+#      dockerfile: ../chat-server/Dockerfile
+#    restart: always
+#    ports:
+#      - '8080:8080'
+#    networks:
+#      - default
+networks:
+  backend:
+    driver: bridge
