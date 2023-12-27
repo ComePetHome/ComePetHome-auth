@@ -43,7 +43,7 @@ pipeline {
             steps {
                 echo 'Running Docker Compose'
                 script {
-                    sh 'docker-compose -f ./docker-compose/docker-compose.yml up -d'
+                    sh 'docker-compose -f $WORKSPACE/docker-compose/docker-compose.yml up -d'
                 }
             }
         }
