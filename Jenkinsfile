@@ -4,22 +4,23 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
+                echo 'Checkout Remote Repository'
                 script {
-                    echo 'Checkout Remote Repository' git branch: 'master',
+                    git branch: 'master',
                         credentialsId: 'ComePetHome',
                         url: 'https://github.com/ComePetHome/ComePetHome-auth'
                 }
             }
         }
 
-         stage('Build') {
-             steps {
-                 echo 'Build With gradlew'
-                 script {
+        stage('Build') {
+            steps {
+                echo 'Build With gradlew'
+                script {
                     sh 'chmod +x ./gradlew'
                     sh './gradlew clean build'
-                 }
-             }
-         }
+                }
+            }
+        }
     }
 }
