@@ -56,7 +56,8 @@ pipeline {
 
                     sh(script: """
                         docker rmi \$(docker images -q \
-                        --filter \"before=${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME}:latest\" \                        ${DOCKER_HUB_URL}/${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME})      """, returnStatus: true)
+                        --filter \"before=${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME}:latest\" \
+                        ${DOCKER_HUB_URL}/${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME})      """, returnStatus: true)
                     }
                 }
             }
