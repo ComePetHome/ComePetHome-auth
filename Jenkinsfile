@@ -2,14 +2,12 @@ pipeline {
     agent any
 
     environment {
-        // BASIC
         PROJECT_NAME = 'ComePetHome'
         REPOSITORY_URL = 'https://github.com/ComePetHome/ComePetHome-auth'
         DOCKER_HUB_URL = 'registry.hub.docker.com'
         DOCKER_IMAGE_NAME = "comepethome:${env.BRANCH_NAME}"
         DOCKER_HUB_CREDENTIAL_ID = 'rhw0213@gmail.com'
 
-        //DOCKER
         DOCKER_HUB_URL = 'registry.hub.docker.com'
         DOCKER_HUB_FULL_URL = 'https://' + DOCKER_HUB_URL
         DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL'
