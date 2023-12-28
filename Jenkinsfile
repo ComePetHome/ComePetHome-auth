@@ -38,23 +38,25 @@ pipeline {
             }
         }
 
-        stage('Docker Compose Up') {
+        stage('Build & Push Docker Image') {
             steps {
-                echo 'Running Docker Compose'
-                script {
-                    sh 'docker-compose -f /jenkins/workspace/ComePetHome_master/docker-compose/docker-compose.yml up -d'
-                }
-            }
-        }
+                echo 'Build & Push Docker Image'
+                withCredentials([usernamePassword(
+                        credentialsId: DOCKER_HUB_CREDENTIAL_ID,
+                        usernameVariable: 'DOCKER_HUB_ID',
+                        passwordVariable: 'DOCKER_HUB_PW')]) {
 
-        stage('Push Docker Image') {
-            steps {
-                echo 'Pushing Docker Image'
-                script {
-                    withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIAL_ID, usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                        sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_HUB_URL"
-                        sh "docker tag $DOCKER_IMAGE_NAME $DOCKER_HUB_FULL_URL/$DOCKER_IMAGE_NAME"
-                        sh "docker push $DOCKER_HUB_FULL_URL/$DOCKER_IMAGE_NAME"
+                    script {
+                        docker.withRegistry(DOCKER_HUB_FULL_URL,
+                                            DOCKER_HUB_CREDENTIAL_ID) {
+                        app = docker.build(DOCKER_HUB_ID + '/' + DOCKER_IMAGE_NAME)
+                        app.push(env.BUILD_ID)
+                        app.push('latest')
+                        }
+
+                    sh(script: """
+                        docker rmi \$(docker images -q \
+                        --filter \"before=${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME}:latest\" \                        ${DOCKER_HUB_URL}/${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME})      """, returnStatus: true)
                     }
                 }
             }
