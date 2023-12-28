@@ -45,17 +45,13 @@ pipeline {
                         usernameVariable: 'DOCKER_HUB_ID',
                         passwordVariable: 'DOCKER_HUB_PW')]) {
 
-                    script {
-                        docker.withRegistry(DOCKER_HUB_URL) {
-                            app = docker.build(DOCKER_IMAGE_NAME)
-                            app.push('latest')
+                    dir('eureka-server'){
+                        script {
+                            docker.withRegistry(DOCKER_HUB_URL) {
+                                app = docker.build("animal/eureka-server:${env.BRANCH_NAME}")
+                                app.push('latest')
+                            }
                         }
-
-                        sh(script: """
-                            docker rmi \$(docker images -q \
-                            --filter \"before=${DOCKER_IMAGE_NAME}:latest\" \
-                            ${DOCKER_IMAGE_NAME})
-                            """, returnStatus: true)
                     }
                 }
             }
