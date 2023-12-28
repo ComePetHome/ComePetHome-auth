@@ -10,7 +10,7 @@ pipeline {
 
         DOCKER_HUB_URL = 'registry.hub.docker.com'
         DOCKER_HUB_FULL_URL = 'https://' + DOCKER_HUB_URL
-        DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL'
+        DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL_ID'
     }
 
     stages {
