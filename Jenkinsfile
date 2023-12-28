@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        //변수설정
         PROJECT_NAME = 'ComePetHome'
         REPOSITORY_URL = 'https://github.com/ComePetHome/ComePetHome-auth'
         DOCKER_HUB_URL = 'registry.hub.docker.com'
