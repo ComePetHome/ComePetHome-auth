@@ -14,7 +14,6 @@ pipeline {
         stage('Set Variables') {
             steps {
                 echo 'Set Variables'
-                // 변수 설정 스테이지
             }
         }
 
