@@ -42,7 +42,7 @@ pipeline {
             steps {
                 echo 'Running Docker Compose'
                 script {
-                    sh '/var/jenkins_home/docker-compose/docker-compose -f $WORKSPACE/docker-compose/docker-compose.yml up -d'
+                    sh 'docker-compose -f $WORKSPACE/docker-compose/docker-compose.yml up -d'
                 }
             }
         }
