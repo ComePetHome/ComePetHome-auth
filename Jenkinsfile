@@ -50,6 +50,7 @@ pipeline {
                         script {
                             docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
                                 app = docker.build("eureka-server", "/var/jenkins_home/workspace/ComePetHome_master/eureka-server")
+                                app.push(env.BUILD_ID)
                                 app.push('latest')
                             }
                         }
