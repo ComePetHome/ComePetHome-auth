@@ -49,10 +49,14 @@ pipeline {
                     dir('eureka-server'){
                         script {
                             docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                                app = docker.build(DOCKER_HUB_ID + '/' + 'eureka-server', '/var/jenkins_home/workspace/ComePetHome_master/eureka-server')
-                                app.push(env.BUILD_ID)
-                                app.push('latest')
+                                app = docker.build('eureka-server', '/root/docker/jenkins/workspace/ComePetHome_master/eureka-server')
+                                app.push('0.0.1-SNAPSHOT')
                             }
+                            sh(script: """
+                                docker rmi \$(docker images -q \
+                                --filter \"before=${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME}:0.0.1-SNAPSHOT\" \
+                                ${DOCKER_HUB_URL}/${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME})
+                            """, returnStatus: true)
                         }
                     }
                 }
