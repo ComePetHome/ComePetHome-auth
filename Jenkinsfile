@@ -48,7 +48,7 @@ pipeline {
 
                     dir('eureka-server'){
                         script {
-                            docker.withRegistry(DOCKER_HUB_URL) {
+                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
                                 app = docker.build("eureka-server", "/var/jenkins_home/workspace/ComePetHome_master/eureka-server")
                                 app.push('latest')
                             }
