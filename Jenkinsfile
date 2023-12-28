@@ -5,7 +5,7 @@ pipeline {
         //변수설정
         PROJECT_NAME = 'ComePetHome'
         REPOSITORY_URL = 'https://github.com/ComePetHome/ComePetHome-auth'
-        DOCKER_HUB_URL = 'registry.hub.docker.com'
+        DOCKER_HUB_URL = 'https://registry.hub.docker.com'
         DOCKER_IMAGE_NAME = "comepethome:${env.BRANCH_NAME}"
         DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL_ID'
     }
