@@ -73,10 +73,9 @@ pipeline {
                     usernamePassword(credentialsId: DOCKER_HUB_CREDENTIAL_ID,
                                         usernameVariable: 'DOCKER_HUB_ID',
                                         passwordVariable: 'DOCKER_HUB_PW'),
-                    sshUserPrivateKey(credentialsId: SSH_CREDENTIAL_ID,
-                                        keyFileVariable: 'KEY_FILE',
-                                        passphraseVariable: 'PW',
-                                        usernameVariable: 'USERNAME')]) {
+                    usernamePassword(credentialsId: SSH_CREDENTIAL_ID,
+                                        usernameVariable: 'USERNAME',
+                                        passwordVariable: 'PW')]) {
                     script {
                         def remote = [:]
                         remote.name = 'deploy'
