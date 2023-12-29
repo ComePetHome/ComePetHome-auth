@@ -9,8 +9,6 @@ pipeline {
         DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL_ID'
 
         SSH_CREDENTIAL_ID = 'ComePetHome_SSH'
-        //SSH_PORT_CREDENTIAL_ID = OPERATION_ENV.toUpperCase() + '_SSH_PORT'
-        //SSH_HOST_CREDENTIAL_ID = OPERATION_ENV.toUpperCase() + '_SSH_HOST'
     }
 
     stages {
@@ -51,21 +49,36 @@ pipeline {
 
                     dir('eureka-server'){
                         script {
+                            sh(script: """
+                                docker rmi ${DOCKER_HUB_USER_NAME}/eureka-server:latest
+                            """, returnStatus: true)
+                            sh(script: """
+                                docker rmi ${DOCKER_HUB_URL}/${DOCKER_HUB_USER_NAME}/eureka-server:latest
+                            """, returnStatus: true)
+
                             docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
                                 app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'eureka-server', '/var/jenkins_home/workspace/ComePetHome_master/eureka-server')
                                 app.push('latest')
                             }
-                            sh(script: """
-                                docker rmi \$(docker images -q \
-                                --filter \"before=${DOCKER_HUB_CREDENTIAL_ID}/eureka-server:latest\" \
-                                ${DOCKER_HUB_URL}/${DOCKER_HUB_CREDENTIAL_ID}/eureka-server)
-                            """, returnStatus: true)
-                            sh(script: """
-                                docker rmi ${DOCKER_HUB_URL}/${DOCKER_HUB_CREDENTIAL_ID}/eureka-server
-                            """, returnStatus: true)
-
                         }
                     }
+                    //dir('gateway-server'){
+                    //    script {
+                    //        docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                    //            app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'gateway-server', '/var/jenkins_home/workspace/ComePetHome_master/gateway-server')
+                    //            app.push('latest')
+                    //        }
+                    //        sh(script: """
+                    //            docker rmi \$(docker images -q \
+                    //            --filter \"before=${DOCKER_HUB_CREDENTIAL_ID}/gateway-server:latest\" \
+                    //            ${DOCKER_HUB_URL}/${DOCKER_HUB_CREDENTIAL_ID}/gateway-server)
+                    //        """, returnStatus: true)
+                    //        sh(script: """
+                    //            docker rmi ${DOCKER_HUB_URL}/${DOCKER_HUB_CREDENTIAL_ID}/gateway-server
+                    //        """, returnStatus: true)
+
+                    //    }
+                    //}
                 }
             }
         }
@@ -91,19 +104,19 @@ pipeline {
                         remote.allowAnyHosts = true
 
                         // eureka-server 배포
+                        sshCommand remote: remote, command: 'docker image rmi -f' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
-                        sshCommand (remote: remote, failOnError: false, command: 'docker rm -f eureka-server')
+                        //sshCommand (remote: remote, failOnError: false, command: '')
                         sshCommand remote: remote, command: ('docker run -d --name eureka-server'
                                                 + ' -p 8761:' + 8761
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest')
 
-                        // 이미지 2 배포
-                        //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/another-image:latest'
-                        //sshCommand (remote: remote, failOnError: false, command: 'docker rm -f another-container')
-                        //sshCommand remote: remote, command: ('docker run -d --name another-container'
-                        //                        + ' -p 8080:' + ANOTHER_INTERNAL_PORT
-                        //                        + ' -e \"SOME_ENV_VARIABLE=' + OPERATION_ENV + '\"'
-                        //                        + ' ' + DOCKER_HUB_ID + '/another-image:latest')
+                        // gateway-server 배포
+                        //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest'
+                        //sshCommand (remote: remote, failOnError: false, command: 'docker rm -f gateway-server')
+                        //sshCommand remote: remote, command: ('docker run -d --name gateway-server'
+                        //                        + ' -p 9001:' + 9001
+                        //                        + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
                     }
                 }
             }
