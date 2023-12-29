@@ -103,6 +103,9 @@ pipeline {
                         //remote.port = PORT as Integer
                         remote.allowAnyHosts = true
 
+                        // docker 전체 다운 및 삭제
+                        sshCommand remote: remote, command: 'docker stop $(docker ps -aq) && docker rm -vf $(docker ps -aq)'
+
                         // eureka-server 배포
                         sshCommand remote: remote, command: 'docker image rmi -f ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
