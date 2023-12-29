@@ -57,8 +57,8 @@ pipeline {
                             }
                             sh(script: """
                                 docker rmi \$(docker images -q \
-                                --filter \"before=${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME}:latest\" \
-                                ${DOCKER_HUB_URL}/${DOCKER_HUB_ID}/${DOCKER_IMAGE_NAME})
+                                --filter \"before=${DOCKER_HUB_CREDENTIAL_ID}/eureka-server:latest\" \
+                                ${DOCKER_HUB_URL}/${DOCKER_HUB_CREDENTIAL_ID}/eureka-server)
                             """, returnStatus: true)
                         }
                     }
