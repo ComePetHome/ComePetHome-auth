@@ -23,13 +23,13 @@ spring:
     gateway:
       routes:
         - id: user
-          uri: http://172.17.0.3:8081
+          uri: http://172.17.0.4:8081
           predicates:
             - Path=/api/user/login, /api/user/join
           filters:
             - LoginFilter
         - id: custom
-          uri: http://172.17.0.3:8081
+          uri: http://172.17.0.4:8081
           predicates:
             - Path=/api/user/test
           filters:

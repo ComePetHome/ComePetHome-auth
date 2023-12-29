@@ -130,14 +130,14 @@ pipeline {
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name gateway-server'
                                                 + ' --hostname gateway-server'
-                                                + ' --ip 172.17.0.1'
+                                                + ' --ip 172.17.0.3'
                                                 + ' -p 9001:' + 9001
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
                         // user-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name user-server'
                                                 + ' --hostname user-server'
-                                                + ' --ip 172.17.0.3'
+                                                + ' --ip 172.17.0.4'
                                                 + ' -p 8081:' + 8081
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-server:latest')
                     }
