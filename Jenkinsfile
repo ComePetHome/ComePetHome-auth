@@ -100,12 +100,10 @@ pipeline {
                         remote.host = '3.36.75.87'
                         remote.user = USERNAME
                         remote.password = PW
-                        //remote.identity = KEY_FILE
-                        //remote.port = PORT as Integer
                         remote.allowAnyHosts = true
 
                         // docker 전체 다운 및 삭제
-                        sshCommand remote: remote, command: 'docker stop $(docker ps -aq) && docker rm -vf $(docker ps -aq)'
+                        sshCommand remote: remote, command: 'docker stop $(docker ps -aq) && docker rm -vf $(docker ps -aq) || true'
 
                         // eureka-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
