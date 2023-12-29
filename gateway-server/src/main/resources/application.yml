@@ -23,13 +23,13 @@ spring:
     gateway:
       routes:
         - id: user
-          uri: http://user-server:8081
+          uri: http://172.16.0.3:8081
           predicates:
             - Path=/api/user/login, /api/user/join
           filters:
             - LoginFilter
         - id: custom
-          uri: http://user-server:8081
+          uri: http://172.16.0.3:8081
           predicates:
             - Path=/api/user/test
           filters:
@@ -52,4 +52,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     serviceUrl:
-      defaultZone: http://eureka-server:8761/eureka/
+      defaultZone: http://172.16.0.2:8761/eureka/
