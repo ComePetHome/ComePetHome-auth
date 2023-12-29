@@ -4,7 +4,8 @@ pipeline {
     environment {
         PROJECT_NAME = 'ComePetHome'
         REPOSITORY_URL = 'https://github.com/ComePetHome/ComePetHome-auth'
-        DOCKER_HUB_URL = 'https://registry.hub.docker.com'
+        DOCKER_HUB_URL_ADDRESS = 'registry.hub.docker.com'
+        DOCKER_HUB_URL = 'https://' + DOCKER_HUB_URL_ADDRESS
         DOCKER_HUB_USER_NAME = 'rhw0213'
         DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL_ID'
 
@@ -53,7 +54,7 @@ pipeline {
                                 docker image rmi -f ${DOCKER_HUB_USER_NAME}/eureka-server:latest
                             """, returnStatus: true)
                             sh(script: """
-                                docker image rmi -f ${DOCKER_HUB_URL}/${DOCKER_HUB_USER_NAME}/eureka-server:latest
+                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/eureka-server:latest
                             """, returnStatus: true)
 
                             docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
@@ -104,10 +105,9 @@ pipeline {
                         remote.allowAnyHosts = true
 
                         // docker 전체 다운 및 삭제
-                        sshCommand remote: remote, command: 'docker stop $(docker ps -aq) && docker rm -vf $(docker ps -aq)'
+                        sshCommand(remote: remote, command: 'docker stop $(docker ps -aq) && docker rm -vf $(docker ps -aq) || true')
 
                         // eureka-server 배포
-                        sshCommand remote: remote, command: 'docker image rmi -f ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
                         //sshCommand (remote: remote, failOnError: false, command: '')
                         sshCommand remote: remote, command: ('docker run -d --name eureka-server'
