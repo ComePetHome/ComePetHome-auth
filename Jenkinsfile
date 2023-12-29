@@ -121,17 +121,20 @@ pipeline {
                         // eureka-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name eureka-server'
+                                                + ' --hostname eureka-server'
                                                 + ' -p 8761:' + 8761
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest')
 
                         // gateway-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name gateway-server'
+                                                + ' --hostname gateway-server'
                                                 + ' -p 9001:' + 9001
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
                         // user-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name user-server'
+                                                + ' --hostname user-server'
                                                 + ' -p 8081:' + 8081
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-server:latest')
                     }
