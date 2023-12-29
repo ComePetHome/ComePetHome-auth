@@ -50,10 +50,10 @@ pipeline {
                     dir('eureka-server'){
                         script {
                             sh(script: """
-                                docker rmi ${DOCKER_HUB_USER_NAME}/eureka-server:latest
+                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/eureka-server:latest
                             """, returnStatus: true)
                             sh(script: """
-                                docker rmi ${DOCKER_HUB_URL}/${DOCKER_HUB_USER_NAME}/eureka-server:latest
+                                docker image rmi -f ${DOCKER_HUB_URL}/${DOCKER_HUB_USER_NAME}/eureka-server:latest
                             """, returnStatus: true)
 
                             docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
@@ -104,7 +104,7 @@ pipeline {
                         remote.allowAnyHosts = true
 
                         // eureka-server 배포
-                        sshCommand remote: remote, command: 'docker image rmi -f' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
+                        sshCommand remote: remote, command: 'docker image rmi -f ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
                         //sshCommand (remote: remote, failOnError: false, command: '')
                         sshCommand remote: remote, command: ('docker run -d --name eureka-server'
