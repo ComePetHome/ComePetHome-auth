@@ -8,9 +8,9 @@ pipeline {
         DOCKER_HUB_USER_NAME = 'rhw0213'
         DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL_ID'
 
-        SSH_CREDENTIAL_ID = OPERATION_ENV.toUpperCase() + '_SSH'
-        SSH_PORT_CREDENTIAL_ID = OPERATION_ENV.toUpperCase() + '_SSH_PORT'
-        SSH_HOST_CREDENTIAL_ID = OPERATION_ENV.toUpperCase() + '_SSH_HOST'
+        SSH_CREDENTIAL_ID = 'ComePetHome_SSH'
+        //SSH_PORT_CREDENTIAL_ID = OPERATION_ENV.toUpperCase() + '_SSH_PORT'
+        //SSH_HOST_CREDENTIAL_ID = OPERATION_ENV.toUpperCase() + '_SSH_HOST'
     }
 
     stages {
@@ -76,18 +76,15 @@ pipeline {
                     sshUserPrivateKey(credentialsId: SSH_CREDENTIAL_ID,
                                         keyFileVariable: 'KEY_FILE',
                                         passphraseVariable: 'PW',
-                                        usernameVariable: 'USERNAME'),
-                    string(credentialsId: SSH_HOST_CREDENTIAL_ID, variable: 'HOST'),
-                    string(credentialsId: SSH_PORT_CREDENTIAL_ID, variable: 'PORT')]) {
-
+                                        usernameVariable: 'USERNAME')]) {
                     script {
                         def remote = [:]
                         remote.name = OPERATION_ENV
-                        remote.host = HOST
+                        remote.host = '3.36.75.87'
                         remote.user = USERNAME
                         // remote.password = PW
                         remote.identity = KEY_FILE
-                        remote.port = PORT as Integer
+                        //remote.port = PORT as Integer
                         remote.allowAnyHosts = true
 
                         // eureka-server 배포
