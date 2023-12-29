@@ -79,7 +79,7 @@ pipeline {
                                         usernameVariable: 'USERNAME')]) {
                     script {
                         def remote = [:]
-                        remote.name = OPERATION_ENV
+                        remote.name = 'deploy'
                         remote.host = '3.36.75.87'
                         remote.user = USERNAME
                         // remote.password = PW
