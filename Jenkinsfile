@@ -82,8 +82,8 @@ pipeline {
                         remote.name = 'deploy'
                         remote.host = '3.36.75.87'
                         remote.user = USERNAME
-                        // remote.password = PW
-                        remote.identity = KEY_FILE
+                        remote.password = PW
+                        //remote.identity = KEY_FILE
                         //remote.port = PORT as Integer
                         remote.allowAnyHosts = true
 
