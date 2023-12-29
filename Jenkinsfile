@@ -5,7 +5,7 @@ pipeline {
         PROJECT_NAME = 'ComePetHome'
         REPOSITORY_URL = 'https://github.com/ComePetHome/ComePetHome-auth'
         DOCKER_HUB_URL_ADDRESS = 'registry.hub.docker.com'
-        DOCKER_HUB_URL = 'https://' + DOCKER_HUB_URL_ADDRESS
+        DOCKER_HUB_URL = 'https://registry.hub.docker.com'
         DOCKER_HUB_USER_NAME = 'rhw0213'
         DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL_ID'
 
