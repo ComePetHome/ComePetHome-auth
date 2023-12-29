@@ -6,6 +6,7 @@ pipeline {
         PROJECT_NAME = 'ComePetHome'
         REPOSITORY_URL = 'https://github.com/ComePetHome/ComePetHome-auth'
         DOCKER_HUB_URL = 'https://registry.hub.docker.com'
+        DOCKER_HUB_USER_NAME = 'rhw0213'
         DOCKER_IMAGE_NAME = "comepethome:${env.BRANCH_NAME}"
         DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL_ID'
     }
@@ -49,7 +50,7 @@ pipeline {
                     dir('eureka-server'){
                         script {
                             docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                                app = docker.build('eureka-server:latest', '/var/jenkins_home/workspace/ComePetHome_master/eureka-server')
+                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'eureka-server', '/var/jenkins_home/workspace/ComePetHome_master/eureka-server')
                                 app.push('latest')
                             }
                             sh(script: """
