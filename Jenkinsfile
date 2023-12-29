@@ -60,6 +60,10 @@ pipeline {
                                 --filter \"before=${DOCKER_HUB_CREDENTIAL_ID}/eureka-server:latest\" \
                                 ${DOCKER_HUB_URL}/${DOCKER_HUB_CREDENTIAL_ID}/eureka-server)
                             """, returnStatus: true)
+                            sh(script: """
+                                docker rmi ${DOCKER_HUB_URL}/${DOCKER_HUB_CREDENTIAL_ID}/eureka-server
+                            """, returnStatus: true)
+
                         }
                     }
                 }
