@@ -26,13 +26,6 @@ spring:
     enabled: true
     baseline-on-migrate: true
 
-jwt:
-  properties:
-    secret: 123
-    access-token-expiration-seconds: 60 # 600 10분
-    refresh-token-expiration-seconds: 180 # 3600 1시간
-    token-prefix: Bearer
-
 eureka:
   instance:
     prefer-ip-address: true

@@ -22,22 +22,24 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user-joinAndlogin
+        - id: user-NoAuthentication
           uri: http://172.17.0.4:8081
           predicates:
             - Path=/api/user/login, /api/user/join
           filters:
             - NoAuthenticationFilter
+
         - id: command
           uri: http://172.17.0.4:8081
           predicates:
             - Path=/api/user/test,
           filters:
             - AuthenticationFilter
+
         - id: query
-          uri: http://172.17.0.5:8082, /api/user/findUserId
+          uri: http://172.17.0.5:8082
           predicates:
-            - Path=/api/user/test
+            - Path=/api/user/test, /api/user/findUserId
           filters:
             - AuthenticationFilter
 
