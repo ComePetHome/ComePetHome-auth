@@ -94,15 +94,26 @@ services:
 #        condition: service_started
     networks:
       - default
-  user-server:
-    image: user-server:0.0.1-SNAPSHOT
-    container_name: user-server
+  user-query-server:
+    image: user-query-server:0.0.1-SNAPSHOT
+    container_name: user-query-server
     build:
-      context: ../user-server
-      dockerfile: ../user-server/Dockerfile
+      context: ../user-query-server
+      dockerfile: ../user-query-server/Dockerfile
     restart: always
     ports:
-      - '8080:8080'
+      - '8081:8081'
+    networks:
+      - default
+  user-command-server:
+    image: user-command-server:0.0.1-SNAPSHOT
+    container_name: user-command-server
+    build:
+      context: ../user-command-server
+      dockerfile: ../user-command-server/Dockerfile
+    restart: always
+    ports:
+      - '8082:8082'
     networks:
       - default
   gateway-server:

@@ -9,8 +9,8 @@ create table users(
     create_at date,
     update_at date,
     name varchar(255),
-    phone_number varchar(255)
+    phone_number varchar(255),
     primary key (id)
 );
 
-insert into users (user_id, password, nick_name, name, phone_number) values ('ryu', '1234', '닉네임', "류현우", "010-1234-1234");
+insert into users (user_id, password, nick_name, name, phone_number) values ('ryu', '1234', '닉네임', '류현우', '010-1234-1234');
