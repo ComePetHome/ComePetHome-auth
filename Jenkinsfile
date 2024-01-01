@@ -78,17 +78,32 @@ pipeline {
                             }
                         }
                     }
-                    dir('user-server'){
+                    dir('user-query-server'){
                         script {
                             sh(script: """
-                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-server:latest
+                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-query-server:latest
                             """, returnStatus: true)
                             sh(script: """
-                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-server:latest
+                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-query-server:latest
                             """, returnStatus: true)
 
                             docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-server', '/var/jenkins_home/workspace/ComePetHome_master/user-server')
+                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-query-server', '/var/jenkins_home/workspace/ComePetHome_master/user-query-server')
+                                app.push('latest')
+                            }
+                        }
+                    }
+                    dir('user-command-server'){
+                        script {
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                            """, returnStatus: true)
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                            """, returnStatus: true)
+
+                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
                                 app.push('latest')
                             }
                         }
@@ -133,13 +148,20 @@ pipeline {
                                                 + ' --ip 172.17.0.3'
                                                 + ' -p 9001:' + 9001
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
-                        // user-server 배포
-                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-server:latest'
-                        sshCommand remote: remote, command: ('docker run -d --name user-server'
-                                                + ' --hostname user-server'
+                        // user-query-server 배포
+                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
+                        sshCommand remote: remote, command: ('docker run -d --name user-query-server'
+                                                + ' --hostname user-query-server'
                                                 + ' --ip 172.17.0.4'
                                                 + ' -p 8081:' + 8081
-                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-server:latest')
+                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
+                        // user-command-server 배포
+                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
+                        sshCommand remote: remote, command: ('docker run -d --name user-command-server'
+                                                + ' --hostname user-command-server'
+                                                + ' --ip 172.17.0.5'
+                                                + ' -p 8082:' + 8082
+                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
                     }
                 }
             }

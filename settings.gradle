@@ -1,5 +1,6 @@
 rootProject.name = 'animal'
-include 'user-server'
+include 'user-query-server'
+include 'user-command-server'
 include 'eureka-server'
 include 'gateway-server'
 
