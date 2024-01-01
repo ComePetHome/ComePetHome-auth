@@ -160,7 +160,7 @@ pipeline {
                         sshCommand remote: remote, command: ('docker run -d --name user-query-server'
                                                 + ' --hostname user-query-server'
                                                 + ' --ip 172.17.0.5'
-                                                + ' -p 8085:' + 8082
+                                                + ' -p 8082:' + 8082
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
                     }
                 }

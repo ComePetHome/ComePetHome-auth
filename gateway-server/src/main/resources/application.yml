@@ -25,7 +25,7 @@ spring:
         - id: user-joinAndlogin
           uri: http://172.17.0.4:8081
           predicates:
-            - Path=/api/user/login, Path=/api/user/join
+            - Path=/api/user/login, /api/user/join
           filters:
             - NoAuthenticationFilter
         - id: command
