@@ -1,9 +1,9 @@
-package com.comepethome.user_commend.controller;
+package com.comepethome.user_query.controller;
 
-import com.comepethome.user_commend.controller.request.UserJoinRequest;
-import com.comepethome.user_commend.dto.UserDTO;
-import com.comepethome.user_commend.exception.ResponseMessage;
-import com.comepethome.user_commend.service.UserService;
+import com.comepethome.user_query.controller.request.UserJoinRequest;
+import com.comepethome.user_query.dto.UserDTO;
+import com.comepethome.user_query.exception.ResponseMessage;
+import com.comepethome.user_query.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

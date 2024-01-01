@@ -32,13 +32,6 @@ public class UserService {
     }
 
     @Transactional
-    public String findUserIdByNameAndPhoneNumber(UserDTO userDTO){
-        return Optional.ofNullable(userRepository.findByNameAndPhoneNumber(userDTO.getName(), userDTO.getPhoneNumber()))
-                .map(User::getUserId)
-                .orElseThrow(UserNotExistException::new);
-    }
-
-    @Transactional
     public Optional<User> findByUser(String userId){
         return Optional.ofNullable(userRepository.findByUserId(userId));
     }

@@ -1,6 +1,6 @@
 package com.comepethome.user_commend.dto;
 
-import com.comepethome.user_commend.controller.request.UserJoinRequest;
+import com.comepethome.user_commend.controller.request.UserFindIdRequest;
 import com.comepethome.user_commend.entity.User;
 import lombok.*;
 
@@ -26,9 +26,8 @@ public class UserDTO {
                             user.getNickName(), user.getImageUrl(), user.getCreateAt(), user.getUpdateAt(), user.getName(), user.getPhoneNumber());
     }
 
-    public static UserDTO translate(UserJoinRequest request){
-        return new UserDTO(request.getUserId(), request.getPassword(), "", "", request.getNickName(),
-                            "", LocalDateTime.now(), LocalDateTime.now(), request.getName(), request.getPhoneNumber());
+    public static UserDTO translate(UserFindIdRequest request){
+        return new UserDTO("", "", "", "", "", "", null, null, request.getName(), request.getPhoneNumber());
     }
 }
 

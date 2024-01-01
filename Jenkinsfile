@@ -148,20 +148,20 @@ pipeline {
                                                 + ' --ip 172.17.0.3'
                                                 + ' -p 9001:' + 9001
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
-                        // user-query-server 배포
-                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
-                        sshCommand remote: remote, command: ('docker run -d --name user-query-server'
-                                                + ' --hostname user-query-server'
-                                                + ' --ip 172.17.0.4'
-                                                + ' -p 8081:' + 8081
-                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
                         // user-command-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name user-command-server'
                                                 + ' --hostname user-command-server'
-                                                + ' --ip 172.17.0.5'
-                                                + ' -p 8082:' + 8082
+                                                + ' --ip 172.17.0.4'
+                                                + ' -p 8081:' + 8081
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
+                        // user-query-server 배포
+                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
+                        sshCommand remote: remote, command: ('docker run -d --name user-query-server'
+                                                + ' --hostname user-query-server'
+                                                + ' --ip 172.17.0.5'
+                                                + ' -p 8085:' + 8082
+                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
                     }
                 }
             }
