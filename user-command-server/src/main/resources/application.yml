@@ -9,12 +9,13 @@ spring:
       enabled: true
 
   datasource:
-    url: com.mysql.cj.jdbc.Driver
-    driver-class-name: jdbc:mysql://172.17.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
+    url: org.mariadb.jdbc.Driver
+    driver-class-name: jdbc:mariadb://172.17.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
     password: admin
 
   jpa:
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
     hibernate:
       ddl-auto: none
     properties:
