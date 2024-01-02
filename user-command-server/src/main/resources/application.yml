@@ -15,7 +15,7 @@ spring:
     password: admin
 
   jpa:
-    database-platform: org.hibernate.dialect.MariaDB104Dialect
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
     hibernate:
       ddl-auto: none
     properties:
