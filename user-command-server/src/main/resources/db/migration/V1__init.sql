@@ -12,4 +12,4 @@
 --    phone_number VARCHAR(255)
 --);
 
-insert into users (user_id, password, nick_name, name, phone_number) values ('ryu', '1234', '닉네임', '류현우', '010-1234-1234');
+--insert into users (user_id, password, nick_name, name, phone_number) values ('ryu', '1234', '닉네임', '류현우', '010-1234-1234');
