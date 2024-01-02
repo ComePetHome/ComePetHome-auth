@@ -137,7 +137,7 @@ pipeline {
                         sshCommand remote: remote, command: 'docker pull mariadb'
                         sshCommand remote: remote, command: ('docker run -d --name user-mariadb'
                                                 + ' --hostname user-mariadb'
-                                                + ' --network bridge'
+                                                + ' --net comepethome'
                                                 + ' --ip 172.17.0.6'
                                                 + ' -p 3306:' + 3306
                                                 + ' -e MARIADB_ROOT_PASSWORD=admin'
@@ -148,7 +148,7 @@ pipeline {
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name eureka-server'
                                                 + ' --hostname eureka-server'
-                                                + ' --network bridge'
+                                                + ' --net comepethome'
                                                 + ' --ip 172.17.0.2'
                                                 + ' -p 8761:' + 8761
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest')
@@ -157,7 +157,7 @@ pipeline {
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name gateway-server'
                                                 + ' --hostname gateway-server'
-                                                + ' --network bridge'
+                                                + ' --net comepethome'
                                                 + ' --ip 172.17.0.3'
                                                 + ' -p 9001:' + 9001
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
@@ -165,7 +165,7 @@ pipeline {
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name user-command-server'
                                                 + ' --hostname user-command-server'
-                                                + ' --network bridge'
+                                                + ' --net comepethome'
                                                 + ' --ip 172.17.0.4'
                                                 + ' -p 8081:' + 8081
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
@@ -173,7 +173,7 @@ pipeline {
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name user-query-server'
                                                 + ' --hostname user-query-server'
-                                                + ' --network bridge'
+                                                + ' --net comepethome'
                                                 + ' --ip 172.17.0.5'
                                                 + ' -p 8082:' + 8082
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
