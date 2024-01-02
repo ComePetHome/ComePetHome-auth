@@ -140,8 +140,8 @@ pipeline {
                                                 + ' --ip 172.17.0.6'
                                                 + ' -p 3306:' + 3306
                                                 + ' -e MARIADB_ROOT_PASSWORD=admin'
-                                                + ' -e MYSQL_DATABASE=comepethome'
-                                                + ' ' + mariadb:latest')
+                                                + ' -e MARIADB_DATABASE=comepethome'
+                                                + ' mariadb:latest')
 
                         // eureka-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
