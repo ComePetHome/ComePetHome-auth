@@ -138,7 +138,7 @@ pipeline {
                         sshCommand remote: remote, command: ('docker run -d --name user-mariadb'
                                                 + ' --hostname user-mariadb'
                                                 + ' --net comepethome'
-                                                + ' --ip 172.17.0.6'
+                                                + ' --ip 172.18.0.6'
                                                 + ' -p 3306:' + 3306
                                                 + ' -e MARIADB_ROOT_PASSWORD=admin'
                                                 + ' -e MARIADB_DATABASE=comepethome'
@@ -149,7 +149,7 @@ pipeline {
                         sshCommand remote: remote, command: ('docker run -d --name eureka-server'
                                                 + ' --hostname eureka-server'
                                                 + ' --net comepethome'
-                                                + ' --ip 172.17.0.2'
+                                                + ' --ip 172.18.0.2'
                                                 + ' -p 8761:' + 8761
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest')
 
@@ -158,7 +158,7 @@ pipeline {
                         sshCommand remote: remote, command: ('docker run -d --name gateway-server'
                                                 + ' --hostname gateway-server'
                                                 + ' --net comepethome'
-                                                + ' --ip 172.17.0.3'
+                                                + ' --ip 172.18.0.3'
                                                 + ' -p 9001:' + 9001
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
                         // user-command-server 배포
@@ -166,7 +166,7 @@ pipeline {
                         sshCommand remote: remote, command: ('docker run -d --name user-command-server'
                                                 + ' --hostname user-command-server'
                                                 + ' --net comepethome'
-                                                + ' --ip 172.17.0.4'
+                                                + ' --ip 172.18.0.4'
                                                 + ' -p 8081:' + 8081
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
                         // user-query-server 배포
@@ -174,7 +174,7 @@ pipeline {
                         sshCommand remote: remote, command: ('docker run -d --name user-query-server'
                                                 + ' --hostname user-query-server'
                                                 + ' --net comepethome'
-                                                + ' --ip 172.17.0.5'
+                                                + ' --ip 172.18.0.5'
                                                 + ' -p 8082:' + 8082
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
 

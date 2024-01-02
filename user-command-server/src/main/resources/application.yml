@@ -9,7 +9,7 @@ spring:
       enabled: true
 
   datasource:
-    url: jdbc:mariadb://172.17.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mariadb://172.18.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
     driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: admin
@@ -43,4 +43,4 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     serviceUrl:
-      defaultZone: http://172.17.0.2:8761/eureka/
+      defaultZone: http://172.18.0.2:8761/eureka/
