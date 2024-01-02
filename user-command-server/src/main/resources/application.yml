@@ -9,8 +9,8 @@ spring:
       enabled: true
 
   datasource:
-    url: org.mariadb.jdbc.Driver
-    driver-class-name: jdbc:mariadb://172.17.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mariadb://172.17.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: org.mariadb.jdbc.Driver
     username: root
     password: admin
 
