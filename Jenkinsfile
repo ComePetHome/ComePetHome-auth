@@ -131,9 +131,9 @@ pipeline {
                         remote.allowAnyHosts = true
 
                         // user-mariadb 삭제
-                        sshCommand remote: remote, command: 'docker stop user-mariadb || true'
-                        sshCommand remote: remote, command: 'docker rm user-mariadb|| true'
-                        sshCommand remote: remote, command: 'docker image rm mariadb || true'
+                        //sshCommand remote: remote, command: 'docker stop user-mariadb || true'
+                        //sshCommand remote: remote, command: 'docker rm user-mariadb|| true'
+                        //sshCommand remote: remote, command: 'docker image rm mariadb || true'
 
                         // user-gateway-server 삭제
                         sshCommand remote: remote, command: 'docker stop gateway-server || true'
@@ -156,15 +156,15 @@ pipeline {
                         sshCommand remote: remote, command: 'docker image rm rhw0213/user-query-server || true'
 
                         // user-maria-db 배포
-                        sshCommand remote: remote, command: 'docker pull mariadb:10.4'
-                        sshCommand remote: remote, command: ('docker run -d --name user-mariadb'
-                                                + ' --hostname user-mariadb'
-                                                + ' --net comepethome'
-                                                + ' --ip 172.18.0.6'
-                                                + ' -p 3306:' + 3306
-                                                + ' -e MARIADB_ROOT_PASSWORD=admin'
-                                                + ' -e MARIADB_DATABASE=comepethome'
-                                                + ' mariadb:10.4')
+                        //sshCommand remote: remote, command: 'docker pull mariadb:10.4'
+                        //sshCommand remote: remote, command: ('docker run -d --name user-mariadb'
+                        //                        + ' --hostname user-mariadb'
+                        //                        + ' --net comepethome'
+                        //                        + ' --ip 172.18.0.6'
+                        //                        + ' -p 3306:' + 3306
+                        //                        + ' -e MARIADB_ROOT_PASSWORD=admin'
+                        //                        + ' -e MARIADB_DATABASE=comepethome'
+                        //                        + ' mariadb:10.4')
 
                         // eureka-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
