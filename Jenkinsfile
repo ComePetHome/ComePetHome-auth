@@ -133,6 +133,16 @@ pipeline {
                         // docker 전체 다운 및 삭제
                         sshCommand remote: remote, command: 'docker stop $(docker ps -aq) && docker rm -vf $(docker ps -aq) || true'
 
+                        // user-maria-db 배포
+                        sshCommand remote: remote, command: 'docker pull mariadb'
+                        sshCommand remote: remote, command: ('docker run -d --name user-mariadb'
+                                                + ' --hostname user-mariadb'
+                                                + ' --ip 172.17.0.6'
+                                                + ' -p 3306:' + 3306
+                                                + ' -e MARIADB_ROOT_PASSWORD=admin'
+                                                + ' -e MYSQL_DATABASE=comepethome'
+                                                + ' ' + mariadb:latest')
+
                         // eureka-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name eureka-server'
@@ -162,6 +172,7 @@ pipeline {
                                                 + ' --ip 172.17.0.5'
                                                 + ' -p 8082:' + 8082
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
+
                     }
                 }
             }

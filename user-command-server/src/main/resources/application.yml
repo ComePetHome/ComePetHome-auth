@@ -9,10 +9,10 @@ spring:
       enabled: true
 
   datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+    url: org.mariadb.jdbc.Driver
+    driver-class-name: jdbc:mariadb://172.17.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: admin
 
   jpa:
     hibernate:
