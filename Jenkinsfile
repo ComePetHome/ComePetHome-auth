@@ -130,11 +130,33 @@ pipeline {
                         remote.password = PW
                         remote.allowAnyHosts = true
 
-                        // docker 전체 다운 및 삭제
-                        sshCommand remote: remote, command: 'docker stop $(docker ps -aq) && docker rm -vf $(docker ps -aq) || true'
+                        // user-mariadb 삭제
+                        sshCommand remote: remote, command: 'docker stop user-mariadb || true'
+                        sshCommand remote: remote, command: 'docker rm user-mariadb|| true'
+                        sshCommand remote: remote, command: 'docker image rm mariadb || true'
+
+                        // user-gateway-server 삭제
+                        sshCommand remote: remote, command: 'docker stop gateway-server || true'
+                        sshCommand remote: remote, command: 'docker rm gateway-server || true'
+                        sshCommand remote: remote, command: 'docker image rm rhw0213/gateway-server || true'
+
+                        // user-eureka-server 삭제
+                        sshCommand remote: remote, command: 'docker stop eureka-server || true'
+                        sshCommand remote: remote, command: 'docker rm eureka-server || true'
+                        sshCommand remote: remote, command: 'docker image rm rhw0213/eureka-server || true'
+
+                        // user-command-server 삭제
+                        sshCommand remote: remote, command: 'docker stop user-command-server || true'
+                        sshCommand remote: remote, command: 'docker rm user-command-server || true'
+                        sshCommand remote: remote, command: 'docker image rm rhw0213/user-command-server || true'
+
+                        // user-query-server 삭제
+                        sshCommand remote: remote, command: 'docker stop user-query-server || true'
+                        sshCommand remote: remote, command: 'docker rm user-query-server || true'
+                        sshCommand remote: remote, command: 'docker image rm rhw0213/user-query-server || true'
 
                         // user-maria-db 배포
-                        sshCommand remote: remote, command: 'docker pull mariadb'
+                        sshCommand remote: remote, command: 'docker pull mariadb:10.4'
                         sshCommand remote: remote, command: ('docker run -d --name user-mariadb'
                                                 + ' --hostname user-mariadb'
                                                 + ' --net comepethome'
@@ -142,7 +164,7 @@ pipeline {
                                                 + ' -p 3306:' + 3306
                                                 + ' -e MARIADB_ROOT_PASSWORD=admin'
                                                 + ' -e MARIADB_DATABASE=comepethome'
-                                                + ' mariadb:latest')
+                                                + ' mariadb:10.4')
 
                         // eureka-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
