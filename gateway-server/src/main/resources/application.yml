@@ -29,19 +29,26 @@ spring:
           filters:
             - NoAuthenticationFilter
 
-        - id: command
+        - id: user-command
           uri: http://172.18.0.4:8081
           predicates:
             - Path=/api/user/test,
           filters:
             - AuthenticationFilter
 
-        - id: query
+        - id: user-query
           uri: http://172.18.0.5:8082
           predicates:
             - Path=/api/user/test, /api/user/findUserId
           filters:
             - AuthenticationFilter
+
+        - id: pet
+          uri: http://172.18.0.8:3000
+          predicates:
+            - Path=/pets
+          filters:
+            - NoAuthenticationFilter
 
 jwt:
   properties:
