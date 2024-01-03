@@ -210,7 +210,6 @@ pipeline {
                                                 + ' --hostname kafka-server'
                                                 + ' --net comepethome'
                                                 + ' --ip 172.18.0.7'
-                                                + ' -p 8082:' + 8082
                                                 + ' ubuntu:20.04')
 
                     }
