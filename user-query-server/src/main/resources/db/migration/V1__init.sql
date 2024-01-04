@@ -6,10 +6,9 @@ CREATE TABLE users (
     refresh_token VARCHAR(255),
     nick_name VARCHAR(255),
     image_url VARCHAR(255),
-    create_at DATE,
-    update_at DATE,
+    create_at DATETIME,
+    update_at DATETIME,
     name VARCHAR(255),
     phone_number VARCHAR(255)
 );
 
-insert into users (user_id, password, nick_name, name, phone_number) values ('ryu', '1234', '닉네임', '류현우', '010-1234-1234');
