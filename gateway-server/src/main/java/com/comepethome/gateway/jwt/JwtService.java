@@ -10,13 +10,11 @@ import com.comepethome.gateway.jwt.dto.TokenDTO;
 import com.comepethome.gateway.jwt.exception.CustomHttpStatus;
 import com.comepethome.gateway.jwt.exception.token.UnexpectedRefreshTokenException;
 import com.comepethome.gateway.jwt.refreshToken.RefreshTokenManager;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -107,6 +105,19 @@ public class JwtService {
                 .withClaim(USERNAME_CLAIM, username)
                 .sign(algorithm);
 
+    }
+    public String getUserIdfromToken(String token){
+        token = removePrefix(token);
+        try {
+            DecodedJWT decodedJWT = verifier.verify(token);
+            String userId = decodedJWT.getClaim("userId").asString();
+            return userId;
+        } catch (TokenExpiredException e) {
+            // Todo: 만료시 알림 해줘야하나..? or 비회원으로 들어가나
+            return null;
+        } catch (JWTVerificationException e) {
+            return null;
+        }
     }
 
     public TokenDTO reissue(String refreshTokenWithPrefix) {
