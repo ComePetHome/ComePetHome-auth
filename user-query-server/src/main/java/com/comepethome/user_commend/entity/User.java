@@ -2,6 +2,7 @@ package com.comepethome.user_commend.entity;
 
 import com.comepethome.user_commend.dto.UserDTO;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -17,7 +18,7 @@ public class User {
 
     @Id
     @Field("_id")
-    private final String objectId;
+    private final ObjectId objectId;
 
     private final Long id;
 
@@ -49,9 +50,8 @@ public class User {
     @Field("phone_number")
     private final String phoneNumber;
 
-
     public static User translate(UserDTO userDTO, PasswordEncoder encoder){
-        return new User("",
+        return new User(null,
                             0L,
                             userDTO.getUserId(),
                             encoder.encode(userDTO.getPassword()),
