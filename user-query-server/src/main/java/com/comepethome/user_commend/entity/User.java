@@ -4,6 +4,7 @@ import com.comepethome.user_commend.dto.UserDTO;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
@@ -15,16 +16,34 @@ import java.time.LocalDateTime;
 public class User {
 
     private final Long id;
-    private final String user_id;
+
+    @Field("user_id")
+    private final String userId;
+
     private String password;
-    private String access_token;
-    private String refresh_token;
-    private String nick_name;
-    private String image_url;
-    private LocalDateTime create_at;
-    private LocalDateTime update_at;
+
+    @Field("access_token")
+    private String accessToken;
+
+    @Field("refresh_token")
+    private String refreshToken;
+
+    @Field("nick_name")
+    private String nickName;
+
+    @Field("image_url")
+    private String imageUrl;
+
+    @Field("create_at")
+    private LocalDateTime createAt;
+
+    @Field("update_at")
+    private LocalDateTime updateAt;
+
     private final String name;
-    private final String phone_number;
+
+    @Field("phone_number")
+    private final String phoneNumber;
 
 
     public static User translate(UserDTO userDTO, PasswordEncoder encoder){
