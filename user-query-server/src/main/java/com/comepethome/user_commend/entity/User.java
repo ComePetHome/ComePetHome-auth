@@ -18,7 +18,7 @@ public class User {
 
     @Id
     @Field("_id")
-    private final ObjectId objectId;
+    private ObjectId objectId;
 
     private final Long id;
 
