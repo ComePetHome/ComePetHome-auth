@@ -20,10 +20,10 @@ public class User {
     @Field("_id")
     private ObjectId objectId;
 
-    private final Long id;
+    private Long id;
 
     @Field("user_id")
-    private final String userId;
+    private String userId;
 
     private String password;
 
@@ -45,10 +45,10 @@ public class User {
     @Field("update_at")
     private LocalDateTime updateAt;
 
-    private final String name;
+    private String name;
 
     @Field("phone_number")
-    private final String phoneNumber;
+    private String phoneNumber;
 
     public static User translate(UserDTO userDTO, PasswordEncoder encoder){
         return new User(null,
