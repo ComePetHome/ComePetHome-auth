@@ -9,6 +9,7 @@ spring:
     mongodb:
       host: 172.18.0.9
       port: 27017
+      authentication-database: admin
       database: comepethome
       username: root
       password: admin
