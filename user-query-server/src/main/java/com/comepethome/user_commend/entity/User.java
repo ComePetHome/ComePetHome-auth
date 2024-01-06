@@ -1,8 +1,8 @@
 package com.comepethome.user_commend.entity;
 
 import com.comepethome.user_commend.dto.UserDTO;
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
