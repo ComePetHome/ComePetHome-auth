@@ -15,6 +15,10 @@ import java.time.LocalDateTime;
 @Document(collection = "users")
 public class User {
 
+    @Id
+    @Field("_id")
+    private final String objectId;
+
     private final Long id;
 
     @Field("user_id")
@@ -47,7 +51,8 @@ public class User {
 
 
     public static User translate(UserDTO userDTO, PasswordEncoder encoder){
-        return new User(null,
+        return new User("",
+                            0L,
                             userDTO.getUserId(),
                             encoder.encode(userDTO.getPassword()),
                             userDTO.getAccessToken(),
