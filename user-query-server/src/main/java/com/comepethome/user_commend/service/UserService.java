@@ -17,7 +17,7 @@ public class UserService {
     private UserRepository userRepository;
 
     public String findUserIdByNameAndPhoneNumber(UserDTO userDTO){
-        return Optional.ofNullable(userRepository.findByNameAndPhoneNumber(userDTO.getName(), userDTO.getPhoneNumber()))
+        return Optional.ofNullable(userRepository.findByNameAndPhone_number(userDTO.getName(), userDTO.getPhoneNumber()))
                 .map(User::getUser_id)
                 .orElseThrow(UserNotExistException::new);
     }
