@@ -3,48 +3,28 @@ package com.comepethome.user_commend.entity;
 import com.comepethome.user_commend.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
+@Document(collection = "users")
 public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
-
-    @Column
     private final String userId;
-
-    @Column
     private String password;
-
-    @Column
     private String accessToken;
-
-    @Column
     private String refreshToken;
-
-    @Column
     private String nickName;
-
-    @Column
     private String imageUrl;
-
-    @Column
     private LocalDateTime createAt;
-
-    @Column
     private LocalDateTime updateAt;
-
-    @Column
     private final String name;
-
-    @Column
     private final String phoneNumber;
 
 
