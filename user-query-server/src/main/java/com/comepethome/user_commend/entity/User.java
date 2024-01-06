@@ -14,18 +14,17 @@ import java.time.LocalDateTime;
 @Document(collection = "users")
 public class User {
 
-    @Id
     private final Long id;
-    private final String userId;
+    private final String user_id;
     private String password;
-    private String accessToken;
-    private String refreshToken;
-    private String nickName;
-    private String imageUrl;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private String access_token;
+    private String refresh_token;
+    private String nick_name;
+    private String image_url;
+    private LocalDateTime create_at;
+    private LocalDateTime update_at;
     private final String name;
-    private final String phoneNumber;
+    private final String phone_number;
 
 
     public static User translate(UserDTO userDTO, PasswordEncoder encoder){

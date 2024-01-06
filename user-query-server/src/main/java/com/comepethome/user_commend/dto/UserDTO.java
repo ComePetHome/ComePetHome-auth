@@ -22,8 +22,8 @@ public class UserDTO {
     private final String phoneNumber;
 
     public static UserDTO translate(User user){
-        return new UserDTO(user.getUserId(), user.getPassword(), user.getAccessToken(), user.getRefreshToken(),
-                            user.getNickName(), user.getImageUrl(), user.getCreateAt(), user.getUpdateAt(), user.getName(), user.getPhoneNumber());
+        return new UserDTO(user.getUser_id(), user.getPassword(), user.getAccess_token(), user.getRefresh_token(),
+                            user.getNick_name(), user.getImage_url(), user.getCreate_at(), user.getUpdate_at(), user.getName(), user.getPhone_number());
     }
 
     public static UserDTO translate(UserFindIdRequest request){
