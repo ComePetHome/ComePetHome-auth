@@ -30,6 +30,20 @@ public class ApiExceptionHandler {
         //마이너 입셉션 메이져입셉션(개발자가 받아볼수있게) 두개로 구분해서 만든다
         return new ResponseEntity<>(apiException, httpStatus);
     }
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<Object> exception(Exception e){
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        ApiException apiException = new ApiException(
+                ResponseMessage.NO_ERROR,
+                httpStatus,
+                ZonedDateTime.now(ZoneId.of("Z"))
+        );
+
+        //마이너 입셉션 메이져입셉션(개발자가 받아볼수있게) 두개로 구분해서 만든다
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
     @ExceptionHandler(value = {UserAlreadyExistException.class})
     public ResponseEntity<Object> handleUserAlreadyExistException(UserAlreadyExistException e){
 
