@@ -8,7 +8,8 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import reactor.core.publisher.Mono;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Component
@@ -27,6 +28,10 @@ public class NoAuthenticationFilter extends AbstractGatewayFilterFactory<NoAuthe
 
     @Override
     public GatewayFilter apply(Config config) {
+
+        System.out.println("========================================================");
+        System.out.println("logic 시작 시간 : " + getTime());
+
         return (exchange, chain) -> chain.filter(exchange).then(Mono.fromRunnable(()->{
                 ServerHttpResponse response = exchange.getResponse();
                 Optional.ofNullable(response.getHeaders().getFirst(AUTH_ID)).ifPresent(userId -> {
@@ -36,8 +41,17 @@ public class NoAuthenticationFilter extends AbstractGatewayFilterFactory<NoAuthe
 
                     response.getHeaders().add(ACCESS_TOKEN_SUBJECT, accessToken);
                     response.getHeaders().add(REFRESH_TOKEN_SUBJECT, refreshToken);
+
+                    System.out.println("---------------------------------------------------------");
+                    System.out.println("logic 종료 시간 : " + getTime());
             });
         }));
+    }
+
+    public String getTime(){
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return currentTime.format(formatter);
     }
 
     @Data
