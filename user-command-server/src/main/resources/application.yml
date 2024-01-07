@@ -24,7 +24,7 @@ spring:
     show-sql: true
 
   flyway:
-    enabled: true
+    enabled: false
     baseline-on-migrate: true
 
 jwt:
