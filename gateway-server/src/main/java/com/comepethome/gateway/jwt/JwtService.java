@@ -126,11 +126,6 @@ public class JwtService {
         }
 
         String userId= decodedToken.getClaim(USERNAME_CLAIM).asString();
-        List<String> roles = decodedToken.getClaim(ROLES_CLAIM).asList(String.class);
-
-        if(roles == null){
-            roles = new ArrayList<>();
-        }
 
         Optional<String> savedRefreshToken = refreshTokenManager.find(userId);
 
@@ -139,10 +134,8 @@ public class JwtService {
             throw new UnexpectedRefreshTokenException();
         }
 
-        String newRefreshToken = withTokenPrefix(createRefreshToken(userId));
-        refreshTokenManager.update(userId, newRefreshToken);
-
-        String newAccessToken = withTokenPrefix(createAccessToken(userId, roles));
+        String newRefreshToken = createRefreshTokenWithPrefix(userId);
+        String newAccessToken = createAccessTokenWithPrefix(userId);
 
         return new TokenDTO(newAccessToken, newRefreshToken);
     }
