@@ -115,7 +115,15 @@ public class JwtService {
     public TokenDTO reissue(String refreshTokenWithPrefix) {
         String refreshToken = removePrefix(refreshTokenWithPrefix);
 
-        DecodedJWT decodedToken = verifier.verify(refreshToken);
+        DecodedJWT decodedToken;
+
+        try {
+            decodedToken = verifier.verify(refreshToken);
+        } catch (TokenExpiredException e) {
+            throw new TokenExpireException();
+        } catch (JWTVerificationException e) {
+            throw new TokenNotVerifiedException();
+        }
 
         String userId= decodedToken.getClaim(USERNAME_CLAIM).asString();
         List<String> roles = decodedToken.getClaim(ROLES_CLAIM).asList(String.class);
