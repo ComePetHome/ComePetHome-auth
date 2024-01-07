@@ -1,7 +1,5 @@
 package com.comepethome.gateway.jwt.exception;
 
-import com.comepethome.gateway.jwt.exception.token.UnexpectedRefreshTokenException;
-import com.comepethome.gateway.jwt.exception.token.UserNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,35 +7,43 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @ControllerAdvice
 public class ApiExceptionHandler {
 
-    @ExceptionHandler(value = {UnexpectedRefreshTokenException.class})
-    public ResponseEntity<Object> handleUnexpectedRefreshTokenException(UnexpectedRefreshTokenException e){
+    @ExceptionHandler(value = {CustomException.class})
+    public ResponseEntity<Object> customExceptin(CustomException e){
 
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         ApiException apiException = new ApiException(
-                ResponseMessage.TOKEN_EMPTY_OR_NOT_MATCH,
+                e.getMessage(),
                 httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
+                getNowDateTime(),
+                e.getCode()
+        );
+
+        return new ResponseEntity<>(apiException, httpStatus);
+    }
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity<Object> exception(Exception e){
+
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        ApiException apiException = new ApiException(
+                e.getMessage(),
+                httpStatus,
+                getNowDateTime(),
+                -1
         );
 
         return new ResponseEntity<>(apiException, httpStatus);
     }
 
-    @ExceptionHandler(value = {UserNotExistException.class})
-    public ResponseEntity<Object> handleUserNotExistException(UserNotExistException e){
-
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-        ApiException apiException = new ApiException(
-                ResponseMessage.USER_NOT_EXIST,
-                httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
-
-        return new ResponseEntity<>(apiException, httpStatus);
+    public String getNowDateTime(){
+        ZonedDateTime seoulDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return seoulDateTime.format(formatter);
     }
 }

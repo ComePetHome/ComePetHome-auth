@@ -1,3 +1,12 @@
 package com.comepethome.gateway.jwt.exception.token;
 
-public class UnexpectedRefreshTokenException extends RuntimeException{}
+
+import com.comepethome.gateway.jwt.exception.CustomException;
+import com.comepethome.gateway.jwt.exception.FailResponseMessage;
+
+public class UnexpectedRefreshTokenException extends CustomException {
+    public UnexpectedRefreshTokenException() {
+        super(FailResponseMessage.TOKEN_UNEXPECTED.getCode(),
+                FailResponseMessage.TOKEN_UNEXPECTED.getMessage());
+    }
+}

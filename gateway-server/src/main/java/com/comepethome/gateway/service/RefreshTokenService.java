@@ -1,7 +1,7 @@
 package com.comepethome.gateway.service;
 
 import com.comepethome.gateway.entity.RefreshToken;
-import com.comepethome.gateway.jwt.exception.token.UserNotExistException;
+import com.comepethome.gateway.jwt.exception.token.TokenUserNotExistException;
 import com.comepethome.gateway.repository.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class RefreshTokenService {
     public Optional<RefreshToken> find(String userId){
         Optional<RefreshToken> refreshToken = Optional.ofNullable(repository.findByUserId(userId));
         if(refreshToken.isEmpty()){
-            throw new UserNotExistException();
+            throw new TokenUserNotExistException();
         }
         return refreshToken;
     }

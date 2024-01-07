@@ -1,21 +1,17 @@
 package com.comepethome.gateway.filter;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.comepethome.gateway.jwt.JwtService;
 import com.comepethome.gateway.jwt.dto.TokenDTO;
-import com.comepethome.gateway.jwt.exception.CustomHttpStatus;
 import com.comepethome.gateway.jwt.exception.token.UnexpectedRefreshTokenException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -52,20 +48,16 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             return Optional.ofNullable(request.getHeaders().get(ACCESS_TOKEN_SUBJECT))
                     .map(accessToken -> {
-                        CustomHttpStatus code = jwtService.resolveAccessTokenWithPrefix(accessToken.get(0));
-                        ServerHttpResponse response = exchange.getResponse();
-                        if (code != CustomHttpStatus.OK) {
-                            response.setRawStatusCode(code.getCode());
-                            String responseBody = "Error occurred: " + code;
-                            DataBuffer buffer = response.bufferFactory().wrap(responseBody.getBytes());
-                            return response.writeWith(Mono.just(buffer));
+                        int code = jwtService.resolveAccessTokenWithPrefix(accessToken.get(0));
+                        if(code == -1){
+                           throw new UnexpectedRefreshTokenException();
                         }
                         return chain.filter(exchange);
                     })
                     .orElseGet(() -> {
                         ServerHttpResponse response = exchange.getResponse();
                         response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                        return response.setComplete(); // Return the completion signal as a Mono
+                        return response.setComplete();
                     });
         };
     }

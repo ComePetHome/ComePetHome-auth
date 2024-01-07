@@ -7,10 +7,10 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.comepethome.gateway.jwt.dto.TokenDTO;
-import com.comepethome.gateway.jwt.exception.CustomHttpStatus;
+import com.comepethome.gateway.jwt.exception.token.TokenExpireException;
+import com.comepethome.gateway.jwt.exception.token.TokenNotVerifiedException;
 import com.comepethome.gateway.jwt.exception.token.UnexpectedRefreshTokenException;
 import com.comepethome.gateway.jwt.refreshToken.RefreshTokenManager;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,16 +74,19 @@ public class JwtService {
         return tokenPrefix + " " + token;
     }
 
-    public CustomHttpStatus resolveAccessTokenWithPrefix(String accessTokenWithPrefix) {
+    public int resolveAccessTokenWithPrefix(String accessTokenWithPrefix) {
         String token = removePrefix(accessTokenWithPrefix);
+        int code = -1;
         try {
             verifier.verify(token);
-            return CustomHttpStatus.OK;
+            code = 200;
         } catch (TokenExpiredException e) {
-            return CustomHttpStatus.EXPIRED;
+            throw new TokenExpireException();
         } catch (JWTVerificationException e) {
-            return CustomHttpStatus.UNAUTHORIZED;
+            throw new TokenNotVerifiedException();
         }
+
+        return code;
     }
 
     private String removePrefix(String token) {

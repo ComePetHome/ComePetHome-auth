@@ -1,5 +1,7 @@
 package com.comepethome.user_query.jwt.handler;
 
+import com.comepethome.user_query.exception.SuccessResponseMessage;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -15,20 +17,12 @@ import java.nio.charset.StandardCharsets;
 
 @RequiredArgsConstructor
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
-//    private final JwtService jwtService;
 
     private final static String AUTH_ID = "Auth-Id";
-//    private final static String ACCESS_TOKEN_HEADER_NAME = "Authorization";
-//    private final static String REFRESH_TOKEN_HEADER_NAME = "Refresh-Token";
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-//        String accessTokenWithPrefix = jwtService.createAccessTokenWithPrefix(authentication);
-//        String refreshTokenWithPrefix = jwtService.createRefreshTokenWithPrefix(authentication);
-//
-//        response.setHeader(ACCESS_TOKEN_HEADER_NAME, accessTokenWithPrefix);
-//        response.setHeader(REFRESH_TOKEN_HEADER_NAME, refreshTokenWithPrefix);
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String userId = userDetails.getUsername();
@@ -38,7 +32,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setStatus(HttpStatus.OK.value());
         response.setHeader(AUTH_ID, userId);
 
-
-        response.getWriter().write("정상 로그인 되었습니다");
+        response.getWriter().write(objectMapper.writeValueAsString(SuccessResponseMessage.USER_LOGIN_SUCCESS));
     }
 }

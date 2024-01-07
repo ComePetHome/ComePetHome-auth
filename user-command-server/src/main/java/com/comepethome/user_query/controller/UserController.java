@@ -2,7 +2,7 @@ package com.comepethome.user_query.controller;
 
 import com.comepethome.user_query.controller.request.UserJoinRequest;
 import com.comepethome.user_query.dto.UserDTO;
-import com.comepethome.user_query.exception.ResponseMessage;
+import com.comepethome.user_query.exception.SuccessResponseMessage;
 import com.comepethome.user_query.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +19,9 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody UserJoinRequest request){
+    public ResponseEntity<SuccessResponseMessage> join(@RequestBody UserJoinRequest request){
         userService.save(UserDTO.translate(request));
-        return ResponseEntity.ok(ResponseMessage.USER_JOIN_SUCCESS);
+        return ResponseEntity.ok(SuccessResponseMessage.USER_JOIN_SUCCESS);
     }
 
     @PostMapping("/test")

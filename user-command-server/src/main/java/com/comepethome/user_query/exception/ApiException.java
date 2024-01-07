@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 public class ApiException {
     private final String message;
     private final HttpStatus httpStatus;
-    private final ZonedDateTime timestamp;
+    private final String time;
     private final int errorCode;
 
 }
