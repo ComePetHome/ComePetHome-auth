@@ -10,6 +10,6 @@ public class ApiException {
     private final String message;
     private final HttpStatus httpStatus;
     private final String time;
-    private final int errorCode;
+    private final int code;
 
 }

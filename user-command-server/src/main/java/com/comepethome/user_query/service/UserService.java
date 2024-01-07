@@ -3,7 +3,6 @@ package com.comepethome.user_query.service;
 import com.comepethome.user_query.entity.User;
 import com.comepethome.user_query.dto.UserDTO;
 import com.comepethome.user_query.exception.user.UserAlreadyExistException;
-import com.comepethome.user_query.exception.user.UserNotExistException;
 import com.comepethome.user_query.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

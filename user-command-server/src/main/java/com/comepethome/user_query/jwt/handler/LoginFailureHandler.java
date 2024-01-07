@@ -1,18 +1,17 @@
 package com.comepethome.user_query.jwt.handler;
 
-import com.comepethome.user_query.controller.response.UserJoinResponse;
+import com.comepethome.user_query.controller.response.UserStatusResponse;
+import com.comepethome.user_query.exception.ApiExceptionHandler;
 import com.comepethome.user_query.exception.FailResponseMessage;
-import com.comepethome.user_query.exception.user.UserAuthenticationFailedException;
-import com.comepethome.user_query.exception.user.UserPasswordNotMatchException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.web.ErrorResponse;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -28,17 +27,19 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-        String message = "";
-        int code = 0;
+        UserStatusResponse userStatusResponse = new UserStatusResponse();
+        userStatusResponse.setHttpStatus(HttpStatus.BAD_REQUEST);
+
         if (exception instanceof BadCredentialsException) {
-            message = FailResponseMessage.USER_PASSWORD_NOT_MATCH.getMessage();
-            code = FailResponseMessage.USER_PASSWORD_NOT_MATCH.getCode();
+            userStatusResponse.setMessage(FailResponseMessage.USER_BAD_CREDENTIAL.getMessage());
+            userStatusResponse.setTime(ApiExceptionHandler.getNowDateTime());
+            userStatusResponse.setCode(FailResponseMessage.USER_BAD_CREDENTIAL.getCode());
         } else {
-            message = FailResponseMessage.USER_NOT_AUTHENTICATION.getMessage();
-            code = FailResponseMessage.USER_NOT_AUTHENTICATION.getCode();
+            userStatusResponse.setMessage(FailResponseMessage.USER_NOT_AUTHENTICATION.getMessage());
+            userStatusResponse.setTime(ApiExceptionHandler.getNowDateTime());
+            userStatusResponse.setCode(FailResponseMessage.USER_NOT_AUTHENTICATION.getCode());
         }
 
-        String jsonResponse = objectMapper.writeValueAsString(new UserJoinResponse(151, message));
-        response.getWriter().write(jsonResponse);
+        response.getWriter().write(objectMapper.writeValueAsString(userStatusResponse));
     }
 }

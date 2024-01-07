@@ -1,5 +1,7 @@
 package com.comepethome.user_query.jwt.handler;
 
+import com.comepethome.user_query.controller.response.UserStatusResponse;
+import com.comepethome.user_query.exception.ApiExceptionHandler;
 import com.comepethome.user_query.exception.SuccessResponseMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -34,9 +36,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setStatus(HttpStatus.OK.value());
         response.setHeader(AUTH_ID, userId);
 
-        enumAsJson.put("code", SuccessResponseMessage.USER_LOGIN_SUCCESS.getCode());
-        enumAsJson.put("message", SuccessResponseMessage.USER_LOGIN_SUCCESS.getMessage());
-
-        response.getWriter().write(objectMapper.writeValueAsString(enumAsJson));
+        response.getWriter().write(objectMapper.writeValueAsString(new UserStatusResponse(
+                SuccessResponseMessage.USER_LOGIN_SUCCESS.getMessage(),
+                HttpStatus.OK,
+                ApiExceptionHandler.getNowDateTime(),
+                SuccessResponseMessage.USER_LOGIN_SUCCESS.getCode()
+        )));
     }
 }
