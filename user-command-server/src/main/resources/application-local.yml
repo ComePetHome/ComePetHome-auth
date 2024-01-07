@@ -2,8 +2,13 @@ server:
   port: 8081
 
 spring:
+  config:
+    activate:
+      on-profile: local
+
   application:
     name: user-command-server
+
   h2:
     console:
       enabled: false

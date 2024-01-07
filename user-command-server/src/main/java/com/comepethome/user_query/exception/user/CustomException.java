@@ -1,6 +1,9 @@
 package com.comepethome.user_query.exception.user;
 
 
+import lombok.Getter;
+
+@Getter
 public class CustomException extends RuntimeException{
     private int code;
     private String message;

@@ -22,9 +22,10 @@ public class ApiExceptionHandler {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         ApiException apiException = new ApiException(
-                ResponseMessage.USER_ALREADY_EXIST,
+                e.getMessage(),
                 httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
+                ZonedDateTime.now(ZoneId.of("Z")),
+                e.getCode()
         );
 
         //마이너 입셉션 메이져입셉션(개발자가 받아볼수있게) 두개로 구분해서 만든다
@@ -36,27 +37,29 @@ public class ApiExceptionHandler {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         ApiException apiException = new ApiException(
-                ResponseMessage.NO_ERROR,
+                e.getMessage(),
                 httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
+                ZonedDateTime.now(ZoneId.of("Z")),
+                -1
         );
 
         //마이너 입셉션 메이져입셉션(개발자가 받아볼수있게) 두개로 구분해서 만든다
         return new ResponseEntity<>(apiException, httpStatus);
     }
-    @ExceptionHandler(value = {UserAlreadyExistException.class})
-    public ResponseEntity<Object> handleUserAlreadyExistException(UserAlreadyExistException e){
 
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-        ApiException apiException = new ApiException(
-                ResponseMessage.USER_ALREADY_EXIST,
-                httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
-        );
-
-        return new ResponseEntity<>(apiException, httpStatus);
-    }
+//    @ExceptionHandler(value = {UserAlreadyExistException.class})
+//    public ResponseEntity<Object> handleUserAlreadyExistException(UserAlreadyExistException e){
+//
+//        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+//
+//        ApiException apiException = new ApiException(
+//                ResponseMessage.USER_ALREADY_EXIST,
+//                httpStatus,
+//                ZonedDateTime.now(ZoneId.of("Z"))
+//        );
+//
+//        return new ResponseEntity<>(apiException, httpStatus);
+//    }
 
     @ExceptionHandler(value = {UserPasswordNotMatchException.class})
     public ResponseEntity<Object> handleUserPasswordNotMatchException(UserPasswordNotMatchException e){
@@ -66,7 +69,8 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(
                 ResponseMessage.USER_PASSWORD_NOT_MATCH,
                 httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
+                ZonedDateTime.now(ZoneId.of("Z")),
+                101
         );
 
         return new ResponseEntity<>(apiException, httpStatus);
@@ -80,7 +84,8 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(
                 ResponseMessage.USER_NOT_EXIST,
                 httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
+                ZonedDateTime.now(ZoneId.of("Z")),
+                102
         );
 
         return new ResponseEntity<>(apiException, httpStatus);
@@ -94,7 +99,8 @@ public class ApiExceptionHandler {
         ApiException apiException = new ApiException(
                 ResponseMessage.USER_NOT_EXIST,
                 httpStatus,
-                ZonedDateTime.now(ZoneId.of("Z"))
+                ZonedDateTime.now(ZoneId.of("Z")),
+                103
         );
 
         return new ResponseEntity<>(apiException, httpStatus);
