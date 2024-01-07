@@ -1,5 +1,7 @@
 package com.comepethome.user_query.jwt.handler;
 
+import com.comepethome.user_query.controller.response.UserJoinResponse;
+import com.comepethome.user_query.exception.FailResponseMessage;
 import com.comepethome.user_query.exception.user.UserAuthenticationFailedException;
 import com.comepethome.user_query.exception.user.UserPasswordNotMatchException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.web.ErrorResponse;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -25,12 +28,17 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
+        String message = "";
+        int code = 0;
         if (exception instanceof BadCredentialsException) {
-            String jsonResponse = objectMapper.writeValueAsString(new UserPasswordNotMatchException());
-            response.getWriter().write(jsonResponse);
+            message = FailResponseMessage.USER_PASSWORD_NOT_MATCH.getMessage();
+            code = FailResponseMessage.USER_PASSWORD_NOT_MATCH.getCode();
         } else {
-            String jsonResponse = objectMapper.writeValueAsString(new UserAuthenticationFailedException());
-            response.getWriter().write(jsonResponse);
+            message = FailResponseMessage.USER_NOT_AUTHENTICATION.getMessage();
+            code = FailResponseMessage.USER_NOT_AUTHENTICATION.getCode();
         }
+
+        String jsonResponse = objectMapper.writeValueAsString(new UserJoinResponse(151, message));
+        response.getWriter().write(jsonResponse);
     }
 }
