@@ -33,6 +33,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setStatus(HttpStatus.OK.value());
         response.setHeader(AUTH_ID, userId);
+
         enumAsJson.put("code", SuccessResponseMessage.USER_LOGIN_SUCCESS.getCode());
         enumAsJson.put("message", SuccessResponseMessage.USER_LOGIN_SUCCESS.getMessage());
 

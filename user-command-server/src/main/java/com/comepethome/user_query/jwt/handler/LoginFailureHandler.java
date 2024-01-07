@@ -2,6 +2,7 @@ package com.comepethome.user_query.jwt.handler;
 
 import com.comepethome.user_query.exception.user.UserAuthenticationFailedException;
 import com.comepethome.user_query.exception.user.UserPasswordNotMatchException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 @RequiredArgsConstructor
 public class LoginFailureHandler implements AuthenticationFailureHandler {
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
@@ -25,9 +26,11 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
         if (exception instanceof BadCredentialsException) {
-            throw new UserPasswordNotMatchException();
+            String jsonResponse = objectMapper.writeValueAsString(new UserPasswordNotMatchException());
+            response.getWriter().write(jsonResponse);
         } else {
-            throw new UserAuthenticationFailedException();
+            String jsonResponse = objectMapper.writeValueAsString(new UserAuthenticationFailedException());
+            response.getWriter().write(jsonResponse);
         }
     }
 }
