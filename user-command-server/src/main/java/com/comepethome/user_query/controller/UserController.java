@@ -1,6 +1,8 @@
 package com.comepethome.user_query.controller;
 
 import com.comepethome.user_query.controller.request.UserJoinRequest;
+import com.comepethome.user_query.controller.request.UserLoginRequest;
+import com.comepethome.user_query.controller.response.UserJoinResponse;
 import com.comepethome.user_query.dto.UserDTO;
 import com.comepethome.user_query.exception.SuccessResponseMessage;
 import com.comepethome.user_query.service.UserService;
@@ -19,9 +21,10 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/join")
-    public ResponseEntity<SuccessResponseMessage> join(@RequestBody UserJoinRequest request){
+    public ResponseEntity<UserJoinResponse> join(@RequestBody UserJoinRequest request){
         userService.save(UserDTO.translate(request));
-        return ResponseEntity.ok(SuccessResponseMessage.USER_JOIN_SUCCESS);
+        return ResponseEntity.ok(new UserJoinResponse(SuccessResponseMessage.USER_JOIN_SUCCESS.getCode(),
+                SuccessResponseMessage.USER_JOIN_SUCCESS.getMessage()));
     }
 
     @PostMapping("/test")
