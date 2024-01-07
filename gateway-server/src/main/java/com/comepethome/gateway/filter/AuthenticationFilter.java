@@ -54,11 +54,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                         }
                         return chain.filter(exchange);
                     })
-                    .orElseGet(() -> {
-                        ServerHttpResponse response = exchange.getResponse();
-                        response.setStatusCode(HttpStatus.UNAUTHORIZED);
-                        return response.setComplete();
-                    });
+                    .orElseThrow(UnexpectedRefreshTokenException::new);
         };
     }
 
