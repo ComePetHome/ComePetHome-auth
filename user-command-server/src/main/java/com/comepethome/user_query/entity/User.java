@@ -22,11 +22,9 @@ public class User {
     private final Long id;
 
     @Column
-    @NotBlank
     private final String userId;
 
     @Column
-    @NotBlank
     private String password;
 
     @Column
@@ -51,7 +49,6 @@ public class User {
     private final String name;
 
     @Column
-    @NotBlank
     private final String phoneNumber;
 
 

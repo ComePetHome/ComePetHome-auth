@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -23,7 +25,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/join")
-    public ResponseEntity<UserStatusResponse> join(@RequestBody UserJoinRequest request){
+    public ResponseEntity<UserStatusResponse> join(@RequestBody @Valid UserJoinRequest request){
         userService.save(UserDTO.translate(request));
         return ResponseEntity.ok(new UserStatusResponse(
                         SuccessResponseMessage.USER_JOIN_SUCCESS.getMessage(),
