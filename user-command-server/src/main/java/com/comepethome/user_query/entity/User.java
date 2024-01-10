@@ -2,6 +2,7 @@ package com.comepethome.user_query.entity;
 
 import com.comepethome.user_query.dto.UserDTO;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,9 +22,11 @@ public class User {
     private final Long id;
 
     @Column
+    @NotBlank
     private final String userId;
 
     @Column
+    @NotBlank
     private String password;
 
     @Column
@@ -48,6 +51,7 @@ public class User {
     private final String name;
 
     @Column
+    @NotBlank
     private final String phoneNumber;
 
 

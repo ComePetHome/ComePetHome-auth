@@ -1,6 +1,7 @@
 package com.comepethome.user_query.controller;
 
 import com.comepethome.user_query.controller.request.UserJoinRequest;
+import com.comepethome.user_query.controller.response.UserProfileResponse;
 import com.comepethome.user_query.controller.response.UserStatusResponse;
 import com.comepethome.user_query.dto.UserDTO;
 import com.comepethome.user_query.exception.ApiException;
@@ -11,10 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -33,6 +31,12 @@ public class UserController {
                         ApiExceptionHandler.getNowDateTime(),
                         SuccessResponseMessage.USER_JOIN_SUCCESS.getCode())
         );
+    }
+
+    @GetMapping("/profile/{userId}")
+    public ResponseEntity<UserProfileResponse> profile(@PathVariable String userId){
+        UserDTO userDTO = userService.getProfile(UserDTO.translate(userId));
+        return ResponseEntity.ok(new UserProfileResponse(userDTO));
     }
 
     @PostMapping("/test")

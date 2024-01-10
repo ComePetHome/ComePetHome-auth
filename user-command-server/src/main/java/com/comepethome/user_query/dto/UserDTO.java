@@ -31,6 +31,10 @@ public class UserDTO {
         return new UserDTO(request.getUserId(), request.getPassword(), "", "", "", "", null, null, "", "");
     }
 
+    public static UserDTO translate(String userid){
+        return new UserDTO(userid, "", "", "", "", "", null, null, "", "");
+    }
+
 
 
     public static UserDTO translate(UserJoinRequest request){
