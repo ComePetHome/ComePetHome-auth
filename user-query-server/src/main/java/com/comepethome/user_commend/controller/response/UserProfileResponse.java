@@ -1,10 +1,7 @@
-package com.comepethome.user_query.controller.response;
+package com.comepethome.user_commend.controller.response;
 
-import com.comepethome.user_query.dto.UserDTO;
 import lombok.Data;
-
-import java.time.LocalDateTime;
-
+import com.comepethome.user_commend.dto.UserDTO;
 @Data
 public class UserProfileResponse {
 

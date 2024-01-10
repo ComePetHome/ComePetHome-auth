@@ -1,10 +1,9 @@
 package com.comepethome.user_query.controller;
 
 import com.comepethome.user_query.controller.request.UserJoinRequest;
-import com.comepethome.user_query.controller.response.UserProfileResponse;
+import com.comepethome.user_query.controller.request.UserProfileRequest;
 import com.comepethome.user_query.controller.response.UserStatusResponse;
 import com.comepethome.user_query.dto.UserDTO;
-import com.comepethome.user_query.exception.ApiException;
 import com.comepethome.user_query.exception.ApiExceptionHandler;
 import com.comepethome.user_query.exception.SuccessResponseMessage;
 import com.comepethome.user_query.service.UserService;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/user/command")
 public class UserController {
 
     @Autowired
@@ -33,10 +32,10 @@ public class UserController {
         );
     }
 
-    @GetMapping("/profile/{userId}")
-    public ResponseEntity<UserProfileResponse> profile(@PathVariable String userId){
-        UserDTO userDTO = userService.getProfile(UserDTO.translate(userId));
-        return ResponseEntity.ok(new UserProfileResponse(userDTO));
+    @PatchMapping("/profile")
+    public ResponseEntity<String> update(@RequestBody @Valid UserProfileRequest userProfileRequest){
+        String userId = userService.update(UserDTO.translate(userProfileRequest), userProfileRequest.getChangeUserId());
+        return ResponseEntity.ok(userId);
     }
 
     @PostMapping("/test")

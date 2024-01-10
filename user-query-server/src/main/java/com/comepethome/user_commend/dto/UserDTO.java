@@ -29,5 +29,9 @@ public class UserDTO {
     public static UserDTO translate(UserFindIdRequest request){
         return new UserDTO("", "", "", "", "", "", null, null, request.getName(), request.getPhoneNumber());
     }
+
+    public static UserDTO translate(String userid){
+        return new UserDTO(userid, "", "", "", "", "", null, null, "", "");
+    }
 }
 

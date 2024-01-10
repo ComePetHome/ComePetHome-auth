@@ -36,10 +36,24 @@ public class UserService {
         return Optional.ofNullable(userRepository.findByUserId(userId));
     }
 
+
     @Transactional
-    public UserDTO getProfile(UserDTO userDTO) {
-        return findByUser(userDTO.getUserId())
-                .map(UserDTO::translate)
-                .orElseThrow(UserNotExistException::new);
+    public String update(UserDTO userDTO, String changeUserId) {
+        User user = userRepository.findByUserId(userDTO.getUserId());
+
+        //id변경
+        Optional.ofNullable(changeUserId)
+                .filter(id -> !id.trim().isEmpty())
+                .ifPresent(user::setUserId);
+
+        //update 시간변경
+        user.setUpdateAt(userDTO.getUpdateAt());
+
+        Optional.ofNullable(userDTO.getNickName()).ifPresent(user::setNickName);
+        Optional.ofNullable(userDTO.getName()).ifPresent(user::setName);
+        Optional.ofNullable(userDTO.getPhoneNumber()).ifPresent(user::setPhoneNumber);
+        Optional.ofNullable(userDTO.getImageUrl()).ifPresent(user::setImageUrl);
+
+        return UserDTO.translate(user.getUserId());
     }
 }

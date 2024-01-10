@@ -23,7 +23,7 @@ public class User {
 
     @Column
     @NotBlank
-    private final String userId;
+    private String userId;
 
     @Column
     @NotBlank
@@ -48,11 +48,11 @@ public class User {
     private LocalDateTime updateAt;
 
     @Column
-    private final String name;
+    private String name;
 
     @Column
     @NotBlank
-    private final String phoneNumber;
+    private String phoneNumber;
 
 
     public static User translate(UserDTO userDTO, PasswordEncoder encoder){
@@ -69,5 +69,4 @@ public class User {
                             userDTO.getPhoneNumber()
                 );
     }
-
 }
