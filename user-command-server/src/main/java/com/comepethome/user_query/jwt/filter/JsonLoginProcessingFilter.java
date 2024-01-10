@@ -23,7 +23,7 @@ public class JsonLoginProcessingFilter extends AbstractAuthenticationProcessingF
     public static final String DEFAULT_PASSWORD_KEY = "password";
 
     private static final AntPathRequestMatcher DEFAULT_ANT_PATH_REQUEST_MATCHER =
-            new AntPathRequestMatcher("/api/user/login", "POST");
+            new AntPathRequestMatcher("/api/user/command/login", "POST");
     private final ObjectMapper objectMapper;
 
     public JsonLoginProcessingFilter(ObjectMapper objectMapper) {
