@@ -74,19 +74,9 @@ public class JwtService {
         return tokenPrefix + " " + token;
     }
 
-    public int resolveAccessTokenWithPrefix(String accessTokenWithPrefix) {
+    public String resolveAccessTokenWithPrefix(String accessTokenWithPrefix) {
         String token = removePrefix(accessTokenWithPrefix);
-        int code = -1;
-        try {
-            verifier.verify(token);
-            code = 200;
-        } catch (TokenExpiredException e) {
-            throw new TokenExpireException();
-        } catch (JWTVerificationException e) {
-            throw new TokenNotVerifiedException();
-        }
-
-        return code;
+        return verifyToken(token);
     }
 
     private String removePrefix(String token) {
@@ -112,20 +102,24 @@ public class JwtService {
 
     }
 
-    public TokenDTO reissue(String refreshTokenWithPrefix) {
-        String refreshToken = removePrefix(refreshTokenWithPrefix);
-
+    public String verifyToken(String token){
         DecodedJWT decodedToken;
 
         try {
-            decodedToken = verifier.verify(refreshToken);
+            decodedToken = verifier.verify(token);
         } catch (TokenExpiredException e) {
             throw new TokenExpireException();
         } catch (JWTVerificationException e) {
             throw new TokenNotVerifiedException();
         }
 
-        String userId= decodedToken.getClaim(USERNAME_CLAIM).asString();
+        return decodedToken.getClaim(USERNAME_CLAIM).asString();
+    }
+
+    public TokenDTO reissue(String refreshTokenWithPrefix) {
+        String refreshToken = removePrefix(refreshTokenWithPrefix);
+
+        String userId = verifyToken(refreshToken);
 
         Optional<String> savedRefreshToken = refreshTokenManager.find(userId);
 

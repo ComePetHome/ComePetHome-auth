@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserProfileResponse> getProfile(@RequestParam String userId){
+    public ResponseEntity<UserProfileResponse> getProfile(@RequestHeader("userId") String userId){
         UserDTO userDTO = userService.getProfile(UserDTO.translate(userId));
         return ResponseEntity.ok(new UserProfileResponse(userDTO));
     }

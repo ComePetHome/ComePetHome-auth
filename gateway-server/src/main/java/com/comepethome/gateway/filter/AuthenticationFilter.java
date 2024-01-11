@@ -48,10 +48,11 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
             return Optional.ofNullable(request.getHeaders().get(ACCESS_TOKEN_SUBJECT))
                     .map(accessToken -> {
-                        int code = jwtService.resolveAccessTokenWithPrefix(accessToken.get(0));
-                        if(code == -1){
+                        String userId = jwtService.resolveAccessTokenWithPrefix(accessToken.get(0));
+                        if(userId.isEmpty()){
                            throw new UnexpectedRefreshTokenException();
                         }
+                        request.mutate().header("userId", userId).build();
                         return chain.filter(exchange);
                     })
                     .orElseThrow(UnexpectedRefreshTokenException::new);

@@ -37,9 +37,4 @@ public class UserController {
         String userId = userService.update(UserDTO.translate(userProfileRequest), userProfileRequest.getChangeUserId());
         return ResponseEntity.ok(userId);
     }
-
-    @PostMapping("/test")
-    public ResponseEntity<String> test(){
-        return ResponseEntity.ok("test");
-    }
 }
