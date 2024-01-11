@@ -2,7 +2,7 @@ package com.comepethome.user_commend.service;
 
 import com.comepethome.user_commend.entity.User;
 import com.comepethome.user_commend.dto.UserDTO;
-import com.comepethome.user_commend.exception.user.UserBadCredentialException;
+import com.comepethome.user_commend.exception.user.UserAlreadyExistException;
 import com.comepethome.user_commend.exception.user.UserNotExistException;
 import com.comepethome.user_commend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class UserService {
     public String findUserIdByNameAndPhoneNumber(UserDTO userDTO){
         return Optional.ofNullable(userRepository.findByNameAndPhoneNumber(userDTO.getName(), userDTO.getPhoneNumber()))
                 .map(User::getUserId)
-                .orElseThrow(UserBadCredentialException::new);
+                .orElseThrow(UserNotExistException::new);
     }
 
     public Optional<User> findByUser(String userId){
@@ -31,5 +31,13 @@ public class UserService {
         return findByUser(userDTO.getUserId())
                 .map(UserDTO::translate)
                 .orElseThrow(UserNotExistException::new);
+    }
+
+    public String getAvailableUserId(UserDTO userDTO) {
+        findByUser(userDTO.getUserId())
+                .ifPresent(
+                    user ->{ throw new UserAlreadyExistException();
+                });
+        return userDTO.getUserId();
     }
 }

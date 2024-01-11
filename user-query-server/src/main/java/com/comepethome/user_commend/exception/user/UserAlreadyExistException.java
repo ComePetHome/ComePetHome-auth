@@ -1,5 +1,6 @@
 package com.comepethome.user_commend.exception.user;
 
+import com.comepethome.user_commend.entity.User;
 import com.comepethome.user_commend.exception.CustomException;
 import com.comepethome.user_commend.exception.FailResponseMessage;
 

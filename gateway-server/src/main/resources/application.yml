@@ -50,12 +50,19 @@ spring:
           filters:
             - AuthenticationFilter
 
-        - id: pet
+        - id: pet-NoAuthentication
           uri: http://172.18.0.8:3000
           predicates:
-            - Path=/pets
+            - Path=/read/**
           filters:
             - NoAuthenticationFilter
+
+        - id: pet-Authentication
+          uri: http://172.18.0.8:3000
+          predicates:
+            - Path=/command/**
+          filters:
+            - AuthenticationFilter
 
 jwt:
   properties:

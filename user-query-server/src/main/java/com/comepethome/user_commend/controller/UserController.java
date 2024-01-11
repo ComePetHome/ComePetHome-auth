@@ -28,6 +28,12 @@ public class UserController {
         return ResponseEntity.ok(new UserProfileResponse(userDTO));
     }
 
+    @GetMapping("/availableUserId")
+    public ResponseEntity<String> availableUserId(@RequestParam("userId") String userId){
+        String availableUserId = userService.getAvailableUserId(UserDTO.translate(userId));
+        return ResponseEntity.ok(availableUserId);
+    }
+
     @PostMapping("/test")
     public ResponseEntity<String> test(){
         return ResponseEntity.ok("test");

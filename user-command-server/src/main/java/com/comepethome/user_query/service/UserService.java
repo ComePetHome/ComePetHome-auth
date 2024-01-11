@@ -38,22 +38,14 @@ public class UserService {
 
 
     @Transactional
-    public String update(UserDTO userDTO, String changeUserId) {
+    public void update(UserDTO userDTO) {
         User user = userRepository.findByUserId(userDTO.getUserId());
 
-        //id변경
-        Optional.ofNullable(changeUserId)
-                .filter(id -> !id.trim().isEmpty())
-                .ifPresent(user::setUserId);
-
-        //update 시간변경
         user.setUpdateAt(userDTO.getUpdateAt());
 
         Optional.ofNullable(userDTO.getNickName()).ifPresent(user::setNickName);
         Optional.ofNullable(userDTO.getName()).ifPresent(user::setName);
         Optional.ofNullable(userDTO.getPhoneNumber()).ifPresent(user::setPhoneNumber);
         Optional.ofNullable(userDTO.getImageUrl()).ifPresent(user::setImageUrl);
-
-        return UserDTO.translate(user.getUserId());
     }
 }

@@ -1,7 +1,7 @@
 package com.comepethome.user_query.controller;
 
 import com.comepethome.user_query.controller.request.UserJoinRequest;
-import com.comepethome.user_query.controller.request.UserProfileRequest;
+import com.comepethome.user_query.controller.request.UserProfileUpdateRequest;
 import com.comepethome.user_query.controller.response.UserStatusResponse;
 import com.comepethome.user_query.dto.UserDTO;
 import com.comepethome.user_query.exception.ApiExceptionHandler;
@@ -33,8 +33,13 @@ public class UserController {
     }
 
     @PatchMapping("/profile")
-    public ResponseEntity<String> update(@RequestBody @Valid UserProfileRequest userProfileRequest, @RequestHeader("userId") String userId){
-        String changeUserId = userService.update(UserDTO.translate(userProfileRequest, userId), userProfileRequest.getChangeUserId());
-        return ResponseEntity.ok(changeUserId);
+    public ResponseEntity<UserStatusResponse> update(@RequestBody UserProfileUpdateRequest userProfileUpdateRequest, @RequestHeader("userId") String userId){
+        userService.update(UserDTO.translate(userProfileUpdateRequest, userId));
+        return ResponseEntity.ok(new UserStatusResponse(
+                SuccessResponseMessage.USER_PATCH_SUCCESS.getMessage(),
+                HttpStatus.OK,
+                ApiExceptionHandler.getNowDateTime(),
+                SuccessResponseMessage.USER_PATCH_SUCCESS.getCode())
+        );
     }
 }
