@@ -25,7 +25,7 @@ spring:
         - id: user-NoAuthentication
           uri: http://172.18.0.4:8081
           predicates:
-            - Path=/api/user/command/login, /api/user/command/join
+            - Path=/api/user/command/login, /api/user/command/join, /api/user/query/findUserId
           filters:
             - NoAuthenticationFilter
 
