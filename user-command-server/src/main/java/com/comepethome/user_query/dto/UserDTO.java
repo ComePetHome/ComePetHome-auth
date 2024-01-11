@@ -32,8 +32,8 @@ public class UserDTO {
         return new UserDTO(request.getUserId(), request.getPassword(), "", "", "", "", null, null, "", "");
     }
 
-    public static UserDTO translate(UserProfileRequest request){
-        return new UserDTO(request.getOriginalUserId(), "", "", "", request.getNickName(), request.getImageUrl(), null, LocalDateTime.now(), request.getName(), request.getPhoneNumber());
+    public static UserDTO translate(UserProfileRequest request, String userId){
+        return new UserDTO(userId, "", "", "", request.getNickName(), request.getImageUrl(), null, LocalDateTime.now(), request.getName(), request.getPhoneNumber());
     }
 
     public static UserDTO translate(UserJoinRequest request){

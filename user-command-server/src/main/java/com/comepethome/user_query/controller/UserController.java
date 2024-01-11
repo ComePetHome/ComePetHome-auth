@@ -33,8 +33,8 @@ public class UserController {
     }
 
     @PatchMapping("/profile")
-    public ResponseEntity<String> update(@RequestBody @Valid UserProfileRequest userProfileRequest){
-        String userId = userService.update(UserDTO.translate(userProfileRequest), userProfileRequest.getChangeUserId());
-        return ResponseEntity.ok(userId);
+    public ResponseEntity<String> update(@RequestBody @Valid UserProfileRequest userProfileRequest, @RequestHeader("userId") String userId){
+        String changeUserId = userService.update(UserDTO.translate(userProfileRequest, userId), userProfileRequest.getChangeUserId());
+        return ResponseEntity.ok(changeUserId);
     }
 }

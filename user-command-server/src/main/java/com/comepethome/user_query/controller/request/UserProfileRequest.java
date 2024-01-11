@@ -5,8 +5,6 @@ import lombok.Data;
 
 @Data
 public class UserProfileRequest {
-    @NotBlank
-    private String originalUserId;
     private String changeUserId;
     @NotBlank
     private String nickName;
