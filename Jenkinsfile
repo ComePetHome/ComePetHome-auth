@@ -126,6 +126,7 @@ pipeline {
                         def remote = [:]
                         remote.name = 'deploy'
                         remote.host = '13.124.211.208'
+                        remote.port = 10022
                         remote.user = USERNAME
                         remote.password = PW
                         remote.allowAnyHosts = true
