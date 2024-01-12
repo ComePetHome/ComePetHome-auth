@@ -12,7 +12,7 @@ spring:
     url: jdbc:mariadb://172.18.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
     driver-class-name: org.mariadb.jdbc.Driver
     username: comepethome
-    password: Jk#7Lp@!9z
+    password: Qw#8Lp@Z9!
 
   jpa:
     database-platform: org.hibernate.dialect.MariaDB103Dialect
