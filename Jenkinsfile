@@ -203,7 +203,7 @@ pipeline {
                                                 + ' --ip 172.18.0.3'
                                                 + ' -p 9001:' + 9001
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
-                         user-command-server 배포
+                        // user-command-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name user-command-server'
                                                 + ' --hostname user-command-server'
