@@ -9,10 +9,10 @@ spring:
       enabled: false
 
   datasource:
-    url: jdbc:mariadb://172.18.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mariadb://172.18.0.6:3308/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
     driver-class-name: org.mariadb.jdbc.Driver
-    username: root
-    password: admin
+    username: comepethome
+    password: Jk#7Lp@!9z
 
   jpa:
     database-platform: org.hibernate.dialect.MariaDB103Dialect
