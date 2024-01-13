@@ -1,58 +1,54 @@
 package com.comepethome.user_commend.entity;
 
 import com.comepethome.user_commend.dto.UserDTO;
+import jakarta.persistence.*;
 import lombok.*;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@Document(collection = "users")
 public class User {
-
     @Id
-    @Field("_id")
-    private ObjectId objectId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private final Long id;
 
-    private Long id;
-
-    @Field("user_id")
+    @Column
     private String userId;
 
+    @Column
     private String password;
 
-    @Field("access_token")
+    @Column
     private String accessToken;
 
-    @Field("refresh_token")
+    @Column
     private String refreshToken;
 
-    @Field("nick_name")
+    @Column
     private String nickName;
 
-    @Field("image_url")
+    @Column
     private String imageUrl;
 
-    @Field("create_at")
+    @Column
     private LocalDateTime createAt;
 
-    @Field("update_at")
+    @Column
     private LocalDateTime updateAt;
 
+    @Column
     private String name;
 
-    @Field("phone_number")
+    @Column
     private String phoneNumber;
 
     public static User translate(UserDTO userDTO, PasswordEncoder encoder){
-        return new User(null,
-                            0L,
+        return new User( 0L,
                             userDTO.getUserId(),
                             encoder.encode(userDTO.getPassword()),
                             userDTO.getAccessToken(),

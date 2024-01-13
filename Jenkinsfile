@@ -78,21 +78,21 @@ pipeline {
                     //        }
                     //    }
                     //}
-                    //dir('user-query-server'){
-                    //    script {
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-query-server:latest
-                    //        """, returnStatus: true)
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-query-server:latest
-                    //        """, returnStatus: true)
+                    dir('user-query-server'){
+                        script {
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-query-server:latest
+                            """, returnStatus: true)
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-query-server:latest
+                            """, returnStatus: true)
 
-                    //        docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                    //            app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-query-server', '/var/jenkins_home/workspace/ComePetHome_master/user-query-server')
-                    //            app.push('latest')
-                    //        }
-                    //    }
-                    //}
+                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-query-server', '/var/jenkins_home/workspace/ComePetHome_master/user-query-server')
+                                app.push('latest')
+                            }
+                        }
+                    }
                     //dir('user-command-server'){
                     //    script {
                     //        sh(script: """
@@ -136,10 +136,10 @@ pipeline {
                         //sshCommand remote: remote, command: 'docker rm user-mariadb|| true'
                         //sshCommand remote: remote, command: 'docker image rm mariadb || true'
 
-                        // user-mysql 삭제
-                        sshCommand remote: remote, command: 'docker stop user-mysqldb || true'
-                        sshCommand remote: remote, command: 'docker rm user-mysqldb || true'
-                        sshCommand remote: remote, command: 'docker image rm mysql || true'
+                        //// user-mysql 삭제
+                        //sshCommand remote: remote, command: 'docker stop user-mysqldb || true'
+                        //sshCommand remote: remote, command: 'docker rm user-mysqldb || true'
+                        //sshCommand remote: remote, command: 'docker image rm mysql || true'
 
                         //// user-gateway-server 삭제
                         //sshCommand remote: remote, command: 'docker stop gateway-server || true'
@@ -156,10 +156,10 @@ pipeline {
                         //sshCommand remote: remote, command: 'docker rm user-command-server || true'
                         //sshCommand remote: remote, command: 'docker image rm rhw0213/user-command-server || true'
 
-                        //// user-query-server 삭제
-                        //sshCommand remote: remote, command: 'docker stop user-query-server || true'
-                        //sshCommand remote: remote, command: 'docker rm user-query-server || true'
-                        //sshCommand remote: remote, command: 'docker image rm rhw0213/user-query-server || true'
+                        // user-query-server 삭제
+                        sshCommand remote: remote, command: 'docker stop user-query-server || true'
+                        sshCommand remote: remote, command: 'docker rm user-query-server || true'
+                        sshCommand remote: remote, command: 'docker image rm rhw0213/user-query-server || true'
 
                         //// kafka 삭제
                         //sshCommand remote: remote, command: 'docker stop kafka-server || true'
@@ -175,16 +175,16 @@ pipeline {
                         //                        + ' -p 3308:' + 3306
                         //                        + ' mariadb:10.4')
 
-                        // user-mysql-db 배포
-                        sshCommand remote: remote, command: 'docker pull mysql'
-                        sshCommand remote: remote, command: ('docker run -d --name user-mysqldb'
-                                                + ' --hostname user-mysqldb'
-                                                + ' --net comepethome'
-                                                + ' --ip 172.18.0.9'
-                                                + ' -p 3309:' + 3306
-                                                + ' -e MYSQL_ROOT_PASSWORD=QWERzxc!@#1234'
-                                                + ' -e MYSQL_DATABASE=comepethome'
-                                                + ' mysql:latest')
+                        //// user-mysql-db 배포
+                        //sshCommand remote: remote, command: 'docker pull mysql'
+                        //sshCommand remote: remote, command: ('docker run -d --name user-mysqldb'
+                        //                        + ' --hostname user-mysqldb'
+                        //                        + ' --net comepethome'
+                        //                        + ' --ip 172.18.0.9'
+                        //                        + ' -p 3309:' + 3306
+                        //                        + ' -e MYSQL_ROOT_PASSWORD=QWERzxc!@#1234'
+                        //                        + ' -e MYSQL_DATABASE=comepethome'
+                        //                        + ' mysql:latest')
 
                         //// eureka-server 배포
                         //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
@@ -211,14 +211,14 @@ pipeline {
                         //                        + ' --ip 172.18.0.4'
                         //                        //+ ' -p 8081:' + 8081
                         //                        + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
-                        //// user-query-server 배포
-                        //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
-                        //sshCommand remote: remote, command: ('docker run -d --name user-query-server'
-                        //                        + ' --hostname user-query-server'
-                        //                        + ' --net comepethome'
-                        //                        + ' --ip 172.18.0.5'
-                        //                        //+ ' -p 8082:' + 8082
-                        //                        + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
+                        // user-query-server 배포
+                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
+                        sshCommand remote: remote, command: ('docker run -d --name user-query-server'
+                                                + ' --hostname user-query-server'
+                                                + ' --net comepethome'
+                                                + ' --ip 172.18.0.5'
+                                                //+ ' -p 8082:' + 8082
+                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
                         //// kafka 배포
                         //sshCommand remote: remote, command: 'docker pull ubuntu:20.04'
                         //sshCommand remote: remote, command: ('docker run -it -d --name kafka-server'

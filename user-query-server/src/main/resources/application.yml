@@ -5,14 +5,20 @@ spring:
   application:
     name: user-query-server
 
-  data:
-    mongodb:
-      host: 172.18.0.9
-      port: 27017
-      authentication-database: admin
-      database: comepethome
-      username: root
-      password: admin
+  datasource:
+    url: jdbc:mariadb://172.18.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: comepethome
+    password: Qw#8Lp@Z9!
+
+  jpa:
+    database-platform: org.hibernate.dialect.MariaDB103Dialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
 
   flyway:
     enabled: false
