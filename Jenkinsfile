@@ -172,7 +172,7 @@ pipeline {
                         //                        + ' --hostname user-mariadb'
                         //                        + ' --net comepethome'
                         //                        + ' --ip 172.18.0.6'
-                        //                        + ' -p 3308:' + 3308
+                        //                        + ' -p 3308:' + 3306
                         //                        + ' mariadb:10.4')
 
                         // user-mysql-db 배포
@@ -181,7 +181,7 @@ pipeline {
                                                 + ' --hostname user-mysqldb'
                                                 + ' --net comepethome'
                                                 + ' --ip 172.18.0.9'
-                                                + ' -p 3306:' + 3309
+                                                + ' -p 3309:' + 3306
                                                 + ' -e MYSQL_ROOT_PASSWORD=QWERzxc!@#1234'
                                                 + ' -e MYSQL_DATABASE=comepethome'
                                                 + ' mysql:latest')
