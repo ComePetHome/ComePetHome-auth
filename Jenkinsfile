@@ -177,14 +177,14 @@ pipeline {
 
                         // user-mysql-db 배포
                         sshCommand remote: remote, command: 'docker pull mysql'
-                        sshCommand remote: remote, command: ('docker run -d --name user-mysql'
-                                                + ' --hostname user-mysql'
+                        sshCommand remote: remote, command: ('docker run -d --name user-mysqldb'
+                                                + ' --hostname user-mysqldb'
                                                 + ' --net comepethome'
                                                 + ' --ip 172.18.0.9'
                                                 //+ ' -p 3306:' + 3309
                                                 + ' -e MYSQL_ROOT_PASSWORD=QWERzxc!@#1234'
                                                 + ' -e MYSQL_DATABASE=comepethome'
-                                                + ' mongo')
+                                                + ' mysql')
 
                         //// eureka-server 배포
                         //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
