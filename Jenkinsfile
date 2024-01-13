@@ -136,10 +136,10 @@ pipeline {
                         //sshCommand remote: remote, command: 'docker rm user-mariadb|| true'
                         //sshCommand remote: remote, command: 'docker image rm mariadb || true'
 
-                        //// user-mysql 삭제
-                        //sshCommand remote: remote, command: 'docker stop user-mysqldb || true'
-                        //sshCommand remote: remote, command: 'docker rm user-mysqldb || true'
-                        //sshCommand remote: remote, command: 'docker image rm mysql || true'
+                        // user-mysql 삭제
+                        sshCommand remote: remote, command: 'docker stop user-mysqldb || true'
+                        sshCommand remote: remote, command: 'docker rm user-mysqldb || true'
+                        sshCommand remote: remote, command: 'docker image rm mysql || true'
 
                         //// user-gateway-server 삭제
                         //sshCommand remote: remote, command: 'docker stop gateway-server || true'
