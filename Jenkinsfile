@@ -181,7 +181,7 @@ pipeline {
                                                 + ' --hostname user-mysqldb'
                                                 + ' --net comepethome'
                                                 + ' --ip 172.18.0.9'
-                                                //+ ' -p 3306:' + 3309
+                                                + ' -p 3306:' + 3309
                                                 + ' -e MYSQL_ROOT_PASSWORD=QWERzxc!@#1234'
                                                 + ' -e MYSQL_DATABASE=comepethome'
                                                 + ' mysql:latest')
