@@ -50,4 +50,9 @@ public class UserService {
                 .ifPresent(user::setPhoneNumber);
         Optional.ofNullable(userDTO.getImageUrl()).ifPresent(user::setImageUrl);
     }
+
+    @Transactional
+    public void delete(UserDTO userDTO) {
+        findByUser(userDTO.getUserId()).ifPresent(userRepository::delete);
+    }
 }

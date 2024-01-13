@@ -8,6 +8,6 @@ public interface RefreshTokenManager {
 
     Optional<String> find(String username);
 
-    void delete(String username);
+    void delete(String userId);
 
 }

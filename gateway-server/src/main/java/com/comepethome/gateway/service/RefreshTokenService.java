@@ -37,6 +37,6 @@ public class RefreshTokenService {
     @Transactional
     public void delete(String userId){
         Optional<RefreshToken> refreshToken = find(userId);
-        refreshToken.ifPresent(item -> item.setRefreshToken(""));
+        refreshToken.ifPresent(repository::delete);
     }
 }

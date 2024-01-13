@@ -42,4 +42,15 @@ public class UserController {
                 SuccessResponseMessage.USER_PATCH_SUCCESS.getCode())
         );
     }
+
+    @DeleteMapping("/withdraw")
+    public ResponseEntity<UserStatusResponse> delete(@RequestHeader("userId") String userId){
+        userService.delete(UserDTO.translate(userId));
+        return ResponseEntity.ok(new UserStatusResponse(
+                SuccessResponseMessage.USER_DELETE_SUCCESS.getMessage(),
+                HttpStatus.OK,
+                ApiExceptionHandler.getNowDateTime(),
+                SuccessResponseMessage.USER_DELETE_SUCCESS.getCode())
+        );
+    }
 }

@@ -133,4 +133,8 @@ public class JwtService {
 
         return new TokenDTO(newAccessToken, newRefreshToken);
     }
+
+    public void deleteRefreshToken(String userId) {
+       refreshTokenManager.delete(userId);
+    }
 }

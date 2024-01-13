@@ -41,8 +41,8 @@ public class UserDTO {
                 "", LocalDateTime.now(), LocalDateTime.now(), request.getName(), request.getPhoneNumber());
     }
 
-    public static String translate(String userId){
-        return userId;
+    public static UserDTO translate(String userId){
+        return new UserDTO(userId, "", "", "", "", "", null, null, "", "");
     }
 
 }

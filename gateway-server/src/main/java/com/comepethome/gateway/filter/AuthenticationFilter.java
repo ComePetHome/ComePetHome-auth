@@ -8,11 +8,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,10 +39,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
+            ServerHttpResponse response = exchange.getResponse();
 
             if (request.getHeaders().containsKey(REFRESH_TOKEN_SUBJECT)) {
                 List<String> refreshToken = request.getHeaders().get(REFRESH_TOKEN_SUBJECT);
-                ServerHttpResponse response = exchange.getResponse();
                 assert refreshToken != null;
                 TokenDTO tokenDTO = jwtService.reissue(refreshToken.get(0));
 
@@ -52,6 +57,32 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                         if(userId.isEmpty()){
                            throw new UnexpectedRefreshTokenException();
                         }
+
+                        Optional<String> path = Optional.ofNullable(request.getURI().getPath());
+
+                        if(path.get().equals("/api/user/query/logout")) {
+                            jwtService.deleteRefreshToken(userId);
+                            response.setStatusCode(HttpStatus.OK);
+                            response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
+
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                            String currentTime = LocalDateTime.now().format(formatter);
+
+                            String responseBody = "{"
+                                    + "\"message\": \"회원이 정상 로그아웃되었습니다.\","
+                                    + "\"httpStatus\": \"OK\","
+                                    + "\"time\": \"" + currentTime + "\","
+                                    + "\"code\": 200"
+                                    + "}";
+
+                            DataBuffer buffer = response.bufferFactory().wrap(responseBody.getBytes());
+                            return response.writeWith(Mono.just(buffer));
+                        }
+
+                        if(path.get().equals("/api/user/command/withdraw")){
+                            jwtService.deleteRefreshToken(userId);
+                        }
+
                         request.mutate().header("userId", userId).build();
                         return chain.filter(exchange);
                     })
