@@ -136,10 +136,10 @@ pipeline {
                         //sshCommand remote: remote, command: 'docker rm user-mariadb|| true'
                         //sshCommand remote: remote, command: 'docker image rm mariadb || true'
 
-                        // user-mysql 삭제
-                        sshCommand remote: remote, command: 'docker stop user-mongodb || true'
-                        sshCommand remote: remote, command: 'docker rm user-mongodb|| true'
-                        sshCommand remote: remote, command: 'docker image rm mongodb || true'
+                        //// user-mysql 삭제
+                        //sshCommand remote: remote, command: 'docker stop user-mysqldb || true'
+                        //sshCommand remote: remote, command: 'docker rm user-mysqldb || true'
+                        //sshCommand remote: remote, command: 'docker image rm mysql || true'
 
                         //// user-gateway-server 삭제
                         //sshCommand remote: remote, command: 'docker stop gateway-server || true'
@@ -184,7 +184,7 @@ pipeline {
                                                 //+ ' -p 3306:' + 3309
                                                 + ' -e MYSQL_ROOT_PASSWORD=QWERzxc!@#1234'
                                                 + ' -e MYSQL_DATABASE=comepethome'
-                                                + ' mysql')
+                                                + ' mysql:latest')
 
                         //// eureka-server 배포
                         //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
