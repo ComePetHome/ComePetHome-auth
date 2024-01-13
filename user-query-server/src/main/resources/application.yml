@@ -6,8 +6,8 @@ spring:
     name: user-query-server
 
   datasource:
-    url: jdbc:mariadb://172.18.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
-    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mysql://172.18.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
+    driver-class-name: org.mysql.jdbc.Driver
     username: comepethome
     password: Qw#8Lp@Z9!
 
