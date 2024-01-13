@@ -93,21 +93,21 @@ pipeline {
                             }
                         }
                     }
-                    //dir('user-command-server'){
-                    //    script {
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-command-server:latest
-                    //        """, returnStatus: true)
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-command-server:latest
-                    //        """, returnStatus: true)
+                    dir('user-command-server'){
+                        script {
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                            """, returnStatus: true)
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                            """, returnStatus: true)
 
-                    //        docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                    //            app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
-                    //            app.push('latest')
-                    //        }
-                    //    }
-                    //}
+                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
+                                app.push('latest')
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -151,10 +151,10 @@ pipeline {
                         //sshCommand remote: remote, command: 'docker rm eureka-server || true'
                         //sshCommand remote: remote, command: 'docker image rm rhw0213/eureka-server || true'
 
-                        //// user-command-server 삭제
-                        //sshCommand remote: remote, command: 'docker stop user-command-server || true'
-                        //sshCommand remote: remote, command: 'docker rm user-command-server || true'
-                        //sshCommand remote: remote, command: 'docker image rm rhw0213/user-command-server || true'
+                        // user-command-server 삭제
+                        sshCommand remote: remote, command: 'docker stop user-command-server || true'
+                        sshCommand remote: remote, command: 'docker rm user-command-server || true'
+                        sshCommand remote: remote, command: 'docker image rm rhw0213/user-command-server || true'
 
                         // user-query-server 삭제
                         sshCommand remote: remote, command: 'docker stop user-query-server || true'
@@ -203,14 +203,14 @@ pipeline {
                         //                        + ' --ip 172.18.0.3'
                         //                        + ' -p 9001:' + 9001
                         //                        + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
-                        //// user-command-server 배포
-                        //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
-                        //sshCommand remote: remote, command: ('docker run -d --name user-command-server'
-                        //                        + ' --hostname user-command-server'
-                        //                        + ' --net comepethome'
-                        //                        + ' --ip 172.18.0.4'
-                        //                        //+ ' -p 8081:' + 8081
-                        //                        + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
+                        // user-command-server 배포
+                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
+                        sshCommand remote: remote, command: ('docker run -d --name user-command-server'
+                                                + ' --hostname user-command-server'
+                                                + ' --net comepethome'
+                                                + ' --ip 172.18.0.4'
+                                                //+ ' -p 8081:' + 8081
+                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
                         // user-query-server 배포
                         sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
                         sshCommand remote: remote, command: ('docker run -d --name user-query-server'

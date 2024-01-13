@@ -6,7 +6,7 @@ spring:
     name: user-query-server
 
   datasource:
-    url: jdbc:mysql://172.18.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://172.18.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     driver-class-name: org.mysql.jdbc.Driver
     username: comepethome
     password: Qw#8Lp@Z9!
