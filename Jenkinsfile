@@ -93,21 +93,21 @@ pipeline {
                     //        }
                     //    }
                     //}
-                    dir('user-command-server'){
-                        script {
-                            sh(script: """
-                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-command-server:latest
-                            """, returnStatus: true)
-                            sh(script: """
-                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-command-server:latest
-                            """, returnStatus: true)
+                    //dir('user-command-server'){
+                    //    script {
+                    //        sh(script: """
+                    //            docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                    //        """, returnStatus: true)
+                    //        sh(script: """
+                    //            docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                    //        """, returnStatus: true)
 
-                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
-                                app.push('latest')
-                            }
-                        }
-                    }
+                    //        docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                    //            app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
+                    //            app.push('latest')
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }
@@ -136,10 +136,10 @@ pipeline {
                         //sshCommand remote: remote, command: 'docker rm user-mariadb|| true'
                         //sshCommand remote: remote, command: 'docker image rm mariadb || true'
 
-                        //// user-mongodb 삭제
-                        //sshCommand remote: remote, command: 'docker stop user-mongodb || true'
-                        //sshCommand remote: remote, command: 'docker rm user-mongodb|| true'
-                        //sshCommand remote: remote, command: 'docker image rm mongodb || true'
+                        // user-mysql 삭제
+                        sshCommand remote: remote, command: 'docker stop user-mongodb || true'
+                        sshCommand remote: remote, command: 'docker rm user-mongodb|| true'
+                        sshCommand remote: remote, command: 'docker image rm mongodb || true'
 
                         //// user-gateway-server 삭제
                         //sshCommand remote: remote, command: 'docker stop gateway-server || true'
@@ -151,10 +151,10 @@ pipeline {
                         //sshCommand remote: remote, command: 'docker rm eureka-server || true'
                         //sshCommand remote: remote, command: 'docker image rm rhw0213/eureka-server || true'
 
-                        // user-command-server 삭제
-                        sshCommand remote: remote, command: 'docker stop user-command-server || true'
-                        sshCommand remote: remote, command: 'docker rm user-command-server || true'
-                        sshCommand remote: remote, command: 'docker image rm rhw0213/user-command-server || true'
+                        //// user-command-server 삭제
+                        //sshCommand remote: remote, command: 'docker stop user-command-server || true'
+                        //sshCommand remote: remote, command: 'docker rm user-command-server || true'
+                        //sshCommand remote: remote, command: 'docker image rm rhw0213/user-command-server || true'
 
                         //// user-query-server 삭제
                         //sshCommand remote: remote, command: 'docker stop user-query-server || true'
@@ -175,17 +175,16 @@ pipeline {
                         //                        + ' -p 3308:' + 3308
                         //                        + ' mariadb:10.4')
 
-                        //// user-mongo-db 배포
-                        //sshCommand remote: remote, command: 'docker pull mongo'
-                        //sshCommand remote: remote, command: ('docker run -d --name user-mongodb'
-                        //                        + ' --hostname user-mongodb'
-                        //                        + ' --net comepethome'
-                        //                        + ' --ip 172.18.0.9'
-                        //                        //+ ' -p 27017:' + 27017
-                        //                        + ' -e MONGO_INITDB_ROOT_USERNAME=root'
-                        //                        + ' -e MONGO_INITDB_ROOT_PASSWORD=admin'
-                        //                        + ' -e MONGO_INITDB_DATABASE=comepethome'
-                        //                        + ' mongo')
+                        // user-mysql-db 배포
+                        sshCommand remote: remote, command: 'docker pull mysql'
+                        sshCommand remote: remote, command: ('docker run -d --name user-mysql'
+                                                + ' --hostname user-mysql'
+                                                + ' --net comepethome'
+                                                + ' --ip 172.18.0.9'
+                                                //+ ' -p 3306:' + 3309
+                                                + ' -e MYSQL_ROOT_PASSWORD=QWERzxc!@#1234'
+                                                + ' -e MYSQL_DATABASE=comepethome'
+                                                + ' mongo')
 
                         //// eureka-server 배포
                         //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest'
@@ -205,13 +204,13 @@ pipeline {
                         //                        + ' -p 9001:' + 9001
                         //                        + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
                         //// user-command-server 배포
-                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
-                        sshCommand remote: remote, command: ('docker run -d --name user-command-server'
-                                                + ' --hostname user-command-server'
-                                                + ' --net comepethome'
-                                                + ' --ip 172.18.0.4'
-                                                //+ ' -p 8081:' + 8081
-                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
+                        //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
+                        //sshCommand remote: remote, command: ('docker run -d --name user-command-server'
+                        //                        + ' --hostname user-command-server'
+                        //                        + ' --net comepethome'
+                        //                        + ' --ip 172.18.0.4'
+                        //                        //+ ' -p 8081:' + 8081
+                        //                        + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
                         //// user-query-server 배포
                         //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
                         //sshCommand remote: remote, command: ('docker run -d --name user-query-server'
