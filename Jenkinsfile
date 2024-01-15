@@ -8,8 +8,12 @@ pipeline {
         DOCKER_HUB_URL = 'https://registry.hub.docker.com'
         DOCKER_HUB_USER_NAME = 'rhw0213'
         DOCKER_HUB_CREDENTIAL_ID = 'DOCKER_HUB_CREDENTIAL_ID'
-
+        COME_PET_HOME_DB = 'ComePetHome_DB'
         SSH_CREDENTIAL_ID = 'ComePetHome_SSH'
+        AWS_S3_ACCESS_KEY = 'Aws_S3_Access_Key'
+        AWS_S3_SECRET_KEY = 'Aws_S3_Secret_Key'
+        SERVER_IP = 'SERVER_IP'
+        SERVER_PORT= 'SERVER_PORT'
     }
 
     stages {
@@ -40,11 +44,31 @@ pipeline {
             }
         }
 
+        stage('Yml file update') {
+            steps {
+                echo 'Yml file update'
+                withCredentials([usernamePassword(
+                        credentialsId: COME_PET_HOME_DB,
+                        usernameVariable: 'DB_ID',
+                        passwordVariable: 'DB_PW'),
+                        string(credentialsId: AWS_S3_ACCESS_KEY, variable: 'MY_ACCESS_KEY'),
+                        string(credentialsId: AWS_S3_SECRET, variable: 'MY_SECRET_TEXT')]) {
+                        script {
+                            sh yq -i '.spring.datasource.username= ${DB_ID}' command-server/src/main/resources application.yaml
+                            sh yq -i '.spring.datasource.password = ${DB_PW}' command-server/src/main/resources application.yaml
+                            sh yq -i '.spring.datasource.username= ${DB_ID}' query-server/src/main/resources application.yaml
+                            sh yq -i '.spring.datasource.password = ${DB_PW}' query-server/src/main/resources application.yaml
+                            sh yq -i '.cloud.aws.s3.accessKey = ${MY_ACCESS_KEY}' image-server/src/main/resources application.yaml
+                            sh yq -i '.cloud.aws.s3.secretKey = ${MY_SECRET_KEY}' image-server/src/main/resources application.yaml
+                        }
+                }
+            }
+        }
         stage('Build & Push Docker Image') {
             steps {
                 echo 'Build & Push Docker Image'
-                withCredentials([usernamePassword(
-                        credentialsId: DOCKER_HUB_CREDENTIAL_ID,
+                withCredentials([
+                        usernamePassword(credentialsId: DOCKER_HUB_CREDENTIAL_ID,
                         usernameVariable: 'DOCKER_HUB_ID',
                         passwordVariable: 'DOCKER_HUB_PW')]) {
 
@@ -78,21 +102,21 @@ pipeline {
                     //        }
                     //    }
                     //}
-                    //dir('user-query-server'){
-                    //    script {
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-query-server:latest
-                    //        """, returnStatus: true)
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-query-server:latest
-                    //        """, returnStatus: true)
+                    dir('user-query-server'){
+                        script {
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-query-server:latest
+                            """, returnStatus: true)
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-query-server:latest
+                            """, returnStatus: true)
 
-                    //        docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                    //            app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-query-server', '/var/jenkins_home/workspace/ComePetHome_master/user-query-server')
-                    //            app.push('latest')
-                    //        }
-                    //    }
-                    //}
+                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-query-server', '/var/jenkins_home/workspace/ComePetHome_master/user-query-server')
+                                app.push('latest')
+                            }
+                        }
+                    }
                     dir('user-command-server'){
                         script {
                             sh(script: """
@@ -104,6 +128,21 @@ pipeline {
 
                             docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
                                 app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
+                                app.push('latest')
+                            }
+                        }
+                    }
+                    dir('image-server'){
+                        script {
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/image-server:latest
+                            """, returnStatus: true)
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/image-server:latest
+                            """, returnStatus: true)
+
+                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'image-server', '/var/jenkins_home/workspace/ComePetHome_master/image-server')
                                 app.push('latest')
                             }
                         }
@@ -121,12 +160,14 @@ pipeline {
                                         passwordVariable: 'DOCKER_HUB_PW'),
                     usernamePassword(credentialsId: SSH_CREDENTIAL_ID,
                                         usernameVariable: 'USERNAME',
-                                        passwordVariable: 'PW')]) {
+                                        passwordVariable: 'PW'),
+                    string(credentialsId: SERVER_IP, variable: 'IP'),
+                    string(credentialsId: SERVER_PORT, variable: 'PORT')]) {
                     script {
                         def remote = [:]
                         remote.name = 'deploy'
-                        remote.host = '13.124.211.208'
-                        remote.port = 10022
+                        remote.host = IP
+                        remote.port = PORT
                         remote.user = USERNAME
                         remote.password = PW
                         remote.allowAnyHosts = true
@@ -156,10 +197,15 @@ pipeline {
                         sshCommand remote: remote, command: 'docker rm user-command-server || true'
                         sshCommand remote: remote, command: 'docker image rm rhw0213/user-command-server || true'
 
-                        //// user-query-server 삭제
-                        //sshCommand remote: remote, command: 'docker stop user-query-server || true'
-                        //sshCommand remote: remote, command: 'docker rm user-query-server || true'
-                        //sshCommand remote: remote, command: 'docker image rm rhw0213/user-query-server || true'
+                        // user-query-server 삭제
+                        sshCommand remote: remote, command: 'docker stop user-query-server || true'
+                        sshCommand remote: remote, command: 'docker rm user-query-server || true'
+                        sshCommand remote: remote, command: 'docker image rm rhw0213/user-query-server || true'
+
+                        // image-server 삭제
+                        sshCommand remote: remote, command: 'docker stop image-server || true'
+                        sshCommand remote: remote, command: 'docker rm image-server || true'
+                        sshCommand remote: remote, command: 'docker image rm rhw0213/image-server || true'
 
                         //// kafka 삭제
                         //sshCommand remote: remote, command: 'docker stop kafka-server || true'
@@ -212,14 +258,22 @@ pipeline {
                                                 + ' --ip 172.18.0.4'
                                                 //+ ' -p 8081:' + 8081
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
-                        //// user-query-server 배포
-                        //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
-                        //sshCommand remote: remote, command: ('docker run -d --name user-query-server'
-                        //                        + ' --hostname user-query-server'
-                        //                        + ' --net comepethome'
-                        //                        + ' --ip 172.18.0.5'
-                        //                        //+ ' -p 8082:' + 8082
-                        //                        + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
+                        // user-query-server 배포
+                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
+                        sshCommand remote: remote, command: ('docker run -d --name user-query-server'
+                                                + ' --hostname user-query-server'
+                                                + ' --net comepethome'
+                                                + ' --ip 172.18.0.5'
+                                                //+ ' -p 8082:' + 8082
+                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest')
+                        // image-server 배포
+                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/image-server:latest'
+                        sshCommand remote: remote, command: ('docker run -d --name image-server'
+                                                + ' --hostname image-server'
+                                                + ' --net comepethome'
+                                                + ' --ip 172.18.0.5'
+                                                //+ ' -p 8082:' + 8082
+                                                + ' ' + DOCKER_HUB_USER_NAME + '/image-server:latest')
                         //// kafka 배포
                         //sshCommand remote: remote, command: 'docker pull ubuntu:20.04'
                         //sshCommand remote: remote, command: ('docker run -it -d --name kafka-server'

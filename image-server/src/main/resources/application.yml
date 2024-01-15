@@ -1,0 +1,10 @@
+server:
+  port: 7099
+
+cloud:
+  aws:
+    s3:
+      accessKey: a
+      secretKey: s
+      bucketName: comepethome-image
+      region:  ap-northeast-2

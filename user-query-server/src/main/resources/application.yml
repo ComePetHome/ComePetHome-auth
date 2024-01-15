@@ -6,10 +6,10 @@ spring:
     name: user-query-server
 
   datasource:
-    url: jdbc:mysql://172.18.0.6:3306/comepethome?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://172.18.0.9:3306/comepethome?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: comepethome
-    password: Qw#8Lp@Z9!
+    username: u
+    password: p
 
   jpa:
     database-platform: org.hibernate.dialect.MariaDB103Dialect

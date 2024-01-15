@@ -3,4 +3,5 @@ include 'user-query-server'
 include 'user-command-server'
 include 'eureka-server'
 include 'gateway-server'
+include 'image-server'
 
