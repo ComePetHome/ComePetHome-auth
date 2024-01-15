@@ -44,12 +44,12 @@ pipeline {
                         string(credentialsId: AWS_S3_ACCESS_KEY, variable: 'MY_ACCESS_KEY'),
                         string(credentialsId: AWS_S3_SECRET_KEY, variable: 'MY_SECRET_KEY')]) {
                         script {
-                            sh /usr/bin/yq -i '.spring.datasource.username= ${DB_ID}' command-server/src/main/resources application.yaml
-                            sh /usr/bin/yq -i '.spring.datasource.password = ${DB_PW}' command-server/src/main/resources application.yaml
-                            sh /usr/bin/yq -i '.spring.datasource.username= ${DB_ID}' query-server/src/main/resources application.yaml
-                            sh /usr/bin/yq -i '.spring.datasource.password = ${DB_PW}' query-server/src/main/resources application.yaml
-                            sh /usr/bin/yq -i '.cloud.aws.s3.accessKey = ${MY_ACCESS_KEY}' image-server/src/main/resources application.yaml
-                            sh /usr/bin/yq -i '.cloud.aws.s3.secretKey = ${MY_SECRET_KEY}' image-server/src/main/resources application.yaml
+                            sh(script: """ yq -i '.spring.datasource.username= ${DB_ID}' command-server/src/main/resources application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' command-server/src/main/resources application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.spring.datasource.username= ${DB_ID}' query-server/src/main/resources application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' query-server/src/main/resources application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.cloud.aws.s3.accessKey = ${MY_ACCESS_KEY}' image-server/src/main/resources application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.cloud.aws.s3.secretKey = ${MY_SECRET_KEY}' image-server/src/main/resources application.yaml """, returnStatus: true)
                         }
                 }
             }
