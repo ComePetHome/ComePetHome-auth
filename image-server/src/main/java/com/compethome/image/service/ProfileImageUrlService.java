@@ -30,16 +30,16 @@ public class ProfileImageUrlService {
 
     @Autowired
     private AmazonS3 amazonS3;
-    @Value("${aws.s3.bucketName}")
+    @Value("${cloud.aws.s3.bucketName}")
     private String bucket;
 
-    @Value("${aws.s3.accessKey}")
+    @Value("${cloud.aws.s3.accessKey}")
     private String accessKey;
 
-    @Value("${aws.s3.secretKey}")
+    @Value("${cloud.aws.s3.secretKey}")
     private String secretKey;
 
-    @Value("${aws.s3.region}")
+    @Value("${cloud.aws.s3.region}")
     private String region;
 
     public ProfileImageUrlDTO getProfileUrl(String userId){
