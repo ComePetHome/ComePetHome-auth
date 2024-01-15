@@ -46,7 +46,6 @@ pipeline {
                         string(credentialsId: AWS_S3_SECRET_KEY, variable: 'MY_SECRET_KEY')]) {
                         script {
                             sh(script: """ pwd """)
-                            sh(script: """ yq --version """)
                             sh(script: """ /usr/bin/yq --version """)
                             sh(script: """ ls -al /usr/bin/yq  """)
                             sh(script: """ /usr/bin/yq -i '.spring.datasource.username = ${DB_ID}' command-server/src/main/resources/application.yml """)
