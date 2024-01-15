@@ -12,6 +12,7 @@ pipeline {
         SSH_CREDENTIAL_ID = 'ComePetHome_SSH'
         AWS_S3_ACCESS_KEY = 'Aws_S3_Access_Key'
         AWS_S3_SECRET_KEY = 'Aws_S3_Secret_Key'
+
         SERVER_IP = 'SERVER_IP'
         SERVER_PORT= 'SERVER_PORT'
     }
@@ -50,6 +51,8 @@ pipeline {
                             sh(script: """ yq -i '.spring.datasource.password="${DB_PW}"' /var/jenkins_home/workspace/ComePetHome_master/user-query-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.cloud.aws.s3.accessKey="${MY_ACCESS_KEY}"' /var/jenkins_home/workspace/ComePetHome_master/image-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.cloud.aws.s3.secretKey="${MY_SECRET_KEY}"' /var/jenkins_home/workspace/ComePetHome_master/image-server/src/main/resources/application.yml """)
+                            sh(script: """ yq -i '.spring.data.mongodb.username="${DB_ID}"' /var/jenkins_home/workspace/ComePetHome_master/image-server/src/main/resources/application.yml """)
+                            sh(script: """ yq -i '.spring.data.mongodb.password="${DB_PW}"' /var/jenkins_home/workspace/ComePetHome_master/image-server/src/main/resources/application.yml """)
                         }
                 }
             }
@@ -234,8 +237,6 @@ pipeline {
                         //                        + ' --net comepethome'
                         //                        + ' --ip 172.18.0.9'
                         //                        + ' -p 3309:' + 3306
-                        //                        + ' -e MYSQL_ROOT_PASSWORD=QWERzxc!@#1234'
-                        //                        + ' -e MYSQL_DATABASE=comepethome'
                         //                        + ' mysql:latest')
 
                         //// eureka-server 배포

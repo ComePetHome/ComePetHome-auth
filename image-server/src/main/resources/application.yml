@@ -1,6 +1,20 @@
 server:
   port: 7099
 
+spring:
+  data:
+    mongodb:
+      host: 172.18.0.11
+      port: 27017
+      authentication-database: admin
+      username: u
+      password: p
+      database: comepethome
+
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 1MB
 cloud:
   aws:
     s3:
