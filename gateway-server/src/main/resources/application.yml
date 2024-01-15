@@ -63,7 +63,7 @@ spring:
             - Path=/command/**
           filters:
             - AuthenticationFilter
-            -
+
         - id: image
           uri: http://172.18.0.10:7099
           predicates:
