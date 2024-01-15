@@ -213,6 +213,11 @@ pipeline {
                         //sshCommand remote: remote, command: 'docker rm kafka-server || true'
                         //sshCommand remote: remote, command: 'docker image rm ubuntu || true'
 
+                        // image-mongo삭제
+                        sshCommand remote: remote, command: 'docker stop image-mongodb || true'
+                        sshCommand remote: remote, command: 'docker rm image-mongodb || true'
+                        sshCommand remote: remote, command: 'docker image rm mongodb || true'
+
                         //// user-maria-db 배포
                         //sshCommand remote: remote, command: 'docker pull mariadb:10.4'
                         //sshCommand remote: remote, command: ('docker run -d --name user-mariadb'
@@ -272,7 +277,7 @@ pipeline {
                         sshCommand remote: remote, command: ('docker run -d --name image-server'
                                                 + ' --hostname image-server'
                                                 + ' --net comepethome'
-                                                + ' --ip 172.18.0.5'
+                                                + ' --ip 172.18.0.10'
                                                 //+ ' -p 8082:' + 8082
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/image-server:latest')
                         //// kafka 배포
@@ -282,6 +287,15 @@ pipeline {
                         //                        + ' --net comepethome'
                         //                        + ' --ip 172.18.0.7'
                         //                        + ' ubuntu:20.04')
+
+                        // image-mongo-db 배포
+                        sshCommand remote: remote, command: 'docker pull mongo'
+                        sshCommand remote: remote, command: ('docker run -d --name image-mongodb'
+                                                + ' --hostname image-mongodb'
+                                                + ' --net comepethome'
+                                                + ' --ip 172.18.0.11'
+                                                //+ ' -p 27017:' + 27017
+                                                + ' mongodb')
 
                     }
                 }
