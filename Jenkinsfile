@@ -14,7 +14,7 @@ pipeline {
         AWS_S3_SECRET_KEY = 'Aws_S3_Secret_Key'
         SERVER_IP = 'SERVER_IP'
         SERVER_PORT= 'SERVER_PORT'
-        env.PATH = "/usr/bin:${env.PATH}"
+        env.PATH = '/usr/bin:${env.PATH}'
     }
 
     stages {
