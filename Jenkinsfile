@@ -14,7 +14,6 @@ pipeline {
         AWS_S3_SECRET_KEY = 'Aws_S3_Secret_Key'
         SERVER_IP = 'SERVER_IP'
         SERVER_PORT= 'SERVER_PORT'
-        PATH = "/usr/bin:${PATH}"
     }
 
     stages {
@@ -45,7 +44,6 @@ pipeline {
                         string(credentialsId: AWS_S3_ACCESS_KEY, variable: 'MY_ACCESS_KEY'),
                         string(credentialsId: AWS_S3_SECRET_KEY, variable: 'MY_SECRET_KEY')]) {
                         script {
-                            sh('find / -name yq')
                             sh(script: """ yq -i '.spring.datasource.username = ${DB_ID}' command-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' command-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.spring.datasource.username = ${DB_ID}' query-server/src/main/resources/application.yml """)
