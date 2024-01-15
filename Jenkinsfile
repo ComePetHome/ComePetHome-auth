@@ -45,6 +45,7 @@ pipeline {
                         string(credentialsId: AWS_S3_ACCESS_KEY, variable: 'MY_ACCESS_KEY'),
                         string(credentialsId: AWS_S3_SECRET_KEY, variable: 'MY_SECRET_KEY')]) {
                         script {
+                            sh(script: """ pwd """)
                             sh(script: """ yq --version """)
                             sh(script: """ yq -i '.spring.datasource.username= ${DB_ID}' command-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' command-server/src/main/resources/application.yml """)
