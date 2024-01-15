@@ -44,12 +44,12 @@ pipeline {
                         string(credentialsId: AWS_S3_ACCESS_KEY, variable: 'MY_ACCESS_KEY'),
                         string(credentialsId: AWS_S3_SECRET_KEY, variable: 'MY_SECRET_KEY')]) {
                         script {
-                            sh(script: """ yq -i '.spring.datasource.username= ${DB_ID}' command-server/src/main/resources application.yaml """, returnStatus: true)
-                            sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' command-server/src/main/resources application.yaml """, returnStatus: true)
-                            sh(script: """ yq -i '.spring.datasource.username= ${DB_ID}' query-server/src/main/resources application.yaml """, returnStatus: true)
-                            sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' query-server/src/main/resources application.yaml """, returnStatus: true)
-                            sh(script: """ yq -i '.cloud.aws.s3.accessKey = ${MY_ACCESS_KEY}' image-server/src/main/resources application.yaml """, returnStatus: true)
-                            sh(script: """ yq -i '.cloud.aws.s3.secretKey = ${MY_SECRET_KEY}' image-server/src/main/resources application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.spring.datasource.username= ${DB_ID}' command-server/src/main/resources/application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' command-server/src/main/resources/application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.spring.datasource.username= ${DB_ID}' query-server/src/main/resources/application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' query-server/src/main/resources/application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.cloud.aws.s3.accessKey = ${MY_ACCESS_KEY}' image-server/src/main/resources/application.yaml """, returnStatus: true)
+                            sh(script: """ yq -i '.cloud.aws.s3.secretKey = ${MY_SECRET_KEY}' image-server/src/main/resources/application.yaml """, returnStatus: true)
                         }
                 }
             }
@@ -216,7 +216,7 @@ pipeline {
                         // image-mongo삭제
                         sshCommand remote: remote, command: 'docker stop image-mongodb || true'
                         sshCommand remote: remote, command: 'docker rm image-mongodb || true'
-                        sshCommand remote: remote, command: 'docker image rm mongodb || true'
+                        sshCommand remote: remote, command: 'docker image rm mongo || true'
 
                         //// user-maria-db 배포
                         //sshCommand remote: remote, command: 'docker pull mariadb:10.4'
@@ -295,7 +295,7 @@ pipeline {
                                                 + ' --net comepethome'
                                                 + ' --ip 172.18.0.11'
                                                 //+ ' -p 27017:' + 27017
-                                                + ' mongodb')
+                                                + ' mongo')
 
                     }
                 }
