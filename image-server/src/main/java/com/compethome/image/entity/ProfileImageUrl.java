@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document(collection = "users")
+@Document(collection = "image_profile")
 @AllArgsConstructor
 public class ProfileImageUrl {
 
