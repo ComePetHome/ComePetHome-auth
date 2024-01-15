@@ -46,12 +46,12 @@ pipeline {
                         script {
                             env.PATH = "/usr/bin:${env.PATH}"
                             sh 'which yq'
-                            sh(script: """ /usr/bin/yq -i '.spring.datasource.username= ${DB_ID}' command-server/src/main/resources/application.yaml """)
-                            sh(script: """ /usr/bin/yq -i '.spring.datasource.password = ${DB_PW}' command-server/src/main/resources/application.yaml """)
-                            sh(script: """ /usr/bin/yq -i '.spring.datasource.username= ${DB_ID}' query-server/src/main/resources/application.yaml """)
-                            sh(script: """ /usr/bin/yq -i '.spring.datasource.password = ${DB_PW}' query-server/src/main/resources/application.yaml """)
-                            sh(script: """ /usr/bin/yq -i '.cloud.aws.s3.accessKey = ${MY_ACCESS_KEY}' image-server/src/main/resources/application.yaml """)
-                            sh(script: """ /usr/bin/yq -i '.cloud.aws.s3.secretKey = ${MY_SECRET_KEY}' image-server/src/main/resources/application.yaml """)
+                            sh(script: """ yq -i '.spring.datasource.username= ${DB_ID}' command-server/src/main/resources/application.yaml """)
+                            sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' command-server/src/main/resources/application.yaml """)
+                            sh(script: """ yq -i '.spring.datasource.username= ${DB_ID}' query-server/src/main/resources/application.yaml """)
+                            sh(script: """ yq -i '.spring.datasource.password = ${DB_PW}' query-server/src/main/resources/application.yaml """)
+                            sh(script: """ yq -i '.cloud.aws.s3.accessKey = ${MY_ACCESS_KEY}' image-server/src/main/resources/application.yaml """)
+                            sh(script: """ yq -i '.cloud.aws.s3.secretKey = ${MY_SECRET_KEY}' image-server/src/main/resources/application.yaml """)
                         }
                 }
             }
