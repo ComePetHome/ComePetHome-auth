@@ -110,8 +110,7 @@ public class ProfileImageUrlService {
         String s3SaveFileName = createS3SaveFileName(file.getOriginalFilename());
 
         try(InputStream inputStream = file.getInputStream()){
-            amazonS3.putObject(new PutObjectRequest(bucket, s3SaveFileName, inputStream, objectMetadata)
-                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            amazonS3.putObject(new PutObjectRequest(bucket, s3SaveFileName, inputStream, objectMetadata));
         }catch (IOException e){
             throw new ImageUploadFailedException();
         }
