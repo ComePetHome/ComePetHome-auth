@@ -168,7 +168,7 @@ pipeline {
                         def remote = [:]
                         remote.name = 'deploy'
                         remote.host = IP
-                        remote.port = PORT
+                        remote.port = PORT.toInteger()
                         remote.user = USERNAME
                         remote.password = PW
                         remote.allowAnyHosts = true
