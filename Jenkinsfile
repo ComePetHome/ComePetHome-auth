@@ -34,16 +34,6 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                echo 'Build With gradlew'
-                script {
-                    sh 'chmod +x ./gradlew'
-                    sh './gradlew clean build'
-                }
-            }
-        }
-
         stage('Yml file update') {
             steps {
                 echo 'Yml file update'
@@ -64,6 +54,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Build') {
+            steps {
+                echo 'Build With gradlew'
+                script {
+                    sh 'chmod +x ./gradlew'
+                    sh './gradlew clean build'
+                }
+            }
+        }
+
         stage('Build & Push Docker Image') {
             steps {
                 echo 'Build & Push Docker Image'
