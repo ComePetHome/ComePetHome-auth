@@ -17,14 +17,14 @@ public class ProfileImageController {
     @Autowired
     private ProfileImageUrlService profileImageUrlService;
     @PostMapping
-    public ResponseEntity<String> upload(@RequestParam("file")MultipartFile multipartFile, @RequestHeader("userId") String userId){
-        ProfileImageUrlDTO profileImageUrlDTO= profileImageUrlService.save(ProfileImageUrlDTO.traslate(userId, multipartFile));
+    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile multipartFile, @RequestHeader("userId") String userId){
+        ProfileImageUrlDTO profileImageUrlDTO= profileImageUrlService.save(ProfileImageUrlDTO.translate(userId, multipartFile));
         return ResponseEntity.ok(profileImageUrlDTO.getImageUrl());
     }
 
     @PutMapping
-    public ResponseEntity<UserStatusResponse> update(@RequestParam("file")MultipartFile multipartFile, @RequestHeader("userId") String userId){
-        profileImageUrlService.update(ProfileImageUrlDTO.traslate(userId,multipartFile));
+    public ResponseEntity<UserStatusResponse> update(@RequestParam("file") MultipartFile multipartFile, @RequestHeader("userId") String userId){
+        profileImageUrlService.update(ProfileImageUrlDTO.translate(userId,multipartFile));
         return ResponseEntity.ok(new UserStatusResponse(
                 SuccessResponseMessage.IMAGE_UPDATE_SUCCESS.getMessage(),
                 HttpStatus.OK,

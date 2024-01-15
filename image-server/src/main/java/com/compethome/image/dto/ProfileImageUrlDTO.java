@@ -10,19 +10,19 @@ import java.util.Optional;
 @Data
 @AllArgsConstructor
 public class ProfileImageUrlDTO {
-    private final String userId;
-    private final String imageUrl;
-    private final MultipartFile multipartFile;
+    private String userId;
+    private String imageUrl;
+    private MultipartFile multipartFile;
 
-    public static ProfileImageUrlDTO traslate(ProfileImageUrl profileImageUrl) {
+    public static ProfileImageUrlDTO translate(ProfileImageUrl profileImageUrl) {
         return new ProfileImageUrlDTO(profileImageUrl.getUserId(), profileImageUrl.getImageUrl(), null);
     }
 
-    public static ProfileImageUrlDTO traslate(String userId, MultipartFile multipartFile) {
+    public static ProfileImageUrlDTO translate(String userId, MultipartFile multipartFile) {
         return new ProfileImageUrlDTO(userId, null, multipartFile);
     }
 
-    public static ProfileImageUrlDTO traslate(String imageUrl) {
+    public static ProfileImageUrlDTO translate(String imageUrl) {
         return new ProfileImageUrlDTO(null, imageUrl, null);
     }
 }

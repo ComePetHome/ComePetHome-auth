@@ -43,7 +43,7 @@ public class ProfileImageUrlService {
     private String region;
 
     public ProfileImageUrlDTO getProfileUrl(String userId){
-        return find(userId).map(ProfileImageUrlDTO::traslate).orElseThrow(ImageNotExistException::new);
+        return find(userId).map(ProfileImageUrlDTO::translate).orElseThrow(ImageNotExistException::new);
     }
 
     private Optional<ProfileImageUrl> find(String userId){
@@ -52,7 +52,7 @@ public class ProfileImageUrlService {
 
     public ProfileImageUrlDTO getImageUrl(String userId) {
         return find(userId)
-                .map(user -> ProfileImageUrlDTO.traslate(user.getImageUrl()))
+                .map(user -> ProfileImageUrlDTO.translate(user.getImageUrl()))
                 .orElseThrow(ImageNotExistException::new);
     }
 
@@ -62,7 +62,7 @@ public class ProfileImageUrlService {
 
         String imageUrl = amazonS3SaveImage(profileImageUrlDTO.getMultipartFile());
         profileImageUrlRepository.save(new ProfileImageUrl(profileImageUrlDTO.getUserId(), imageUrl));
-        return ProfileImageUrlDTO.traslate(imageUrl);
+        return ProfileImageUrlDTO.translate(imageUrl);
     }
 
 
@@ -92,8 +92,6 @@ public class ProfileImageUrlService {
 
     private String getFileExtension(String fileName) {
         try {
-            System.out.println("-------------------------------------------");
-            System.out.println(fileName);
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
             throw new ImageFileNameWrongException();
@@ -109,7 +107,7 @@ public class ProfileImageUrlService {
         objectMetadata.setContentLength(file.getSize());
         objectMetadata.setContentType(file.getContentType());
 
-        String s3SaveFileName = createS3SaveFileName(file.getName());
+        String s3SaveFileName = createS3SaveFileName(file.getOriginalFilename());
 
         try(InputStream inputStream = file.getInputStream()){
             amazonS3.putObject(new PutObjectRequest(bucket, s3SaveFileName, inputStream, objectMetadata)

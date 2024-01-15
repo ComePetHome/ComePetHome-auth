@@ -22,3 +22,14 @@ cloud:
       secretKey: s
       bucketName: comepethome-image
       region:  ap-northeast-2
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registryFetchIntervalSeconds: 5
+    disable-delta: true
+    register-with-eureka: true
+    fetch-registry: true
+    serviceUrl:
+      defaultZone: http://172.18.0.2:8761/eureka/
