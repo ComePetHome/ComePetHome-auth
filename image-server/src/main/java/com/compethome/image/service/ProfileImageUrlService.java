@@ -92,6 +92,8 @@ public class ProfileImageUrlService {
 
     private String getFileExtension(String fileName) {
         try {
+            System.out.println("-------------------------------------------");
+            System.out.println(fileName);
             return fileName.substring(fileName.lastIndexOf("."));
         } catch (StringIndexOutOfBoundsException e) {
             throw new ImageFileNameWrongException();
