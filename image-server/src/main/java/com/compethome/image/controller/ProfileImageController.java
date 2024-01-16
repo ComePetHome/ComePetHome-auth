@@ -11,21 +11,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.compethome.image.exception.SuccessResponseMessage;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/image/my-profile")
 public class ProfileImageController {
     @Autowired
     private ProfileImageUrlService profileImageUrlService;
+
     @PostMapping
-    public ResponseEntity<String> upload(@RequestParam("file") MultipartFile multipartFile, @RequestHeader("userId") String userId){
-        ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.save(ProfileImageUrlDTO.translate(userId, multipartFile));
-        return ResponseEntity.ok(profileImageUrlDTO.getImageUrl());
+    public ResponseEntity<List<String>> upload(@RequestParam("files") List<MultipartFile> multipartFiles, @RequestHeader("userId") String userId){
+        ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.save(ProfileImageUrlDTO.translateIn(userId, multipartFiles));
+        return ResponseEntity.ok(profileImageUrlDTO.getImageUrls());
     }
 
     @PutMapping
-    public ResponseEntity<String> update(@RequestParam("file") MultipartFile multipartFile, @RequestHeader("userId") String userId){
-        ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.update(ProfileImageUrlDTO.translate(userId,multipartFile));
-        return ResponseEntity.ok(profileImageUrlDTO.getImageUrl());
+    public ResponseEntity<List<String>> update(@RequestParam("files") List<MultipartFile> multipartFiles, @RequestHeader("userId") String userId){
+        ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.update(ProfileImageUrlDTO.translateIn(userId, multipartFiles));
+        return ResponseEntity.ok(profileImageUrlDTO.getImageUrls());
     }
 
     @DeleteMapping
@@ -40,8 +44,8 @@ public class ProfileImageController {
     }
 
     @GetMapping
-    public ResponseEntity<String> getImageUrl(@RequestHeader("userId") String userId){
+    public ResponseEntity<List<String>> getImageUrls(@RequestHeader("userId") String userId){
         ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.getImageUrl(userId);
-        return ResponseEntity.ok(profileImageUrlDTO.getImageUrl());
+        return ResponseEntity.ok(profileImageUrlDTO.getImageUrls());
     }
 }

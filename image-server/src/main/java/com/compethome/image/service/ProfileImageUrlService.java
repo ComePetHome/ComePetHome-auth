@@ -1,7 +1,6 @@
 package com.compethome.image.service;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -9,7 +8,6 @@ import com.compethome.image.dto.ProfileImageUrlDTO;
 import com.compethome.image.entity.ProfileImageUrl;
 import com.compethome.image.exception.image.*;
 import com.compethome.image.repository.ProfileImageUrlRepository;
-import com.ctc.wstx.shaded.msv_core.util.Uri;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,48 +38,52 @@ public class ProfileImageUrlService {
     @Value("${cloud.aws.s3.region}")
     private String region;
 
-    public ProfileImageUrlDTO getProfileUrl(String userId){
-        return find(userId).map(ProfileImageUrlDTO::translate).orElseThrow(ImageNotExistException::new);
-    }
-
     private Optional<ProfileImageUrl> find(String userId){
         return profileImageUrlRepository.findById(userId);
     }
 
     public ProfileImageUrlDTO getImageUrl(String userId) {
-        return find(userId)
-                .map(user -> ProfileImageUrlDTO.translate(user.getImageUrl()))
-                .orElseThrow(ImageNotExistException::new);
+        return find(userId).map(ProfileImageUrlDTO::translateOut).orElseThrow(UserNotExistException::new);
     }
-
 
     public ProfileImageUrlDTO save(ProfileImageUrlDTO profileImageUrlDTO){
-        find(profileImageUrlDTO.getUserId()).ifPresent(user -> {throw new UserAlreadyExistException();});
+        String userId = profileImageUrlDTO.getUserId();
+        find(userId).ifPresent(user -> {throw new UserAlreadyExistException();});
 
-        String imageUrl = amazonS3SaveImage(profileImageUrlDTO.getMultipartFile());
-        profileImageUrlRepository.save(new ProfileImageUrl(profileImageUrlDTO.getUserId(), imageUrl));
-        return ProfileImageUrlDTO.translate(imageUrl);
+        List<String> imageUrls = amazonS3Save(profileImageUrlDTO.getMultipartFile());
+        profileImageUrlRepository.save(ProfileImageUrl.translate(userId, imageUrls));
+
+        return ProfileImageUrlDTO.translateOut(userId, imageUrls);
     }
 
-
     public ProfileImageUrlDTO update(ProfileImageUrlDTO profileImageUrlDTO){
-        return find(profileImageUrlDTO.getUserId()).map(
-                user -> {
-                    amazonS3DeleteImage(user.getImageUrl());
-                    user.setImageUrl(amazonS3SaveImage(profileImageUrlDTO.getMultipartFile()));
-                    profileImageUrlRepository.save(user);
-                    return ProfileImageUrlDTO.translate(user.getImageUrl());
-                }).orElseThrow(UserNotExistException::new);
+        String userId = profileImageUrlDTO.getUserId();
+        find(userId).ifPresentOrElse(
+                user -> {amazonS3DeleteImage(user.getImageUrls());},
+                () ->{ throw new UserNotExistException();}
+        );
+
+        List<String> imageUrls = amazonS3Save(profileImageUrlDTO.getMultipartFile());
+        profileImageUrlRepository.save(ProfileImageUrl.translate(userId, imageUrls));
+
+        return ProfileImageUrlDTO.translateOut(userId, imageUrls);
     }
 
     public void delete(String userId){
         find(userId).ifPresentOrElse(
                 user ->{
-                    amazonS3DeleteImage(user.getImageUrl());
+                    amazonS3DeleteImage(user.getImageUrls());
                     profileImageUrlRepository.delete(user);
                 },
                 ()->{ throw new ImageNotExistException();}
         );
+    }
+
+    private List<String> amazonS3Save(List<MultipartFile> multipartFiles){
+        return multipartFiles
+                .stream()
+                .map(this::amazonS3SaveImage)
+                .toList();
     }
 
     private String createS3SaveFileName(String fileName){
@@ -95,9 +98,10 @@ public class ProfileImageUrlService {
         }
     }
 
-    private void amazonS3DeleteImage(String fileName){
-        fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+    private void amazonS3DeleteImage(List<String> imageUrls) {
+        imageUrls.stream()
+                .map(url -> url.substring(url.lastIndexOf("/") + 1))
+                .forEach(fileName -> amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName)));
     }
 
     private String amazonS3SaveImage(MultipartFile file){
