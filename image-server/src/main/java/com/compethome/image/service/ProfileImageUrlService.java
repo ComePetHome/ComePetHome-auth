@@ -96,6 +96,7 @@ public class ProfileImageUrlService {
     }
 
     private void amazonS3DeleteImage(String fileName){
+        fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
         amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
     }
 
