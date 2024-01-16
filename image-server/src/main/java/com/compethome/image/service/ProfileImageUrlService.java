@@ -7,10 +7,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.compethome.image.dto.ProfileImageUrlDTO;
 import com.compethome.image.entity.ProfileImageUrl;
-import com.compethome.image.exception.image.ImageFileNameWrongException;
-import com.compethome.image.exception.image.ImageNotExistException;
-import com.compethome.image.exception.image.ImageUploadFailedException;
-import com.compethome.image.exception.image.UserAlreadyExistException;
+import com.compethome.image.exception.image.*;
 import com.compethome.image.repository.ProfileImageUrlRepository;
 import com.ctc.wstx.shaded.msv_core.util.Uri;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,15 +63,14 @@ public class ProfileImageUrlService {
     }
 
 
-    public void update(ProfileImageUrlDTO profileImageUrlDTO){
-        find(profileImageUrlDTO.getUserId()).ifPresentOrElse(
+    public ProfileImageUrlDTO update(ProfileImageUrlDTO profileImageUrlDTO){
+        return find(profileImageUrlDTO.getUserId()).map(
                 user -> {
-                        amazonS3DeleteImage(user.getImageUrl());
-                        user.setImageUrl(amazonS3SaveImage(profileImageUrlDTO.getMultipartFile()));
-                        profileImageUrlRepository.save(user);
-                    },
-                ()-> { throw new ImageNotExistException();}
-        );
+                    amazonS3DeleteImage(user.getImageUrl());
+                    user.setImageUrl(amazonS3SaveImage(profileImageUrlDTO.getMultipartFile()));
+                    profileImageUrlRepository.save(user);
+                    return ProfileImageUrlDTO.translate(user.getImageUrl());
+                }).orElseThrow(UserNotExistException::new);
     }
 
     public void delete(String userId){

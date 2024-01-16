@@ -18,19 +18,14 @@ public class ProfileImageController {
     private ProfileImageUrlService profileImageUrlService;
     @PostMapping
     public ResponseEntity<String> upload(@RequestParam("file") MultipartFile multipartFile, @RequestHeader("userId") String userId){
-        ProfileImageUrlDTO profileImageUrlDTO= profileImageUrlService.save(ProfileImageUrlDTO.translate(userId, multipartFile));
+        ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.save(ProfileImageUrlDTO.translate(userId, multipartFile));
         return ResponseEntity.ok(profileImageUrlDTO.getImageUrl());
     }
 
     @PutMapping
-    public ResponseEntity<UserStatusResponse> update(@RequestParam("file") MultipartFile multipartFile, @RequestHeader("userId") String userId){
-        profileImageUrlService.update(ProfileImageUrlDTO.translate(userId,multipartFile));
-        return ResponseEntity.ok(new UserStatusResponse(
-                SuccessResponseMessage.IMAGE_UPDATE_SUCCESS.getMessage(),
-                HttpStatus.OK,
-                ApiExceptionHandler.getNowDateTime(),
-                SuccessResponseMessage.IMAGE_UPDATE_SUCCESS.getCode())
-        );
+    public ResponseEntity<String> update(@RequestParam("file") MultipartFile multipartFile, @RequestHeader("userId") String userId){
+        ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.update(ProfileImageUrlDTO.translate(userId,multipartFile));
+        return ResponseEntity.ok(profileImageUrlDTO.getImageUrl());
     }
 
     @DeleteMapping
