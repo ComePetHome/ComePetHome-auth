@@ -71,6 +71,7 @@ public class ProfileImageUrlService {
                 user -> {
                         amazonS3DeleteImage(user.getImageUrl());
                         user.setImageUrl(amazonS3SaveImage(profileImageUrlDTO.getMultipartFile()));
+                        profileImageUrlRepository.save(user);
                     },
                 ()-> { throw new ImageNotExistException();}
         );
