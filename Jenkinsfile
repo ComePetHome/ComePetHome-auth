@@ -130,21 +130,21 @@ pipeline {
                     //        }
                     //    }
                     //}
-                    //dir('user-command-server'){
-                    //    script {
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-command-server:latest
-                    //        """, returnStatus: true)
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-command-server:latest
-                    //        """, returnStatus: true)
+                    dir('user-command-server'){
+                        script {
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                            """, returnStatus: true)
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                            """, returnStatus: true)
 
-                    //        docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                    //            app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
-                    //            app.push('latest')
-                    //        }
-                    //    }
-                    //}
+                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
+                                app.push('latest')
+                            }
+                        }
+                    }
                     //dir('image-server'){
                     //    script {
                     //        sh(script: """
