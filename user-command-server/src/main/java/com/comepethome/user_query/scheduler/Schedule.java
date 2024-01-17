@@ -3,6 +3,7 @@ package com.comepethome.user_query.scheduler;
 import com.comepethome.user_query.controller.UserController;
 import com.comepethome.user_query.controller.request.UserJoinRequest;
 import com.comepethome.user_query.controller.request.UserProfileUpdateRequest;
+import com.comepethome.user_query.exception.CustomException;
 import com.comepethome.user_query.exception.user.UserAlreadyExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,13 +79,17 @@ public class Schedule {
 
         log.info("login url {} - {}", loginUrl, System.currentTimeMillis() / 1000);
 
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(loginUrl, requestEntity, String.class);
+        try {
+            ResponseEntity<String> responseEntity = restTemplate.postForEntity(loginUrl, requestEntity, String.class);
+        }catch (CustomException e){
+            log.info("error {} - {}",e.getMessage(), System.currentTimeMillis() / 1000);
+        }
 
         //if (responseEntity.getStatusCode().value() == 200) {
         //    log.info("login success - {}", System.currentTimeMillis() / 1000);
         //} else {
         //    log.info("login fail - {}", System.currentTimeMillis() / 1000);
-            log.info("login fail log {} - {}", responseEntity.getBody(),System.currentTimeMillis() / 1000);
+        //    log.info("login fail log {} - {}", responseEntity.getBody(),System.currentTimeMillis() / 1000);
         //}
     }
 }
