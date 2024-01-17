@@ -74,11 +74,11 @@ public class Schedule {
 
         HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(loginData, headers);
 
+        log.info("login url {} - {}", loginUrl, System.currentTimeMillis() / 1000);
+
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(loginUrl, requestEntity, String.class);
 
-        HttpStatusCode statusCode = responseEntity.getStatusCode();
-
-        if (statusCode == HttpStatus.OK) {
+        if (responseEntity.getStatusCode() == HttpStatus.OK) {
             log.info("login success - {}", System.currentTimeMillis() / 1000);
         } else {
             log.info("login fail - {}", System.currentTimeMillis() / 1000);
