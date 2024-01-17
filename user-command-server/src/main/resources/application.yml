@@ -2,6 +2,9 @@ server:
   port: 8081
 
 spring:
+  main:
+    lazy-initialization: false
+
   application:
     name: user-command-server
   h2:
