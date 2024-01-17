@@ -3,6 +3,7 @@ package com.comepethome.user_query.scheduler;
 import com.comepethome.user_query.controller.UserController;
 import com.comepethome.user_query.controller.request.UserJoinRequest;
 import com.comepethome.user_query.controller.request.UserProfileUpdateRequest;
+import com.comepethome.user_query.exception.user.UserAlreadyExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,7 +41,12 @@ public class Schedule {
     @Scheduled(fixedDelay = 1000)
     public void join() throws InterruptedException {
         log.info("join update delete scheduled start - {}", System.currentTimeMillis() / 1000);
-        userController.join(new UserJoinRequest(testId, testPw, "t1", "t1", "1"));
+
+        try {
+            userController.join(new UserJoinRequest(testId, testPw, "t1", "t1", "1"));
+        }catch(UserAlreadyExistException ignored){
+            log.info("warm up 중 userId 가 존재하여 가입불가,무시하고 패스 - {}", System.currentTimeMillis() / 1000);
+        }
         login();
         userController.update(new UserProfileUpdateRequest("t","","t","0"), testId);
         userController.delete(testId);
