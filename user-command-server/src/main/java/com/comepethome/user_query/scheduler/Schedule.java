@@ -80,11 +80,11 @@ public class Schedule {
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(loginUrl, requestEntity, String.class);
 
-        if (responseEntity.getStatusCode().value() == 200) {
-            log.info("login success - {}", System.currentTimeMillis() / 1000);
-        } else {
-            log.info("login fail - {}", System.currentTimeMillis() / 1000);
+        //if (responseEntity.getStatusCode().value() == 200) {
+        //    log.info("login success - {}", System.currentTimeMillis() / 1000);
+        //} else {
+        //    log.info("login fail - {}", System.currentTimeMillis() / 1000);
             log.info("login fail log {} - {}", responseEntity.getBody(),System.currentTimeMillis() / 1000);
-        }
+        //}
     }
 }
