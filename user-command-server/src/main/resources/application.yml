@@ -48,3 +48,5 @@ eureka:
 test:
   id:
   pw:
+  server-ip:
+  port:
