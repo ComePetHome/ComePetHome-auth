@@ -59,7 +59,7 @@ public class ProfileImageUrlService {
     public ProfileImageUrlDTO update(ProfileImageUrlDTO profileImageUrlDTO){
         String userId = profileImageUrlDTO.getUserId();
         find(userId).ifPresentOrElse(
-                user -> {amazonS3DeleteImage(user.getImageUrls());},
+                user -> {amazonS3AllDeleteImage(user.getImageUrls());},
                 () ->{ throw new UserNotExistException();}
         );
 
@@ -72,7 +72,7 @@ public class ProfileImageUrlService {
     public void delete(String userId){
         find(userId).ifPresentOrElse(
                 user ->{
-                    amazonS3DeleteImage(user.getImageUrls());
+                    amazonS3AllDeleteImage(user.getImageUrls());
                     profileImageUrlRepository.delete(user);
                 },
                 ()->{ throw new ImageNotExistException();}
@@ -98,7 +98,7 @@ public class ProfileImageUrlService {
         }
     }
 
-    private void amazonS3DeleteImage(List<String> imageUrls) {
+    private void amazonS3AllDeleteImage(List<String> imageUrls) {
         imageUrls.stream()
                 .map(url -> url.substring(url.lastIndexOf("/") + 1))
                 .forEach(fileName -> amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName)));

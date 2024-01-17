@@ -1,6 +1,5 @@
 package com.compethome.image.entity;
 
-import com.compethome.image.dto.ProfileImageUrlDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
