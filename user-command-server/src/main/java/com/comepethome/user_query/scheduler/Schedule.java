@@ -81,7 +81,7 @@ public class Schedule {
 
         try {
             ResponseEntity<String> responseEntity = restTemplate.postForEntity(loginUrl, requestEntity, String.class);
-        }catch (CustomException e){
+        }catch (Exception e){
             log.info("error {} - {}",e.getMessage(), System.currentTimeMillis() / 1000);
         }
 
