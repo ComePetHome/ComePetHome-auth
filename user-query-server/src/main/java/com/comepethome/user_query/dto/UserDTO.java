@@ -1,7 +1,7 @@
-package com.comepethome.user_commend.dto;
+package com.comepethome.user_query.dto;
 
-import com.comepethome.user_commend.controller.request.UserFindIdRequest;
-import com.comepethome.user_commend.entity.User;
+import com.comepethome.user_query.controller.request.UserFindIdRequest;
+import com.comepethome.user_query.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;

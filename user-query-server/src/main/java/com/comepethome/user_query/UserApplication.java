@@ -1,4 +1,4 @@
-package com.comepethome.user_commend;
+package com.comepethome.user_query;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

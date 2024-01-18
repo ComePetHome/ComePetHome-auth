@@ -1,6 +1,6 @@
-package com.comepethome.user_commend.repository;
+package com.comepethome.user_query.repository;
 
-import com.comepethome.user_commend.entity.User;
+import com.comepethome.user_query.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {

@@ -1,10 +1,10 @@
-package com.comepethome.user_commend.controller;
+package com.comepethome.user_query.controller;
 
-import com.comepethome.user_commend.controller.request.UserFindIdRequest;
-import com.comepethome.user_commend.controller.response.UserIdResponse;
-import com.comepethome.user_commend.controller.response.UserProfileResponse;
-import com.comepethome.user_commend.dto.UserDTO;
-import com.comepethome.user_commend.service.UserService;
+import com.comepethome.user_query.controller.request.UserFindIdRequest;
+import com.comepethome.user_query.controller.response.UserIdResponse;
+import com.comepethome.user_query.controller.response.UserProfileResponse;
+import com.comepethome.user_query.dto.UserDTO;
+import com.comepethome.user_query.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

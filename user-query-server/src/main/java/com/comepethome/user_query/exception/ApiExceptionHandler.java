@@ -1,4 +1,4 @@
-package com.comepethome.user_commend.exception;
+package com.comepethome.user_query.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

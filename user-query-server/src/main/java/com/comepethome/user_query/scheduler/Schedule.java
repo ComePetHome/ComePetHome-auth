@@ -1,14 +1,13 @@
 package com.comepethome.user_query.scheduler;
 
 import com.comepethome.user_query.controller.UserController;
-import com.comepethome.user_query.controller.request.UserJoinRequest;
-import com.comepethome.user_query.controller.request.UserLoginRequest;
-import com.comepethome.user_query.controller.request.UserProfileUpdateRequest;
-import com.comepethome.user_query.controller.response.UserStatusResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -64,10 +63,7 @@ public class Schedule {
 
         UserJoinRequest userJoinRequest = new UserJoinRequest(testId, testPw,"t", "t", "0");
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        createContentTypeIncludeUserId(httpHeaders);
-
-        HttpEntity<UserJoinRequest> requestHttpEntity = new HttpEntity<>(userJoinRequest, httpHeaders);
+        HttpEntity<UserJoinRequest> requestHttpEntity = new HttpEntity<>(userJoinRequest);
 
         ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
 
@@ -79,10 +75,7 @@ public class Schedule {
 
         UserLoginRequest userLoginRequest = new UserLoginRequest(testId, testPw);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        createContentTypeIncludeUserId(httpHeaders);
-
-        HttpEntity<UserLoginRequest> requestHttpEntity = new HttpEntity<>(userLoginRequest, httpHeaders);
+        HttpEntity<UserLoginRequest> requestHttpEntity = new HttpEntity<>(userLoginRequest);
 
         ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
 
@@ -100,7 +93,6 @@ public class Schedule {
         HttpHeaders httpHeaders = new HttpHeaders();
         createHeaderIncludeUserId(httpHeaders);
         createAccessTokenIncludeUserId(httpHeaders);
-        createContentTypeIncludeUserId(httpHeaders);
 
         HttpEntity<UserProfileUpdateRequest> requestHttpEntity = new HttpEntity<>(userProfileUpdateRequest, httpHeaders);
 
@@ -114,7 +106,6 @@ public class Schedule {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         createHeaderIncludeUserId(httpHeaders);
-        createContentTypeIncludeUserId(httpHeaders);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
@@ -140,16 +131,14 @@ public class Schedule {
         return "http://" + serverIp + ":" + port + uri;
     }
 
-    private void createHeaderIncludeUserId(HttpHeaders headers){
+    private HttpHeaders createHeaderIncludeUserId(HttpHeaders headers){
         headers.set("userId", testId);
+        return headers;
     }
 
-    private void createAccessTokenIncludeUserId(HttpHeaders headers){
+    private HttpHeaders createAccessTokenIncludeUserId(HttpHeaders headers){
         headers.set("access-token", accessToken);
-    }
-
-    private void createContentTypeIncludeUserId(HttpHeaders headers){
-        headers.set("Content-Type", "application/json");
+        return headers;
     }
 
 }

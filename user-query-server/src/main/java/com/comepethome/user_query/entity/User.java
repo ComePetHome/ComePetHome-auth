@@ -1,6 +1,6 @@
-package com.comepethome.user_commend.entity;
+package com.comepethome.user_query.entity;
 
-import com.comepethome.user_commend.dto.UserDTO;
+import com.comepethome.user_query.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;

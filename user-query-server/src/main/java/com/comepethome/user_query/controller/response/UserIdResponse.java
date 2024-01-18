@@ -1,4 +1,4 @@
-package com.comepethome.user_commend.controller.response;
+package com.comepethome.user_query.controller.response;
 
 import lombok.Data;
 

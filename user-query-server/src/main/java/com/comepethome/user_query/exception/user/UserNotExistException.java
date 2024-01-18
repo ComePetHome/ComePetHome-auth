@@ -1,8 +1,8 @@
-package com.comepethome.user_commend.exception.user;
+package com.comepethome.user_query.exception.user;
 
 
-import com.comepethome.user_commend.exception.CustomException;
-import com.comepethome.user_commend.exception.FailResponseMessage;
+import com.comepethome.user_query.exception.CustomException;
+import com.comepethome.user_query.exception.FailResponseMessage;
 
 public class UserNotExistException extends CustomException {
     public UserNotExistException() {

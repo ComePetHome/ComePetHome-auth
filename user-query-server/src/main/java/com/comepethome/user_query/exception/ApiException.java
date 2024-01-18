@@ -1,4 +1,4 @@
-package com.comepethome.user_commend.exception;
+package com.comepethome.user_query.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
