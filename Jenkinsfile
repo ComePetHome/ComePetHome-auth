@@ -60,10 +60,17 @@ pipeline {
                             sh(script: """ yq -i '.test.pw="${pw}"' /var/jenkins_home/workspace/ComePetHome_master/user-command-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.test.server-ip="${IP}"' /var/jenkins_home/workspace/ComePetHome_master/user-command-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.test.port="${PORT}"' /var/jenkins_home/workspace/ComePetHome_master/user-command-server/src/main/resources/application.yml """)
+
                             sh(script: """ yq -i '.spring.datasource.username="${DB_ID}"' /var/jenkins_home/workspace/ComePetHome_master/user-query-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.spring.datasource.password="${DB_PW}"' /var/jenkins_home/workspace/ComePetHome_master/user-query-server/src/main/resources/application.yml """)
+                            sh(script: """ yq -i '.test.id="${ID}"' /var/jenkins_home/workspace/ComePetHome_master/user-query-server/src/main/resources/application.yml """)
+                            sh(script: """ yq -i '.test.pw="${pw}"' /var/jenkins_home/workspace/ComePetHome_master/user-query-server/src/main/resources/application.yml """)
+                            sh(script: """ yq -i '.test.server-ip="${IP}"' /var/jenkins_home/workspace/ComePetHome_master/user-query-server/src/main/resources/application.yml """)
+                            sh(script: """ yq -i '.test.port="${PORT}"' /var/jenkins_home/workspace/ComePetHome_master/user-query-server/src/main/resources/application.yml """)
+
                             sh(script: """ yq -i '.cloud.aws.s3.accessKey="${MY_ACCESS_KEY}"' /var/jenkins_home/workspace/ComePetHome_master/image-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.cloud.aws.s3.secretKey="${MY_SECRET_KEY}"' /var/jenkins_home/workspace/ComePetHome_master/image-server/src/main/resources/application.yml """)
+
                             sh(script: """ yq -i '.spring.data.mongodb.username="${DB_ID}"' /var/jenkins_home/workspace/ComePetHome_master/image-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.spring.data.mongodb.password="${DB_PW}"' /var/jenkins_home/workspace/ComePetHome_master/image-server/src/main/resources/application.yml """)
                         }

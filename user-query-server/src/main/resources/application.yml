@@ -34,3 +34,9 @@ eureka:
     fetch-registry: true
     serviceUrl:
       defaultZone: http://172.18.0.2:8761/eureka/
+
+test:
+  id:
+  pw:
+  server-ip:
+  port:
