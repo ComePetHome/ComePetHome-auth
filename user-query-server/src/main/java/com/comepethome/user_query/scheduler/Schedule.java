@@ -68,7 +68,8 @@ public class Schedule {
 
         HttpEntity<UserJoinRequest> requestHttpEntity = new HttpEntity<>(userJoinRequest, httpHeaders);
 
-        ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
+        ResponseEntity<UserStatusResponse> responseEntity
+                = requestRestful(url, requestHttpEntity, HttpMethod.POST, UserStatusResponse.class);
 
         logResponseCode(responseEntity);
 
@@ -88,7 +89,8 @@ public class Schedule {
 
         HttpEntity<UserLoginRequest> requestHttpEntity = new HttpEntity<>(userLoginRequest, httpHeaders);
 
-        ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
+        ResponseEntity<UserStatusResponse> responseEntity
+                = requestRestful(url, requestHttpEntity, HttpMethod.POST, UserStatusResponse.class);
 
         logResponseCode(responseEntity);
 
@@ -110,7 +112,8 @@ public class Schedule {
 
         HttpEntity<UserFindIdRequest> requestHttpEntity = new HttpEntity<>(userFindIdRequest, httpHeaders);
 
-        ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
+        ResponseEntity<UserIdResponse> responseEntity
+                = requestRestful(url, requestHttpEntity, HttpMethod.POST, UserIdResponse.class);
 
         logResponseCode(responseEntity);
         log.info("findUserId request end - {}", System.currentTimeMillis() / 1000);
@@ -126,9 +129,10 @@ public class Schedule {
         includeAcceptType(httpHeaders);
         includeAcceptEncodingType(httpHeaders);
 
-        HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<UserProfileResponse> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.GET);
+        ResponseEntity<?> responseEntity
+                = requestRestful(url, requestHttpEntity, HttpMethod.GET, UserProfileResponse.class);
 
         logResponseCode(responseEntity);
         log.info("profile request end - {}", System.currentTimeMillis() / 1000);
@@ -145,7 +149,8 @@ public class Schedule {
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.GET);
+        ResponseEntity<String> responseEntity
+                = requestRestful(url, requestHttpEntity, HttpMethod.GET, String.class);
 
         logResponseCode(responseEntity);
         log.info("availableUserId request request end - {}", System.currentTimeMillis() / 1000);
@@ -156,13 +161,13 @@ public class Schedule {
         log.info("logout request start - {}", System.currentTimeMillis() / 1000);
         HttpHeaders httpHeaders = new HttpHeaders();
         includeAccessToken(httpHeaders, accessToken);
-        includeContentType(httpHeaders);
         includeAcceptType(httpHeaders);
         includeAcceptEncodingType(httpHeaders);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.GET);
+        ResponseEntity<UserStatusResponse> responseEntity
+                = requestRestful(url, requestHttpEntity, HttpMethod.GET, UserStatusResponse.class);
 
         logResponseCode(responseEntity);
         log.info("logout request request end - {}", System.currentTimeMillis() / 1000);
@@ -179,7 +184,8 @@ public class Schedule {
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
-        ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.DELETE);
+        ResponseEntity<UserStatusResponse> responseEntity
+                = requestRestful(url, requestHttpEntity, HttpMethod.DELETE, UserStatusResponse.class);
 
         logResponseCode(responseEntity);
         log.info("delete request end - {}", System.currentTimeMillis() / 1000);
@@ -189,12 +195,12 @@ public class Schedule {
         log.info("log result message {} - {}", responseEntity.getBody(), System.currentTimeMillis() / 1000);
     }
 
-    private ResponseEntity<?> requestRestful(String url, HttpEntity<?> requestHttpEntity, HttpMethod method){
+    private <T> ResponseEntity<T> requestRestful(String url, HttpEntity<?> requestHttpEntity, HttpMethod method, Class<T> cls){
         return restTemplate.exchange(
                 url,
                 method,
                 requestHttpEntity,
-                UserStatusResponse.class
+                cls
         );
     }
 
