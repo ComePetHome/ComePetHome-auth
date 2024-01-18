@@ -38,8 +38,7 @@ public class Schedule {
     RestTemplate restTemplate = new RestTemplateBuilder().build();
 
     @Scheduled(fixedDelay = 3 * 60 * 1000)
-    public void join() throws InterruptedException {
-
+    public void warmUp() throws InterruptedException {
         try {
             joinRequest("/api/user/command/join");
             String accessToken = loginRequest("/api/user/command/login");
@@ -58,7 +57,7 @@ public class Schedule {
         String url =  createUrl(uri);
 
         log.info("join request start - {}", System.currentTimeMillis() / 1000);
-        UserJoinRequest userJoinRequest = new UserJoinRequest(testId + "1" , testPw,"t", "t", "1");
+        UserJoinRequest userJoinRequest = new UserJoinRequest(testId , testPw,"t", "t", "1");
 
 
         HttpHeaders httpHeaders = new HttpHeaders();
