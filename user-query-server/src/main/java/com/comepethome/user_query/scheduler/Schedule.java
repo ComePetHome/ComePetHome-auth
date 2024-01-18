@@ -140,7 +140,6 @@ public class Schedule {
 
         log.info("availableUserId request start - {}", System.currentTimeMillis() / 1000);
         HttpHeaders httpHeaders = new HttpHeaders();
-        includeContentType(httpHeaders);
         includeAcceptType(httpHeaders);
         includeAcceptEncodingType(httpHeaders);
 
