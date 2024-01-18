@@ -62,6 +62,8 @@ public class Schedule {
     public void joinRequest(String uri){
         String url =  createUrl(uri);
 
+        log.info("join url - {}", url);
+
         if(testId.isEmpty()){
             log.info("join testId empty - {}", System.currentTimeMillis() / 1000);
         }
@@ -74,11 +76,15 @@ public class Schedule {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         createContentTypeIncludeUserId(httpHeaders);
+        createAcceptTypeIncludeUserId(httpHeaders);
+        createAcceptEncodingTypeIncludeUserId(httpHeaders);
 
         HttpEntity<UserJoinRequest> requestHttpEntity = new HttpEntity<>(userJoinRequest, httpHeaders);
 
+        log.info("join request start");
         ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
 
+        log.info("join request end");
         logResponseCode(responseEntity);
     }
 
@@ -89,6 +95,8 @@ public class Schedule {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         createContentTypeIncludeUserId(httpHeaders);
+        createAcceptTypeIncludeUserId(httpHeaders);
+        createAcceptEncodingTypeIncludeUserId(httpHeaders);
 
         HttpEntity<UserLoginRequest> requestHttpEntity = new HttpEntity<>(userLoginRequest, httpHeaders);
 
@@ -107,6 +115,8 @@ public class Schedule {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         createHeaderIncludeUserId(httpHeaders);
+        createAcceptTypeIncludeUserId(httpHeaders);
+        createAcceptEncodingTypeIncludeUserId(httpHeaders);
         createAccessTokenIncludeUserId(httpHeaders);
         createContentTypeIncludeUserId(httpHeaders);
 
@@ -123,6 +133,8 @@ public class Schedule {
         HttpHeaders httpHeaders = new HttpHeaders();
         createHeaderIncludeUserId(httpHeaders);
         createContentTypeIncludeUserId(httpHeaders);
+        createAcceptTypeIncludeUserId(httpHeaders);
+        createAcceptEncodingTypeIncludeUserId(httpHeaders);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
@@ -158,6 +170,14 @@ public class Schedule {
 
     private void createContentTypeIncludeUserId(HttpHeaders headers){
         headers.set("Content-Type", "application/json");
+    }
+
+    private void createAcceptTypeIncludeUserId(HttpHeaders headers){
+        headers.add("Accept", "application/json");
+    }
+
+    private void createAcceptEncodingTypeIncludeUserId(HttpHeaders headers){
+        headers.add("Accept-Encoding", "application/json");
     }
 
 }
