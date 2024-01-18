@@ -46,6 +46,7 @@ public class Schedule {
             profileRequest("/api/user/query/profile", accessToken);
             availableUserIdRequest("/api/user/query/availableUserId");
             logoutRequest("/api/user/query/logout", accessToken);
+            deleteRequest("/api/user/command/withdraw",accessToken);
         }catch (Exception e){
             log.info("Exception {} - {}",e.getMessage(), System.currentTimeMillis() / 1000);
         }
@@ -165,6 +166,23 @@ public class Schedule {
 
         logResponseCode(responseEntity);
         log.info("logout request request end - {}", System.currentTimeMillis() / 1000);
+    }
+    public void deleteRequest(String uri, String accessToken){
+        String url =  createUrl(uri);
+
+        log.info("delete request start - {}", System.currentTimeMillis() / 1000);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        includeAccessToken(httpHeaders, accessToken);
+        includeContentType(httpHeaders);
+        includeAcceptType(httpHeaders);
+        includeAcceptEncodingType(httpHeaders);
+
+        HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
+
+        ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.DELETE);
+
+        logResponseCode(responseEntity);
+        log.info("delete request end - {}", System.currentTimeMillis() / 1000);
     }
 
     private void logResponseCode(ResponseEntity<?> responseEntity){
