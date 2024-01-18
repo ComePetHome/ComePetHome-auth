@@ -62,7 +62,15 @@ public class Schedule {
     public void joinRequest(String uri){
         String url =  createUrl(uri);
 
-        UserJoinRequest userJoinRequest = new UserJoinRequest(testId, testPw,"t", "t", "0");
+        if(testId.isEmpty()){
+            log.info("join testId empty - {}", System.currentTimeMillis() / 1000);
+        }
+
+        if(testPw.isEmpty()){
+            log.info("join testPw empty - {}", System.currentTimeMillis() / 1000);
+        }
+
+        UserJoinRequest userJoinRequest = new UserJoinRequest(testId, testPw,"t", "t", "000");
 
         HttpHeaders httpHeaders = new HttpHeaders();
         createContentTypeIncludeUserId(httpHeaders);
