@@ -143,7 +143,7 @@ public class Schedule {
         includeAcceptType(httpHeaders);
         includeAcceptEncodingType(httpHeaders);
 
-        HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<String> requestHttpEntity = new HttpEntity<>("t3", httpHeaders);
 
         ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.GET);
 
@@ -186,7 +186,7 @@ public class Schedule {
     }
 
     private void logResponseCode(ResponseEntity<?> responseEntity){
-        log.info("join finished state code {} - {}", responseEntity.getBody(), System.currentTimeMillis() / 1000);
+        log.info("log result message {} - {}", responseEntity.getBody(), System.currentTimeMillis() / 1000);
     }
 
     private ResponseEntity<?> requestRestful(String url, HttpEntity<?> requestHttpEntity, HttpMethod method){
