@@ -32,9 +32,6 @@ public class Schedule {
     @Value("${test.server-ip}")
     private String serverIp;
 
-    @Value("${test.port}")
-    private String port;
-
     private String accessToken;
 
     @Autowired
@@ -62,16 +59,6 @@ public class Schedule {
     public void joinRequest(String uri){
         String url =  createUrl(uri);
 
-        log.info("join url - {}", url);
-
-        if(testId.isEmpty()){
-            log.info("join testId empty - {}", System.currentTimeMillis() / 1000);
-        }
-
-        if(testPw.isEmpty()){
-            log.info("join testPw empty - {}", System.currentTimeMillis() / 1000);
-        }
-
         UserJoinRequest userJoinRequest = new UserJoinRequest(testId, testPw,"t", "t", "000");
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -81,10 +68,8 @@ public class Schedule {
 
         HttpEntity<UserJoinRequest> requestHttpEntity = new HttpEntity<>(userJoinRequest, httpHeaders);
 
-        log.info("join request start");
         ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
 
-        log.info("join request end");
         logResponseCode(responseEntity);
     }
 
@@ -157,7 +142,7 @@ public class Schedule {
     }
 
     private String createUrl(String uri){
-        return "http://" + serverIp + ":" + port + uri;
+        return "http://" + serverIp + ":9001" + uri;
     }
 
     private void createHeaderIncludeUserId(HttpHeaders headers){
