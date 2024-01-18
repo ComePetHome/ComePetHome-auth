@@ -59,6 +59,7 @@ public class Schedule {
     public void joinRequest(String uri){
         String url =  createUrl(uri);
 
+        log.info("join request start - {}", System.currentTimeMillis() / 1000);
         UserJoinRequest userJoinRequest = new UserJoinRequest(testId, testPw,"t", "t", "000");
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -71,11 +72,14 @@ public class Schedule {
         ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
 
         logResponseCode(responseEntity);
+
+        log.info("join request end - {}", System.currentTimeMillis() / 1000);
     }
 
     public void loginRequest(String uri){
         String url =  createUrl(uri);
 
+        log.info("login request start - {}", System.currentTimeMillis() / 1000);
         UserLoginRequest userLoginRequest = new UserLoginRequest(testId, testPw);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -90,12 +94,15 @@ public class Schedule {
         accessToken = Objects.requireNonNull(responseEntity.getHeaders().get("access-token")).get(0);
 
         logResponseCode(responseEntity);
+
+        log.info("login request end - {}", System.currentTimeMillis() / 1000);
     }
 
     public void updateRequest(String uri){
         String userId = testId;
         String url =  createUrl(uri);
 
+        log.info("update request start - {}", System.currentTimeMillis() / 1000);
         UserProfileUpdateRequest userProfileUpdateRequest = new UserProfileUpdateRequest("t", "t", "t", "0");
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -110,11 +117,13 @@ public class Schedule {
         ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.PATCH);
 
         logResponseCode(responseEntity);
+        log.info("update request end - {}", System.currentTimeMillis() / 1000);
     }
 
     public void deleteRequest(String uri){
         String url =  createUrl(uri);
 
+        log.info("delete request start - {}", System.currentTimeMillis() / 1000);
         HttpHeaders httpHeaders = new HttpHeaders();
         createHeaderIncludeUserId(httpHeaders);
         createContentTypeIncludeUserId(httpHeaders);
@@ -126,6 +135,7 @@ public class Schedule {
         ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.DELETE);
 
         logResponseCode(responseEntity);
+        log.info("delete request end - {}", System.currentTimeMillis() / 1000);
     }
 
     private void logResponseCode(ResponseEntity<?> responseEntity){
