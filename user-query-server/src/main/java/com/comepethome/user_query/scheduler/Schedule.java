@@ -136,6 +136,7 @@ public class Schedule {
 
     public void availableUserIdRequest(String uri){
         String url =  createUrl(uri);
+        url = url + "?userId=t3";
 
         log.info("availableUserId request start - {}", System.currentTimeMillis() / 1000);
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -143,7 +144,7 @@ public class Schedule {
         includeAcceptType(httpHeaders);
         includeAcceptEncodingType(httpHeaders);
 
-        HttpEntity<String> requestHttpEntity = new HttpEntity<>("t3", httpHeaders);
+        HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
         ResponseEntity<?> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.GET);
 
