@@ -32,8 +32,6 @@ public class Schedule {
     @Value("${test.server-ip}")
     private String serverIp;
 
-    private String accessToken;
-
     @Autowired
     private UserController userController;
 
@@ -45,9 +43,9 @@ public class Schedule {
 
         try {
             joinRequest("/api/user/command/join");
-            loginRequest("/api/user/command/login");
-            updateRequest("/api/user/command/profile");
-            deleteRequest("/api/user/command/withdraw");
+            String accessToken = loginRequest("/api/user/command/login");
+            updateRequest("/api/user/command/profile", accessToken);
+            deleteRequest("/api/user/command/withdraw", accessToken);
         }catch (Exception e){
             log.info("Exception {} - {}",e.getMessage(), System.currentTimeMillis() / 1000);
         }
@@ -76,7 +74,7 @@ public class Schedule {
         log.info("join request end - {}", System.currentTimeMillis() / 1000);
     }
 
-    public void loginRequest(String uri){
+    public String loginRequest(String uri){
         String url =  createUrl(uri);
 
         log.info("login request start - {}", System.currentTimeMillis() / 1000);
@@ -91,21 +89,22 @@ public class Schedule {
 
         ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
 
-        accessToken = Objects.requireNonNull(responseEntity.getHeaders().get("access-token")).get(0);
 
         logResponseCode(responseEntity);
 
         log.info("login request end - {}", System.currentTimeMillis() / 1000);
+
+        return Objects.requireNonNull(responseEntity.getHeaders().get("access-token")).get(0);
     }
 
-    public void updateRequest(String uri){
+    public void updateRequest(String uri, String accessToken){
         String url =  createUrl(uri);
 
         log.info("update request start - {}", System.currentTimeMillis() / 1000);
         UserProfileUpdateRequest userProfileUpdateRequest = new UserProfileUpdateRequest("t", "", "t", "0");
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        includeAccessToken(httpHeaders);
+        includeAccessToken(httpHeaders, accessToken);
         includeAcceptEncodingType(httpHeaders);
         includeContentType(httpHeaders);
         includeAcceptType(httpHeaders);
@@ -118,12 +117,12 @@ public class Schedule {
         log.info("update request end - {}", System.currentTimeMillis() / 1000);
     }
 
-    public void deleteRequest(String uri){
+    public void deleteRequest(String uri, String accessToken){
         String url =  createUrl(uri);
 
         log.info("delete request start - {}", System.currentTimeMillis() / 1000);
         HttpHeaders httpHeaders = new HttpHeaders();
-        includeAccessToken(httpHeaders);
+        includeAccessToken(httpHeaders, accessToken);
         includeContentType(httpHeaders);
         includeAcceptType(httpHeaders);
         includeAcceptEncodingType(httpHeaders);
@@ -157,7 +156,7 @@ public class Schedule {
         headers.set("userId", testId);
     }
 
-    private void includeAccessToken(HttpHeaders headers){
+    private void includeAccessToken(HttpHeaders headers, String accessToken){
         headers.set("access-token", accessToken);
     }
 
