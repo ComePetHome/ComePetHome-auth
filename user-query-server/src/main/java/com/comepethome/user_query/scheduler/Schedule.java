@@ -35,9 +35,6 @@ public class Schedule {
     @Value("${test.server-ip}")
     private String serverIp;
 
-    @Autowired
-    private UserController userController;
-
     RestTemplate restTemplate = new RestTemplateBuilder().build();
 
     @Scheduled(fixedDelay = 3 * 60 * 1000)
