@@ -47,7 +47,7 @@ public class Schedule {
             joinRequest("/api/user/command/join");
             loginRequest("/api/user/command/login");
             updateRequest("/api/user/command/profile");
-            updateRequest("/api/user/command/withdraw");
+            deleteRequest("/api/user/command/withdraw");
         }catch (Exception e){
             log.info("Exception {} - {}",e.getMessage(), System.currentTimeMillis() / 1000);
         }
@@ -63,9 +63,9 @@ public class Schedule {
         UserJoinRequest userJoinRequest = new UserJoinRequest(testId, testPw,"t", "t", "000");
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        createContentTypeIncludeUserId(httpHeaders);
-        createAcceptTypeIncludeUserId(httpHeaders);
-        createAcceptEncodingTypeIncludeUserId(httpHeaders);
+        includeContentType(httpHeaders);
+        includeAcceptType(httpHeaders);
+        includeAcceptEncodingType(httpHeaders);
 
         HttpEntity<UserJoinRequest> requestHttpEntity = new HttpEntity<>(userJoinRequest, httpHeaders);
 
@@ -83,9 +83,9 @@ public class Schedule {
         UserLoginRequest userLoginRequest = new UserLoginRequest(testId, testPw);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        createContentTypeIncludeUserId(httpHeaders);
-        createAcceptTypeIncludeUserId(httpHeaders);
-        createAcceptEncodingTypeIncludeUserId(httpHeaders);
+        includeContentType(httpHeaders);
+        includeAcceptType(httpHeaders);
+        includeAcceptEncodingType(httpHeaders);
 
         HttpEntity<UserLoginRequest> requestHttpEntity = new HttpEntity<>(userLoginRequest, httpHeaders);
 
@@ -99,18 +99,16 @@ public class Schedule {
     }
 
     public void updateRequest(String uri){
-        String userId = testId;
         String url =  createUrl(uri);
 
         log.info("update request start - {}", System.currentTimeMillis() / 1000);
-        UserProfileUpdateRequest userProfileUpdateRequest = new UserProfileUpdateRequest("t", "t", "t", "0");
+        UserProfileUpdateRequest userProfileUpdateRequest = new UserProfileUpdateRequest("t", "", "t", "0");
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        createHeaderIncludeUserId(httpHeaders);
-        createAcceptTypeIncludeUserId(httpHeaders);
-        createAcceptEncodingTypeIncludeUserId(httpHeaders);
-        createAccessTokenIncludeUserId(httpHeaders);
-        createContentTypeIncludeUserId(httpHeaders);
+        includeAccessToken(httpHeaders);
+        includeAcceptEncodingType(httpHeaders);
+        includeContentType(httpHeaders);
+        includeAcceptType(httpHeaders);
 
         HttpEntity<UserProfileUpdateRequest> requestHttpEntity = new HttpEntity<>(userProfileUpdateRequest, httpHeaders);
 
@@ -125,10 +123,10 @@ public class Schedule {
 
         log.info("delete request start - {}", System.currentTimeMillis() / 1000);
         HttpHeaders httpHeaders = new HttpHeaders();
-        createHeaderIncludeUserId(httpHeaders);
-        createContentTypeIncludeUserId(httpHeaders);
-        createAcceptTypeIncludeUserId(httpHeaders);
-        createAcceptEncodingTypeIncludeUserId(httpHeaders);
+        includeAccessToken(httpHeaders);
+        includeContentType(httpHeaders);
+        includeAcceptType(httpHeaders);
+        includeAcceptEncodingType(httpHeaders);
 
         HttpEntity<String> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
@@ -155,24 +153,24 @@ public class Schedule {
         return "http://" + serverIp + ":9001" + uri;
     }
 
-    private void createHeaderIncludeUserId(HttpHeaders headers){
+    private void includeUserId(HttpHeaders headers){
         headers.set("userId", testId);
     }
 
-    private void createAccessTokenIncludeUserId(HttpHeaders headers){
+    private void includeAccessToken(HttpHeaders headers){
         headers.set("access-token", accessToken);
     }
 
-    private void createContentTypeIncludeUserId(HttpHeaders headers){
+    private void includeContentType(HttpHeaders headers){
         headers.set("Content-Type", "application/json");
     }
 
-    private void createAcceptTypeIncludeUserId(HttpHeaders headers){
+    private void includeAcceptType(HttpHeaders headers){
         headers.add("Accept", "application/json");
     }
 
-    private void createAcceptEncodingTypeIncludeUserId(HttpHeaders headers){
-        headers.add("Accept-Encoding", "application/json");
+    private void includeAcceptEncodingType(HttpHeaders headers){
+        headers.add("Accept-Encoding", "gzip, deflate, br");
     }
 
 }
