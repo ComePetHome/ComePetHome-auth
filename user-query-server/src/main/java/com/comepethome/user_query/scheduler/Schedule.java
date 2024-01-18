@@ -101,7 +101,7 @@ public class Schedule {
         String url =  createUrl(uri);
 
         log.info("findUserId request start - {}", System.currentTimeMillis() / 1000);
-        UserFindIdRequest userFindIdRequest = new UserFindIdRequest("t", "0");
+        UserFindIdRequest userFindIdRequest = new UserFindIdRequest("t", "1");
 
         HttpHeaders httpHeaders = new HttpHeaders();
         includeAcceptEncodingType(httpHeaders);
