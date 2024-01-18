@@ -8,12 +8,14 @@ import com.comepethome.user_query.exception.ApiExceptionHandler;
 import com.comepethome.user_query.exception.SuccessResponseMessage;
 import com.comepethome.user_query.service.UserService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+@Slf4j
 @RestController
 @RequestMapping("/api/user/command")
 public class UserController {
@@ -23,6 +25,7 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<UserStatusResponse> join(@RequestBody @Valid UserJoinRequest request){
+        log.info("join controller position - {}", System.currentTimeMillis() / 1000);
         userService.save(UserDTO.translate(request));
         return ResponseEntity.ok(new UserStatusResponse(
                         SuccessResponseMessage.USER_JOIN_SUCCESS.getMessage(),

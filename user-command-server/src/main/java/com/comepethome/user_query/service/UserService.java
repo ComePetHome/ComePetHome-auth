@@ -6,6 +6,7 @@ import com.comepethome.user_query.exception.user.UserAlreadyExistException;
 import com.comepethome.user_query.exception.user.UserNotExistException;
 import com.comepethome.user_query.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -24,6 +26,7 @@ public class UserService {
 
     @Transactional
     public void save(UserDTO userDTO){
+        log.info("join service position - {}", System.currentTimeMillis() / 1000);
         findByUser(userDTO.getUserId())
                 .ifPresentOrElse(
                         user -> { throw new UserAlreadyExistException(); },
