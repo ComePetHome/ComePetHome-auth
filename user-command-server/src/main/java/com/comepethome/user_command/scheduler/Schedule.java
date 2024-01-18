@@ -8,6 +8,7 @@ import com.comepethome.user_command.controller.response.UserStatusResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -35,11 +36,10 @@ public class Schedule {
     @Autowired
     private UserController userController;
 
-    RestTemplate restTemplate = new RestTemplate();
+    RestTemplate restTemplate = new RestTemplateBuilder().build();
 
-    @Scheduled(fixedDelay = 5 * 60 * 1000)
+    @Scheduled(fixedDelay = 2 * 60 * 1000)
     public void join() throws InterruptedException {
-        log.info("join update delete scheduled start - {}", System.currentTimeMillis() / 1000);
 
         try {
             joinRequest("/api/user/command/join");
@@ -50,7 +50,6 @@ public class Schedule {
             log.info("Exception {} - {}",e.getMessage(), System.currentTimeMillis() / 1000);
         }
 
-        log.info("join update delete scheduled finished - {}", System.currentTimeMillis() / 1000);
         Thread.sleep(5000);
     }
 
@@ -88,7 +87,6 @@ public class Schedule {
         HttpEntity<UserLoginRequest> requestHttpEntity = new HttpEntity<>(userLoginRequest, httpHeaders);
 
         ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
-
 
         logResponseCode(responseEntity);
 
