@@ -60,28 +60,8 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
                         Optional<String> path = Optional.ofNullable(request.getURI().getPath());
 
-                        if(path.get().equals("/api/user/query/logout")) {
-                            jwtService.deleteRefreshToken(userId);
-                            response.setStatusCode(HttpStatus.OK);
-                            response.getHeaders().setContentType(MediaType.APPLICATION_JSON);
-
-                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                            String currentTime = LocalDateTime.now().format(formatter);
-
-                            String responseBody = "{"
-                                    + "\"message\": \"회원이 정상 로그아웃되었습니다.\","
-                                    + "\"httpStatus\": \"OK\","
-                                    + "\"time\": \"" + currentTime + "\","
-                                    + "\"code\": 200"
-                                    + "}";
-
-                            DataBuffer buffer = response.bufferFactory().wrap(responseBody.getBytes());
-                            return response.writeWith(Mono.just(buffer));
-                        }
-
-                        if(path.get().equals("/api/user/command/withdraw")){
-                            jwtService.deleteRefreshToken(userId);
-                        }
+                        path.filter( p -> p.equals("/api/user/command/withdraw") || p.equals("/api/user/query/logout"))
+                                .ifPresent(p ->{jwtService.deleteRefreshToken(userId);});
 
                         request.mutate().header("userId", userId).build();
                         return chain.filter(exchange);

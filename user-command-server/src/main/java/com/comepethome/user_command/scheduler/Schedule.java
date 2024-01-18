@@ -57,7 +57,7 @@ public class Schedule {
         String url =  createUrl(uri);
 
         log.info("join request start - {}", System.currentTimeMillis() / 1000);
-        UserJoinRequest userJoinRequest = new UserJoinRequest(testId, testPw,"t", "t", "000");
+        UserJoinRequest userJoinRequest = new UserJoinRequest(testId, testPw,"t", "t", "0");
 
         HttpHeaders httpHeaders = new HttpHeaders();
         includeContentType(httpHeaders);
