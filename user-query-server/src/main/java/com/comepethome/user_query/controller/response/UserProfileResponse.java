@@ -6,6 +6,8 @@ import com.comepethome.user_query.dto.UserDTO;
 import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserProfileResponse {
 
     public UserProfileResponse(UserDTO userDTO){
