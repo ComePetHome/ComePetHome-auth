@@ -6,6 +6,7 @@ import com.compethome.image.exception.ApiExceptionHandler;
 import com.compethome.image.service.ProfileImageUrlService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,13 +20,13 @@ public class ProfileImageController {
     @Autowired
     private ProfileImageUrlService profileImageUrlService;
 
-    @PostMapping
-    public ResponseEntity<ProfileImageUrlDTO> upload(@RequestParam("files") List<MultipartFile> multipartFiles, @RequestHeader("userId") String userId){
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ProfileImageUrlDTO> upload(@RequestPart("files") List<MultipartFile> multipartFiles, @RequestHeader("userId") String userId){
         ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.save(ProfileImageUrlDTO.translateIn(userId, multipartFiles));
         return ResponseEntity.ok(profileImageUrlDTO);
     }
 
-    @PutMapping
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProfileImageUrlDTO> update(@RequestParam("files") List<MultipartFile> multipartFiles, @RequestHeader("userId") String userId){
         ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.update(ProfileImageUrlDTO.translateIn(userId, multipartFiles));
         return ResponseEntity.ok(profileImageUrlDTO);
