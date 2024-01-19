@@ -306,7 +306,7 @@ pipeline {
                                                 + ' --hostname image-server'
                                                 + ' --net comepethome'
                                                 + ' --ip 172.18.0.10'
-                                                //+ ' -p 8082:' + 8082
+                                                //+ ' -p 7099:' + 7099
                                                 + ' ' + DOCKER_HUB_USER_NAME + '/image-server:latest')
 
                         //// kafka 배포

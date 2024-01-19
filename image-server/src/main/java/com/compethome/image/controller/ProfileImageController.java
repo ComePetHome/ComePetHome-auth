@@ -20,13 +20,13 @@ public class ProfileImageController {
     private ProfileImageUrlService profileImageUrlService;
 
     @PostMapping
-    public ResponseEntity<ProfileImageUrlDTO> upload(@RequestParam("files") List<MultipartFile> multipartFiles, @RequestHeader("userId") String userId){
+    public ResponseEntity<ProfileImageUrlDTO> upload(@RequestPart("files") List<MultipartFile> multipartFiles, @RequestHeader("userId") String userId){
         ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.save(ProfileImageUrlDTO.translateIn(userId, multipartFiles));
         return ResponseEntity.ok(profileImageUrlDTO);
     }
 
     @PutMapping
-    public ResponseEntity<ProfileImageUrlDTO> update(@RequestParam("files") List<MultipartFile> multipartFiles, @RequestHeader("userId") String userId){
+    public ResponseEntity<ProfileImageUrlDTO> update(@RequestPart("files") List<MultipartFile> multipartFiles, @RequestHeader("userId") String userId){
         ProfileImageUrlDTO profileImageUrlDTO = profileImageUrlService.update(ProfileImageUrlDTO.translateIn(userId, multipartFiles));
         return ResponseEntity.ok(profileImageUrlDTO);
     }
