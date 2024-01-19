@@ -1,7 +1,10 @@
 package com.comepethome.user_query.controller.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import com.comepethome.user_query.dto.UserDTO;
+import lombok.NoArgsConstructor;
+
 @Data
 public class UserProfileResponse {
 

@@ -6,5 +6,5 @@ import lombok.NoArgsConstructor;
 
 @Data
 public class UserIdResponse {
-    private final String userId;
+    private String userId;
 }
