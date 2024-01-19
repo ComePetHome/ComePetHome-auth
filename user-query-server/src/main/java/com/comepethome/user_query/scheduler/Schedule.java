@@ -46,6 +46,7 @@ public class Schedule {
             profileRequest("/api/user/query/profile", accessToken);
             availableUserIdRequest("/api/user/query/availableUserId");
             logoutRequest("/api/user/query/logout", accessToken);
+            accessToken = loginRequest("/api/user/command/login");
             deleteRequest("/api/user/command/withdraw",accessToken);
         }catch (Exception e){
             log.info("Exception {} - {}",e.getMessage(), System.currentTimeMillis() / 1000);
