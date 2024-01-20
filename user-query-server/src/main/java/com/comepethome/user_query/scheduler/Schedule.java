@@ -42,6 +42,7 @@ public class Schedule {
         try {
             joinRequest("/api/user/command/join");
             String accessToken = loginRequest("/api/user/command/login");
+            Thread.sleep(5000);
             findUserIdRequest("/api/user/query/findUserId");
             profileRequest("/api/user/query/profile", accessToken);
             availableUserIdRequest("/api/user/query/availableUserId");
