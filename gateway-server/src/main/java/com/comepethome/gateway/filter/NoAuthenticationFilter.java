@@ -37,6 +37,7 @@ public class NoAuthenticationFilter extends AbstractGatewayFilterFactory<NoAuthe
 
                     response.getHeaders().add(ACCESS_TOKEN_SUBJECT, accessToken);
                     response.getHeaders().add(REFRESH_TOKEN_SUBJECT, refreshToken);
+                    response.getHeaders().remove(AUTH_ID);
             });
         }));
     }

@@ -46,11 +46,9 @@ public class UserService {
         user.setUpdateAt(userDTO.getUpdateAt());
 
         Optional.ofNullable(userDTO.getNickName()).ifPresent(user::setNickName);
-        Optional.ofNullable(userDTO.getName()).ifPresent(user::setName);
         Optional.ofNullable(userDTO.getPhoneNumber())
                 .filter(phoneNumber -> !phoneNumber.trim().isEmpty())
                 .ifPresent(user::setPhoneNumber);
-        Optional.ofNullable(userDTO.getImageUrl()).ifPresent(user::setImageUrl);
     }
 
     @Transactional

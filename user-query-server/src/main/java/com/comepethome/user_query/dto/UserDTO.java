@@ -12,26 +12,23 @@ public class UserDTO {
 
     private String userId;
     private String password;
-    private String accessToken;
-    private String refreshToken;
     private String nickName;
-    private String imageUrl;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private final String name;
     private final String phoneNumber;
 
     public static UserDTO translate(User user){
-        return new UserDTO(user.getUserId(), user.getPassword(), user.getAccessToken(), user.getRefreshToken(),
-                            user.getNickName(), user.getImageUrl(), user.getCreateAt(), user.getUpdateAt(), user.getName(), user.getPhoneNumber());
+        return new UserDTO(user.getUserId(), user.getPassword(),
+                            user.getNickName(), user.getCreateAt(), user.getUpdateAt(), user.getName(), user.getPhoneNumber());
     }
 
     public static UserDTO translate(UserFindIdRequest request){
-        return new UserDTO("", "", "", "", "", "", null, null, request.getName(), request.getPhoneNumber());
+        return new UserDTO("", "", "", null, null, request.getName(), request.getPhoneNumber());
     }
 
     public static UserDTO translate(String userid){
-        return new UserDTO(userid, "", "", "", "", "", null, null, "", "");
+        return new UserDTO(userid, "", "", null, null, "", "");
     }
 }
 

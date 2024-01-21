@@ -30,16 +30,7 @@ public class User {
     private String password;
 
     @Column
-    private String accessToken;
-
-    @Column
-    private String refreshToken;
-
-    @Column
     private String nickName;
-
-    @Column
-    private String imageUrl;
 
     @Column
     private LocalDateTime createAt;
@@ -59,10 +50,7 @@ public class User {
         return new User(null,
                             userDTO.getUserId(),
                             encoder.encode(userDTO.getPassword()),
-                            userDTO.getAccessToken(),
-                            userDTO.getRefreshToken(),
                             userDTO.getNickName(),
-                            userDTO.getImageUrl(),
                             userDTO.getCreateAt(),
                             userDTO.getUpdateAt(),
                             userDTO.getName(),

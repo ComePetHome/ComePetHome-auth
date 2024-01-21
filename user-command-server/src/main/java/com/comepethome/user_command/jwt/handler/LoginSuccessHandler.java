@@ -29,7 +29,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String userId = userDetails.getUsername();
-        ObjectNode enumAsJson = objectMapper.createObjectNode();
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
