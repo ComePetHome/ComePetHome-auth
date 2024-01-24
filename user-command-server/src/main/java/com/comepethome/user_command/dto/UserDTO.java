@@ -29,7 +29,7 @@ public class UserDTO {
     }
 
     public static UserDTO translate(UserProfileUpdateRequest request, String userId){
-        return new UserDTO(userId, "", request.getNickName(), null, LocalDateTime.now(), "", request.getPhoneNumber());
+        return new UserDTO(userId, "", request.getNickName(), null, LocalDateTime.now(), request.getName(), request.getPhoneNumber());
     }
 
     public static UserDTO translate(UserJoinRequest request){

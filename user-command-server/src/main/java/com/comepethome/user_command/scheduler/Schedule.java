@@ -96,7 +96,7 @@ public class Schedule {
         String url =  createUrl(uri);
 
         log.info("update request start - {}", System.currentTimeMillis() / 1000);
-        UserProfileUpdateRequest userProfileUpdateRequest = new UserProfileUpdateRequest("t", "0");
+        UserProfileUpdateRequest userProfileUpdateRequest = new UserProfileUpdateRequest("t", "t", "0");
 
         HttpHeaders httpHeaders = new HttpHeaders();
         includeAccessToken(httpHeaders, accessToken);

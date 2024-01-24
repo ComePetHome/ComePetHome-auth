@@ -57,7 +57,7 @@ public class Schedule {
     }
 
     public void joinRequest(String uri){
-        String url =  createUrl(uri);
+        String url = createUrl(uri);
 
         log.info("join request start - {}", System.currentTimeMillis() / 1000);
         UserJoinRequest userJoinRequest = new UserJoinRequest(testId , testPw,"t", "t", "1");
