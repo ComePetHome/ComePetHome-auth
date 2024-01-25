@@ -17,13 +17,14 @@ import java.util.Optional;
 
 @Component
 @Slf4j
-public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
+public class TotalAuthenticationFilter extends AbstractGatewayFilterFactory<TotalAuthenticationFilter.Config> {
+
     @Autowired
     private final JwtService jwtService;
 
     @Autowired
-    public AuthenticationFilter(JwtService jwtService){
-        super(AuthenticationFilter.Config.class);
+    public TotalAuthenticationFilter(JwtService jwtService){
+        super(TotalAuthenticationFilter.Config.class);
         this.jwtService = jwtService;
     }
 
@@ -43,22 +44,21 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 return response.setComplete();
             }
 
-            return Optional.ofNullable(request.getHeaders().get(Common.ACCESS_TOKEN_SUBJECT))
-                    .map(accessToken -> {
-                        String userId = jwtService.resolveAccessTokenWithPrefix(accessToken.get(0));
-                        if(userId.isEmpty()){
-                           throw new UnexpectedRefreshTokenException();
-                        }
+            if(request.getHeaders().containsKey(Common.ACCESS_TOKEN_SUBJECT)){
+                List<String> accessToken = request.getHeaders().get(Common.ACCESS_TOKEN_SUBJECT);
+                String userId = jwtService.resolveAccessTokenWithPrefix(accessToken.get(0));
+                if(userId.isEmpty()){
+                    throw new UnexpectedRefreshTokenException();
+                }
 
-                        Optional<String> path = Optional.ofNullable(request.getURI().getPath());
+                Optional<String> path = Optional.ofNullable(request.getURI().getPath());
 
-                        path.filter( p -> p.equals(Common.USER_WITHDRAW_URI) || p.equals(Common.USER_LOGOUT_URI))
-                                .ifPresent(p ->{jwtService.deleteRefreshToken(userId);});
+                request.mutate().header(Common.USER_ID, userId).build();
+            }else{
+                request.mutate().header(Common.USER_ID, "");
+            }
 
-                        request.mutate().header("userId", userId).build();
-                        return chain.filter(exchange);
-                    })
-                    .orElseThrow(UnexpectedRefreshTokenException::new);
+            return chain.filter(exchange);
         };
     }
 
@@ -69,5 +69,4 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         private boolean postLogger;
     }
 }
-
 

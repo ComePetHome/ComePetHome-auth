@@ -50,19 +50,12 @@ spring:
           filters:
             - AuthenticationFilter
 
-        - id: pet-NoAuthentication
+        - id: pet-TotalAuthentication
           uri: http://172.18.0.8:3000
           predicates:
-            - Path=/read/**
+            - Path=/pet/**
           filters:
-            - NoAuthenticationFilter
-
-        - id: pet-Authentication
-          uri: http://172.18.0.8:3000
-          predicates:
-            - Path=/command/**
-          filters:
-            - AuthenticationFilter
+            - TotalAuthenticationFilter
 
         - id: image
           uri: http://172.18.0.10:7099

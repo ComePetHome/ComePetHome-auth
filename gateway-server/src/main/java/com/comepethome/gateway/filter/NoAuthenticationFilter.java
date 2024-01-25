@@ -14,9 +14,6 @@ import java.util.Optional;
 
 @Component
 public class NoAuthenticationFilter extends AbstractGatewayFilterFactory<NoAuthenticationFilter.Config> {
-    private final static String AUTH_ID = "Auth-Id";
-    private static final String ACCESS_TOKEN_SUBJECT = "access-token";
-    private static final String REFRESH_TOKEN_SUBJECT = "refresh-token";
     @Autowired
     private final JwtService jwtService;
 
@@ -30,14 +27,14 @@ public class NoAuthenticationFilter extends AbstractGatewayFilterFactory<NoAuthe
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> chain.filter(exchange).then(Mono.fromRunnable(()->{
                 ServerHttpResponse response = exchange.getResponse();
-                Optional.ofNullable(response.getHeaders().getFirst(AUTH_ID)).ifPresent(userId -> {
+                Optional.ofNullable(response.getHeaders().getFirst(Common.AUTH_ID)).ifPresent(userId -> {
 
                     String accessToken = jwtService.createAccessTokenWithPrefix(userId);
                     String refreshToken = jwtService.createRefreshTokenWithPrefix(userId);
 
-                    response.getHeaders().add(ACCESS_TOKEN_SUBJECT, accessToken);
-                    response.getHeaders().add(REFRESH_TOKEN_SUBJECT, refreshToken);
-                    response.getHeaders().remove(AUTH_ID);
+                    response.getHeaders().add(Common.ACCESS_TOKEN_SUBJECT, accessToken);
+                    response.getHeaders().add(Common.REFRESH_TOKEN_SUBJECT, refreshToken);
+                    response.getHeaders().remove(Common.AUTH_ID);
             });
         }));
     }
