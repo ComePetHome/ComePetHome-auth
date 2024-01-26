@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/email/verification")
 public class EmailController {
@@ -20,8 +22,8 @@ public class EmailController {
     @Autowired
     private EmailService emailService;
 
-    @PostMapping("/request")
-    public ResponseEntity<UserStatusResponse> sendMessage(@RequestBody String userId){
+    @GetMapping("/request")
+    public ResponseEntity<UserStatusResponse> sendMessage(@RequestParam("userId") String userId){
         emailService.sendCodeEmail(userId);
         return ResponseEntity.ok( new UserStatusResponse(
                 SuccessResponseMessage.MAIL_SEND_SUCCESS.getMessage(),
