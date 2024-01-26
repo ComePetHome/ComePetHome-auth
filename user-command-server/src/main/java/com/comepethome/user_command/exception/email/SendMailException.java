@@ -5,7 +5,7 @@ import com.comepethome.user_command.exception.FailResponseMessage;
 
 public class SendMailException extends CustomException {
     public SendMailException() {
-        super(FailResponseMessage.USER_ALREADY_EXIST.getCode(),
-                FailResponseMessage.USER_ALREADY_EXIST.getMessage());
+        super(FailResponseMessage.EMAIL_SEND_FAIL.getCode(),
+                FailResponseMessage.EMAIL_SEND_FAIL.getMessage());
     }
 }

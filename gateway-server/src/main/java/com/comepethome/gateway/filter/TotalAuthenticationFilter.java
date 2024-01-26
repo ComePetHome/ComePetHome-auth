@@ -51,8 +51,6 @@ public class TotalAuthenticationFilter extends AbstractGatewayFilterFactory<Tota
                     throw new UnexpectedRefreshTokenException();
                 }
 
-                Optional<String> path = Optional.ofNullable(request.getURI().getPath());
-
                 request.mutate().header(Common.USER_ID, userId).build();
             }else{
                 request.mutate().header(Common.USER_ID, "");

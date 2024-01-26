@@ -12,6 +12,7 @@ pipeline {
         SSH_CREDENTIAL_ID = 'ComePetHome_SSH'
         AWS_S3_ACCESS_KEY = 'Aws_S3_Access_Key'
         AWS_S3_SECRET_KEY = 'Aws_S3_Secret_Key'
+        EMAIL_APP = 'Email_App'
 
         SERVER_IP = 'SERVER_IP'
         SERVER_PORT= 'SERVER_PORT'
@@ -54,6 +55,10 @@ pipeline {
                         credentialsId: TEST_ID2,
                         usernameVariable: 'ID2',
                         passwordVariable: 'PW2'),
+                        usernamePassword(
+                        credentialsId: EMAIL_APP,
+                        usernameVariable: 'EMAIL_USER',
+                        passwordVariable: 'EMAIL_PW'),
                         string(credentialsId: AWS_S3_ACCESS_KEY, variable: 'MY_ACCESS_KEY'),
                         string(credentialsId: AWS_S3_SECRET_KEY, variable: 'MY_SECRET_KEY'),
                         string(credentialsId: SERVER_IP, variable: 'IP'),
@@ -65,6 +70,8 @@ pipeline {
                             sh(script: """ yq -i '.test.pw="${PW}"' /var/jenkins_home/workspace/ComePetHome_master/user-command-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.test.server-ip="${IP}"' /var/jenkins_home/workspace/ComePetHome_master/user-command-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.test.port="${PORT}"' /var/jenkins_home/workspace/ComePetHome_master/user-command-server/src/main/resources/application.yml """)
+                            sh(script: """ yq -i '.spring.mail.username="${EMAIL_USER}"' /var/jenkins_home/workspace/ComePetHome_master/user-command-server/src/main/resources/application.yml """)
+                            sh(script: """ yq -i '.spring.mail.password="${EMAIL_PW}"' /var/jenkins_home/workspace/ComePetHome_master/user-command-server/src/main/resources/application.yml """)
 
                             sh(script: """ yq -i '.spring.datasource.username="${DB_ID}"' /var/jenkins_home/workspace/ComePetHome_master/user-query-server/src/main/resources/application.yml """)
                             sh(script: """ yq -i '.spring.datasource.password="${DB_PW}"' /var/jenkins_home/workspace/ComePetHome_master/user-query-server/src/main/resources/application.yml """)
@@ -116,21 +123,21 @@ pipeline {
                     //        }
                     //    }
                     //}
-                    dir('gateway-server'){
-                        script {
-                            sh(script: """
-                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/gateway-server:latest
-                            """, returnStatus: true)
-                            sh(script: """
-                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/gateway-server:latest
-                            """, returnStatus: true)
+                    //dir('gateway-server'){
+                    //    script {
+                    //        sh(script: """
+                    //            docker image rmi -f ${DOCKER_HUB_USER_NAME}/gateway-server:latest
+                    //        """, returnStatus: true)
+                    //        sh(script: """
+                    //            docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/gateway-server:latest
+                    //        """, returnStatus: true)
 
-                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'gateway-server', '/var/jenkins_home/workspace/ComePetHome_master/gateway-server')
-                                app.push('latest')
-                            }
-                        }
-                    }
+                    //        docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                    //            app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'gateway-server', '/var/jenkins_home/workspace/ComePetHome_master/gateway-server')
+                    //            app.push('latest')
+                    //        }
+                    //    }
+                    //}
                     //dir('user-query-server'){
                     //    script {
                     //        sh(script: """
@@ -146,21 +153,21 @@ pipeline {
                     //        }
                     //    }
                     //}
-                    //dir('user-command-server'){
-                    //    script {
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-command-server:latest
-                    //        """, returnStatus: true)
-                    //        sh(script: """
-                    //            docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-command-server:latest
-                    //        """, returnStatus: true)
+                    dir('user-command-server'){
+                        script {
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                            """, returnStatus: true)
+                            sh(script: """
+                                docker image rmi -f ${DOCKER_HUB_URL_ADDRESS}/${DOCKER_HUB_USER_NAME}/user-command-server:latest
+                            """, returnStatus: true)
 
-                    //        docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
-                    //            app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
-                    //            app.push('latest')
-                    //        }
-                    //    }
-                    //}
+                            docker.withRegistry(DOCKER_HUB_URL, DOCKER_HUB_CREDENTIAL_ID) {
+                                app = docker.build(DOCKER_HUB_USER_NAME + '/' + 'user-command-server', '/var/jenkins_home/workspace/ComePetHome_master/user-command-server')
+                                app.push('latest')
+                            }
+                        }
+                    }
                     //dir('image-server'){
                     //    script {
                     //        sh(script: """
@@ -211,20 +218,20 @@ pipeline {
                         //sshCommand remote: remote, command: 'docker rm user-mysqldb || true'
                         //sshCommand remote: remote, command: 'docker image rm mysql || true'
 
-                        // user-gateway-server 삭제
-                        sshCommand remote: remote, command: 'docker stop gateway-server || true'
-                        sshCommand remote: remote, command: 'docker rm gateway-server || true'
-                        sshCommand remote: remote, command: 'docker image rm rhw0213/gateway-server || true'
+                        //// user-gateway-server 삭제
+                        //sshCommand remote: remote, command: 'docker stop gateway-server || true'
+                        //sshCommand remote: remote, command: 'docker rm gateway-server || true'
+                        //sshCommand remote: remote, command: 'docker image rm rhw0213/gateway-server || true'
 
                         //// user-eureka-server 삭제
                         //sshCommand remote: remote, command: 'docker stop eureka-server || true'
                         //sshCommand remote: remote, command: 'docker rm eureka-server || true'
                         //sshCommand remote: remote, command: 'docker image rm rhw0213/eureka-server || true'
 
-                        //// user-command-server 삭제
-                        //sshCommand remote: remote, command: 'docker stop user-command-server || true'
-                        //sshCommand remote: remote, command: 'docker rm user-command-server || true'
-                        //sshCommand remote: remote, command: 'docker image rm rhw0213/user-command-server || true'
+                        // user-command-server 삭제
+                        sshCommand remote: remote, command: 'docker stop user-command-server || true'
+                        sshCommand remote: remote, command: 'docker rm user-command-server || true'
+                        sshCommand remote: remote, command: 'docker image rm rhw0213/user-command-server || true'
 
                         //// user-query-server 삭제
                         //sshCommand remote: remote, command: 'docker stop user-query-server || true'
@@ -273,23 +280,23 @@ pipeline {
                         //                        + ' -p 8761:' + 8761
                         //                        + ' ' + DOCKER_HUB_USER_NAME + '/eureka-server:latest')
 
-                        // gateway-server 배포
-                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest'
-                        sshCommand remote: remote, command: ('docker run -d --name gateway-server'
-                                                + ' --hostname gateway-server'
-                                                + ' --net comepethome'
-                                                + ' --ip 172.18.0.3'
-                                                + ' -p 9001:' + 9001
-                                                + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
-
-                        //// user-command-server 배포
-                        //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
-                        //sshCommand remote: remote, command: ('docker run -d --name user-command-server'
-                        //                        + ' --hostname user-command-server'
+                        //// gateway-server 배포
+                        //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest'
+                        //sshCommand remote: remote, command: ('docker run -d --name gateway-server'
+                        //                        + ' --hostname gateway-server'
                         //                        + ' --net comepethome'
-                        //                        + ' --ip 172.18.0.4'
-                        //                        //+ ' -p 8081:' + 8081
-                        //                        + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
+                        //                        + ' --ip 172.18.0.3'
+                        //                        + ' -p 9001:' + 9001
+                        //                        + ' ' + DOCKER_HUB_USER_NAME + '/gateway-server:latest')
+
+                        // user-command-server 배포
+                        sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest'
+                        sshCommand remote: remote, command: ('docker run -d --name user-command-server'
+                                                + ' --hostname user-command-server'
+                                                + ' --net comepethome'
+                                                + ' --ip 172.18.0.4'
+                                                //+ ' -p 8081:' + 8081
+                                                + ' ' + DOCKER_HUB_USER_NAME + '/user-command-server:latest')
 
                         //// user-query-server 배포
                         //sshCommand remote: remote, command: 'docker pull ' + DOCKER_HUB_USER_NAME + '/user-query-server:latest'
