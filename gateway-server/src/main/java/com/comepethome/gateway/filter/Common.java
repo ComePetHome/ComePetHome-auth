@@ -11,5 +11,4 @@ public class Common {
     public static final String ACCESS_TOKEN_SUBJECT = "access-token";
     public static final String REFRESH_TOKEN_SUBJECT = "refresh-token";
     public static final String USER_ID= "userId";
-    public static final String AUTH_ID = "Auth-Id";
 }

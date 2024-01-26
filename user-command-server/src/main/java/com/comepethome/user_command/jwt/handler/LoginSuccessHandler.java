@@ -21,7 +21,7 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final static String AUTH_ID = "Auth-Id";
+    private final static String USER_ID = "userId";
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -33,7 +33,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setStatus(HttpStatus.OK.value());
-        response.setHeader(AUTH_ID, userId);
+        response.setHeader(USER_ID, userId);
 
         response.getWriter().write(objectMapper.writeValueAsString(new UserStatusResponse(
                 SuccessResponseMessage.USER_LOGIN_SUCCESS.getMessage(),

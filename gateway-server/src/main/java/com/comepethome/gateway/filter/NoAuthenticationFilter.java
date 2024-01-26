@@ -27,14 +27,14 @@ public class NoAuthenticationFilter extends AbstractGatewayFilterFactory<NoAuthe
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> chain.filter(exchange).then(Mono.fromRunnable(()->{
                 ServerHttpResponse response = exchange.getResponse();
-                Optional.ofNullable(response.getHeaders().getFirst(Common.AUTH_ID)).ifPresent(userId -> {
+                Optional.ofNullable(response.getHeaders().getFirst(Common.USER_ID)).ifPresent(userId -> {
 
                     String accessToken = jwtService.createAccessTokenWithPrefix(userId);
                     String refreshToken = jwtService.createRefreshTokenWithPrefix(userId);
 
                     response.getHeaders().add(Common.ACCESS_TOKEN_SUBJECT, accessToken);
                     response.getHeaders().add(Common.REFRESH_TOKEN_SUBJECT, refreshToken);
-                    response.getHeaders().remove(Common.AUTH_ID);
+                    response.getHeaders().remove(Common.USER_ID);
             });
         }));
     }
