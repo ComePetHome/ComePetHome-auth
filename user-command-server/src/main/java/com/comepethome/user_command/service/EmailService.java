@@ -44,7 +44,7 @@ public class EmailService {
         emailCode.ifPresent(emailCodeRepository::delete);
 
         try {
-            EmailCode entity = new EmailCode(0L, userId, createCode());
+            EmailCode entity = new EmailCode( null, userId, createCode());
             emailCodeRepository.save(entity);
             sendMail(userId, AUTH_CODE, entity.getEmailCode());
         } catch (RuntimeException e) {
