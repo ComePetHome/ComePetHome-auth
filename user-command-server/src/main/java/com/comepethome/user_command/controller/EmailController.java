@@ -40,7 +40,7 @@ public class EmailController {
                 SuccessResponseMessage.MAIL_VERIFY_SUCCESS.getCode()));
     }
 
-    @GetMapping("/temp-token")
+    @PostMapping("/temp-token")
     public ResponseEntity<UserStatusResponse> getTempToken(@RequestBody EmailCodeRequest request, HttpServletResponse response){
         String userId = emailService.verificationUserId(EmailCodeDTO.translate(request));
         response.setHeader("userId", userId);
