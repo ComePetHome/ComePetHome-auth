@@ -1,6 +1,7 @@
 package com.comepethome.user_command.controller;
 
 import com.comepethome.user_command.controller.request.UserJoinRequest;
+import com.comepethome.user_command.controller.request.UserPasswordRequest;
 import com.comepethome.user_command.controller.request.UserProfileUpdateRequest;
 import com.comepethome.user_command.controller.response.UserStatusResponse;
 import com.comepethome.user_command.dto.UserDTO;
@@ -36,8 +37,8 @@ public class UserController {
     }
 
     @PostMapping("/change-pw")
-    public ResponseEntity<UserStatusResponse> chanePassword(@RequestParam("password") String password, @RequestHeader("userId") String userId){
-        userService.changePassword(UserDTO.translate(userId, password));
+    public ResponseEntity<UserStatusResponse> chanePassword(@RequestBody UserPasswordRequest request, @RequestHeader("userId") String userId){
+        userService.changePassword(UserDTO.translate(userId, request.getPassword()));
 
         return ResponseEntity.ok(new UserStatusResponse(
                 SuccessResponseMessage.USER_PASSWORD_CHANGE_SUCCESS.getMessage(),
