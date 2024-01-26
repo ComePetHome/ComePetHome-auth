@@ -40,5 +40,9 @@ public class UserDTO {
         return new UserDTO(userId, "", "", null, null, "", "");
     }
 
+    public static UserDTO translate(String userId, String password){
+        return new UserDTO(userId, password, "", null, LocalDateTime.now(), "", "");
+    }
+
 }
 

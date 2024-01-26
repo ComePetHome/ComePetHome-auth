@@ -12,7 +12,9 @@ public enum SuccessResponseMessage {
     USER_DELETE_SUCCESS(200, "회원이 정상 탈퇴 되었습니다."),
 
     MAIL_SEND_SUCCESS(200,"메일 전송 완료되었습니다"),
-    MAIL_VERIFY_SUCCESS(200,"메일 인증이 성공했습니다");
+    MAIL_VERIFY_SUCCESS(200,"메일 인증이 성공했습니다"),
+
+    USER_PASSWORD_CHANGE_SUCCESS(200, "패스워드가 정상 변경되었습니다.");
 
 
     private final int code;

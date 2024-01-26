@@ -3,10 +3,13 @@ package com.comepethome.user_command.service;
 import com.comepethome.user_command.controller.request.EmailCodeRequest;
 import com.comepethome.user_command.dto.EmailCodeDTO;
 import com.comepethome.user_command.entity.EmailCode;
+import com.comepethome.user_command.entity.User;
 import com.comepethome.user_command.exception.email.CreateCodeException;
 import com.comepethome.user_command.exception.email.EmailCodeNotMatchException;
 import com.comepethome.user_command.exception.email.SendMailException;
+import com.comepethome.user_command.exception.user.UserNotExistException;
 import com.comepethome.user_command.repository.EmailCodeRepository;
+import com.comepethome.user_command.repository.UserRepository;
 import jakarta.ws.rs.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +33,10 @@ public class EmailService {
     @Autowired
     private final EmailCodeRepository emailCodeRepository;
 
-    private static final String AUTH_CODE = "auth-code";
+    @Autowired
+    private final UserRepository userRepository;
+
+    private static final String AUTH_CODE = "ComePetHome auth-code";
 
     public void sendCodeEmail(String userId){
         Optional<EmailCode> emailCode = Optional.ofNullable(emailCodeRepository.findByUserId(userId));
@@ -83,10 +89,22 @@ public class EmailService {
         return message;
     }
 
-    public void verification(EmailCodeDTO emailCodeDTO) {
+    public String verification(EmailCodeDTO emailCodeDTO) {
         Optional<EmailCode> emailCode = Optional.ofNullable(emailCodeRepository.findByUserId(emailCodeDTO.getUserId()));
 
         emailCode.filter(e -> e.getEmailCode().equals(emailCodeDTO.getEmailCode()))
                  .ifPresentOrElse(emailCodeRepository::delete, ()->{throw new EmailCodeNotMatchException();} );
+
+        return emailCode.get().getUserId();
+    }
+
+    public String verificationUserId(EmailCodeDTO emailCodeDTO){
+        Optional<User> user = Optional.ofNullable(userRepository.findByUserId(emailCodeDTO.getUserId()));
+
+        if(user.isPresent()){
+            return verification(emailCodeDTO);
+        }
+
+        throw new UserNotExistException();
     }
 }

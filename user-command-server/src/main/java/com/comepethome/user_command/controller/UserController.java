@@ -35,6 +35,18 @@ public class UserController {
         );
     }
 
+    @PostMapping("/change-pw")
+    public ResponseEntity<UserStatusResponse> chanePassword(@RequestParam String password, @RequestHeader("userId") String userId){
+        userService.changePassword(UserDTO.translate(userId, password));
+
+        return ResponseEntity.ok(new UserStatusResponse(
+                SuccessResponseMessage.USER_PASSWORD_CHANGE_SUCCESS.getMessage(),
+                HttpStatus.OK,
+                ApiExceptionHandler.getNowDateTime(),
+                SuccessResponseMessage.USER_PASSWORD_CHANGE_SUCCESS.getCode())
+        );
+    }
+
     @PatchMapping("/profile")
     public ResponseEntity<UserStatusResponse> update(@RequestBody UserProfileUpdateRequest userProfileUpdateRequest, @RequestHeader("userId") String userId){
         userService.update(UserDTO.translate(userProfileUpdateRequest, userId));

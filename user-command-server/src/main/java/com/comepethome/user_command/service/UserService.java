@@ -3,6 +3,7 @@ package com.comepethome.user_command.service;
 import com.comepethome.user_command.entity.User;
 import com.comepethome.user_command.dto.UserDTO;
 import com.comepethome.user_command.exception.user.UserAlreadyExistException;
+import com.comepethome.user_command.exception.user.UserNotExistException;
 import com.comepethome.user_command.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -55,5 +56,14 @@ public class UserService {
     @Transactional
     public void delete(UserDTO userDTO) {
         findByUser(userDTO.getUserId()).ifPresent(userRepository::delete);
+    }
+
+    @Transactional
+    public void changePassword(UserDTO userDTO) {
+        Optional<User> user = findByUser(userDTO.getUserId());
+
+        user.ifPresentOrElse(u -> u.setPassword(encoder.encode(userDTO.getPassword())),
+                ()->{ throw new UserNotExistException(); });
+
     }
 }

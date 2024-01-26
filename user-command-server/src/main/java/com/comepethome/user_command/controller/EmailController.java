@@ -6,6 +6,8 @@ import com.comepethome.user_command.dto.EmailCodeDTO;
 import com.comepethome.user_command.exception.ApiExceptionHandler;
 import com.comepethome.user_command.exception.SuccessResponseMessage;
 import com.comepethome.user_command.service.EmailService;
+import com.comepethome.user_command.service.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,7 @@ public class EmailController {
     private EmailService emailService;
 
     @PostMapping("/request")
-    public ResponseEntity<UserStatusResponse> sendMessage(@RequestParam("userId") String userId){
+    public ResponseEntity<UserStatusResponse> sendMessage(@RequestBody String userId){
         emailService.sendCodeEmail(userId);
         return ResponseEntity.ok( new UserStatusResponse(
                 SuccessResponseMessage.MAIL_SEND_SUCCESS.getMessage(),
@@ -38,4 +40,15 @@ public class EmailController {
                 SuccessResponseMessage.MAIL_VERIFY_SUCCESS.getCode()));
     }
 
+    @GetMapping("/temp-token")
+    public ResponseEntity<UserStatusResponse> getTempToken(@RequestBody EmailCodeRequest request, HttpServletResponse response){
+        String userId = emailService.verificationUserId(EmailCodeDTO.translate(request));
+        response.setHeader("userId", userId);
+
+        return ResponseEntity.ok( new UserStatusResponse(
+                SuccessResponseMessage.MAIL_VERIFY_SUCCESS.getMessage(),
+                HttpStatus.OK,
+                ApiExceptionHandler.getNowDateTime(),
+                SuccessResponseMessage.MAIL_VERIFY_SUCCESS.getCode()));
+    }
 }
