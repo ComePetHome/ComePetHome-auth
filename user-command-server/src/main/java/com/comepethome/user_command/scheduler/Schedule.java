@@ -3,6 +3,7 @@ package com.comepethome.user_command.scheduler;
 import com.comepethome.user_command.controller.UserController;
 import com.comepethome.user_command.controller.request.UserJoinRequest;
 import com.comepethome.user_command.controller.request.UserLoginRequest;
+import com.comepethome.user_command.controller.request.UserPasswordRequest;
 import com.comepethome.user_command.controller.request.UserProfileUpdateRequest;
 import com.comepethome.user_command.controller.response.UserStatusResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,7 @@ public class Schedule {
         try {
             joinRequest("/api/user/command/join");
             String accessToken = loginRequest("/api/user/command/login");
+            changePassword("/api/user/command/change-pw", accessToken);
             updateRequest("/api/user/command/profile", accessToken);
             deleteRequest("/api/user/command/withdraw", accessToken);
         }catch (Exception e){
@@ -90,6 +92,26 @@ public class Schedule {
         log.info("login request end - {}", System.currentTimeMillis() / 1000);
 
         return Objects.requireNonNull(responseEntity.getHeaders().get("access-token")).get(0);
+    }
+
+    public void changePassword(String uri, String accessToken){
+        String url =  createUrl(uri);
+
+        log.info("changePassword request start - {}", System.currentTimeMillis() / 1000);
+        UserPasswordRequest userPasswordRequest = new UserPasswordRequest(testPw);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        includeAccessToken(httpHeaders, accessToken);
+        includeAcceptEncodingType(httpHeaders);
+        includeContentType(httpHeaders);
+        includeAcceptType(httpHeaders);
+
+        HttpEntity<UserPasswordRequest> requestHttpEntity = new HttpEntity<>(userPasswordRequest, httpHeaders);
+
+        ResponseEntity<UserStatusResponse> responseEntity = requestRestful(url, requestHttpEntity, HttpMethod.POST);
+
+        logResponseCode(responseEntity);
+        log.info("changePassword request end - {}", System.currentTimeMillis() / 1000);
     }
 
     public void updateRequest(String uri, String accessToken){
