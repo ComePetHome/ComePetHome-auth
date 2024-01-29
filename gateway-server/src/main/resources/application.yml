@@ -55,7 +55,7 @@ spring:
           predicates:
             - Path=/pet/**
           filters:
-            - TotalAuthenticationFilter
+            - NoAuthenticationFilter
 
         - id: image
           uri: http://172.18.0.10:7099
