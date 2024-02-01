@@ -53,7 +53,7 @@ spring:
         - id: pet-TotalAuthentication
           uri: http://172.18.0.8:3000
           predicates:
-            - Path=/pets/**
+            - Path=/pet/**
           filters:
             - TotalAuthenticationFilter
 
