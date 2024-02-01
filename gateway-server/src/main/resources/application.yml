@@ -53,7 +53,7 @@ spring:
         - id: pet-TotalAuthentication
           uri: http://172.18.0.8:3000
           predicates:
-            - Path=/pet/**
+            - Path=/pets/**
           filters:
             - TotalAuthenticationFilter
 
@@ -67,8 +67,8 @@ spring:
 jwt:
   properties:
     secret: 123
-    access-token-expiration-seconds: 60 # 900 10?
-    refresh-token-expiration-seconds: 180 # 3600 1??
+    access-token-expiration-seconds: 900 # 900 10?
+    refresh-token-expiration-seconds: 3600 # 3600 1??
     token-prefix: Bearer
 
 eureka:
