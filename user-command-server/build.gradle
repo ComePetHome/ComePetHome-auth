@@ -36,6 +36,7 @@ dependencies {
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.flywaydb:flyway-mysql'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
