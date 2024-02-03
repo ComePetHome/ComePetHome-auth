@@ -69,4 +69,14 @@ public class UserController {
                 SuccessResponseMessage.USER_DELETE_SUCCESS.getCode())
         );
     }
+
+    @GetMapping("/test")
+    public ResponseEntity<UserStatusResponse> test(@RequestHeader("userId") String userId){
+        return ResponseEntity.ok(new UserStatusResponse(
+                userId,
+                HttpStatus.OK,
+                ApiExceptionHandler.getNowDateTime(),
+                SuccessResponseMessage.USER_DELETE_SUCCESS.getCode())
+        );
+    }
 }
